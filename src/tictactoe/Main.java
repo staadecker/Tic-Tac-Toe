@@ -1,3 +1,7 @@
+package tictactoe;
+
+import tictactoe.gui.Case;
+import tictactoe.gui.PlateauDeJeu;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,17 +14,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        PlateauDeJeu root = new PlateauDeJeu();
+        PlateauDeJeu root = new PlateauDeJeu(null);
         root.setPadding(new Insets(10));
 
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
         primaryStage.show();
 
-        for (int i = 0 ; i < 3 ; i ++ ){
-            for (int y = 0 ; y < 3 ; y++){
-                root.mettreX(i,y);
-            }
+        for (int id = 0 ; id < 9 ; id ++ ){
+            root.setStatus(id, Case.Status.X);
         }
     }
 }
