@@ -14,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        PlateauDeJeu root = new PlateauDeJeu(null);
+        PlateauDeJeu root = new PlateauDeJeu();
         root.setPadding(new Insets(10));
 
         primaryStage.setScene(new Scene(root));

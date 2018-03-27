@@ -16,12 +16,10 @@ public class Case extends StackPane implements EventHandler<javafx.scene.input.M
     private Status status = Status.VIDE;
 
     private final CaseClickListener listener;
-    private final int id;
 
-    Case(int id, CaseClickListener listener) {
+    Case(CaseClickListener listener) {
         super();
 
-        this.id = id;
         this.listener = listener;
 
         this.setOnMouseClicked(this);
@@ -47,7 +45,7 @@ public class Case extends StackPane implements EventHandler<javafx.scene.input.M
     @Override
     public void handle(MouseEvent event) {
         if (listener != null) {
-            listener.notifierCaseClicked(id);
+            listener.notifierCaseClicked(this);
         }
     }
 

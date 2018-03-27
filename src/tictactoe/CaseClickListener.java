@@ -1,5 +1,7 @@
 package tictactoe;
 
+import tictactoe.gui.Case;
+
 public interface CaseClickListener {
-    void notifierCaseClicked(int id);
+    void notifierCaseClicked(Case caseClicked);
 }
