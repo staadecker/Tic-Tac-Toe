@@ -5,16 +5,16 @@ import javafx.scene.paint.Color;
 import org.jetbrains.annotations.Contract;
 import tictactoe.CaseClickListener;
 
-public class PlateauDeJeu extends GridPane implements CaseClickListener{
+public class PlateauDeJeu extends GridPane {
 
     private final Case[] cases = new Case[9];
 
-    public PlateauDeJeu() {
+    public PlateauDeJeu(CaseClickListener listener) {
         super();
 
-        for (int i = 0; i < 9; i++) {
-            cases[i] = new Case(this);
-            this.add(cases[i], getColonne(i), getRangee(i));
+        for (int id = 0; id < 9; id++) {
+            cases[id] = new Case(id, listener);
+            this.add(cases[id], getColonne(id), getRangee(id));
         }
 
         appliquerConstraints();
@@ -37,16 +37,6 @@ public class PlateauDeJeu extends GridPane implements CaseClickListener{
 
     public void setStatus(int id, Case.Status status){
         cases[id].setStatus(status);
-    }
-
-    @Override
-    public void notifierCaseClicked(Case caseClicked) {
-        for (Case caseATester : cases){
-            if (caseATester == caseClicked){
-                //TODO
-                break;
-            }
-        }
     }
 
     @Contract(pure = true)
