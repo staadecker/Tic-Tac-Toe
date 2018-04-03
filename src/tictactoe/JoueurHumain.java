@@ -1,13 +1,15 @@
 package tictactoe;
 
+import tictactoe.gui.Boite;
+
 public class JoueurHumain implements Joueur {
     @Override
-    public void notifierCaseClick(int id) {
-
+    public Position notifierCaseClick(Position position) {
+        return position;
     }
 
     @Override
-    public void notifierTour() {
-
+    public Position notifierTour(Boite.Status[][] statusDuPlateau) {
+        return null;
     }
 }

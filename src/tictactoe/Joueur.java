@@ -1,6 +1,8 @@
 package tictactoe;
 
+import tictactoe.gui.Boite;
+
 public interface Joueur {
-    void notifierCaseClick(int id);
-    void notifierTour();
+    Position notifierCaseClick(Position position);
+    Position notifierTour(Boite.Status[][] statusDuPlateau);
 }

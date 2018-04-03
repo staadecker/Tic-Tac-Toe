@@ -17,11 +17,11 @@ public class Jeux implements CaseClickListener {
     }
 
     @Override
-    public void notifierCaseClicked(int id) {
+    public void notifierCaseClicked(Position position) {
         if (tourACroix) {
-            croix.notifierCaseClick(id);
+            croix.notifierCaseClick(position);
         } else {
-            cercle.notifierCaseClick(id);
+            cercle.notifierCaseClick(position);
         }
     }
 

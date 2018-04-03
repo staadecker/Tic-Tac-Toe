@@ -4,25 +4,23 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.Contract;
 import tictactoe.CaseClickListener;
+import tictactoe.Position;
 
 public class PlateauDeJeu extends GridPane {
 
-    private final Boite[] boites = new Boite[9];
+    private final Boite[][] boites = new Boite[3][3];
 
     public PlateauDeJeu(CaseClickListener listener) {
         super();
 
-        for (int id = 0; id < 9; id++) {
-            boites[id] = new Boite(id, listener);
-            this.add(boites[id], getColonne(id), getRangee(id));
+        for (int rangee = 0; rangee < boites.length; rangee++) {
+            for (int colonne = 0; colonne < boites[rangee].length; colonne++) {
+                boites[rangee][colonne] = new Boite(new Position(rangee, colonne), listener);
+                this.add(boites[rangee][colonne], colonne, rangee);
+            }
         }
 
-        GridPane.setFillHeight(this, true);
-        GridPane.setFillWidth(this,true);
-
         appliquerConstraintes();
-
-        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.FULL)));
     }
 
     private void appliquerConstraintes() {
@@ -38,27 +36,19 @@ public class PlateauDeJeu extends GridPane {
         this.getRowConstraints().addAll(rowConstraints, rowConstraints, rowConstraints);
     }
 
-    public void setStatus(int id, Boite.Status status){
-        boites[id].setStatus(status);
+    public void setStatus(Position position, Boite.Status status) {
+        boites[position.rangee][position.colonne].setStatus(status);
     }
 
-    public Boite.Status[] getStatus() {
-        Boite.Status[] status = new Boite.Status[9];
+    public Boite.Status[][] getStatus() {
+        Boite.Status[][] status = new Boite.Status[boites.length][boites[0].length];
 
-        for (int i = 0 ; i < 9 ; i ++){
-            status[i] = boites[i].getStatus();
+        for (int rangee = 0; rangee < status.length; rangee++) {
+            for (int colonne = 0; colonne < boites[rangee].length; colonne++) {
+                status[rangee][colonne] = boites[rangee][colonne].getStatus();
+            }
         }
 
         return status;
-    }
-
-    @Contract(pure = true)
-    static int getRangee(int id){
-        return (int) Math.floor(id / 3.0);
-    }
-
-    @Contract(pure = true)
-    static int getColonne(int id){
-        return id % 3;
     }
 }
