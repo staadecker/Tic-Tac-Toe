@@ -7,22 +7,25 @@ import tictactoe.CaseClickListener;
 
 public class PlateauDeJeu extends GridPane {
 
-    private final Case[] cases = new Case[9];
+    private final Boite[] boites = new Boite[9];
 
     public PlateauDeJeu(CaseClickListener listener) {
         super();
 
         for (int id = 0; id < 9; id++) {
-            cases[id] = new Case(id, listener);
-            this.add(cases[id], getColonne(id), getRangee(id));
+            boites[id] = new Boite(id, listener);
+            this.add(boites[id], getColonne(id), getRangee(id));
         }
 
-        appliquerConstraints();
+        GridPane.setFillHeight(this, true);
+        GridPane.setFillWidth(this,true);
 
-        this.setBorder(new Border(new BorderStroke(Color.BLACK, null, null, BorderWidths.FULL)));
+        appliquerConstraintes();
+
+        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.FULL)));
     }
 
-    private void appliquerConstraints() {
+    private void appliquerConstraintes() {
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setFillWidth(true);
         columnConstraints.setHgrow(Priority.ALWAYS);
@@ -35,17 +38,27 @@ public class PlateauDeJeu extends GridPane {
         this.getRowConstraints().addAll(rowConstraints, rowConstraints, rowConstraints);
     }
 
-    public void setStatus(int id, Case.Status status){
-        cases[id].setStatus(status);
+    public void setStatus(int id, Boite.Status status){
+        boites[id].setStatus(status);
+    }
+
+    public Boite.Status[] getStatus() {
+        Boite.Status[] status = new Boite.Status[9];
+
+        for (int i = 0 ; i < 9 ; i ++){
+            status[i] = boites[i].getStatus();
+        }
+
+        return status;
     }
 
     @Contract(pure = true)
-    private static int getRangee(int id){
+    static int getRangee(int id){
         return (int) Math.floor(id / 3.0);
     }
 
     @Contract(pure = true)
-    private static int getColonne(int id){
+    static int getColonne(int id){
         return id % 3;
     }
 }

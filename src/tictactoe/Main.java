@@ -1,6 +1,7 @@
 package tictactoe;
 
-import tictactoe.gui.Case;
+import javafx.scene.layout.StackPane;
+import tictactoe.gui.Boite;
 import tictactoe.gui.PlateauDeJeu;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -14,15 +15,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        PlateauDeJeu root = new PlateauDeJeu(null);
-        root.setPadding(new Insets(10));
+        Jeux jeux = new Jeux(new JoueurHumain(), new JoueurHumain());
 
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(jeux.getPlateauDeJeu()));
         primaryStage.setMaximized(true);
         primaryStage.show();
 
         for (int id = 0 ; id < 9 ; id ++ ){
-            root.setStatus(id, Case.Status.X);
+            jeux.getPlateauDeJeu().setStatus(id, Boite.Status.X);
         }
     }
 }

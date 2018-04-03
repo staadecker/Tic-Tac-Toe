@@ -3,10 +3,18 @@ package tictactoe.gui;
 import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import tictactoe.CaseClickListener;
 
-public class Case extends StackPane implements EventHandler<javafx.scene.input.MouseEvent> {
+public class Boite extends StackPane implements EventHandler<javafx.scene.input.MouseEvent> {
+
+    private final Border HIGHLIGHTED_BORDER = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
+    private final Border NORMAL_BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
+
+
     public enum Status {
         VIDE,
         X,
@@ -15,16 +23,21 @@ public class Case extends StackPane implements EventHandler<javafx.scene.input.M
 
     private Status status = Status.VIDE;
 
+    @Nullable
     private final CaseClickListener listener;
     private final int id;
 
-    Case(int id, CaseClickListener listener) {
+    Boite(int id, @Nullable CaseClickListener listener) {
         super();
 
         this.id = id;
         this.listener = listener;
 
+        this.setBorder(NORMAL_BORDER);
+
         this.setOnMouseClicked(this);
+        this.setOnMouseEntered(event -> this.setBorder(HIGHLIGHTED_BORDER));
+        this.setOnMouseExited(event -> this.setBorder(NORMAL_BORDER));
     }
 
     void setStatus(Status status) {
@@ -40,13 +53,14 @@ public class Case extends StackPane implements EventHandler<javafx.scene.input.M
         }
     }
 
+    @NotNull
     Status getStatus() {
         return status;
     }
 
     @Override
     public void handle(MouseEvent event) {
-        if (listener != null) {
+        if (listener != null && status == Status.VIDE) {
             listener.notifierCaseClicked(id);
         }
     }
