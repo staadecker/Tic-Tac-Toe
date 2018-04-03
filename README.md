@@ -1,4 +1,4 @@
-# TicTacToe
+# Tic Tac Toe
 
 Jeu de tic tac toe avec JavaFX. En dévéloppement.
 
