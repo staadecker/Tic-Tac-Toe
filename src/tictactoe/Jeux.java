@@ -1,5 +1,6 @@
 package tictactoe;
 
+import tictactoe.gui.Boite;
 import tictactoe.gui.PlateauDeJeu;
 
 public class Jeux implements CaseClickListener {
@@ -11,7 +12,7 @@ public class Jeux implements CaseClickListener {
 
     private boolean tourACroix = true;
 
-    public Jeux(Joueur cercle, Joueur croix) {
+    Jeux(Joueur cercle, Joueur croix) {
         this.cercle = cercle;
         this.croix = croix;
     }
@@ -19,13 +20,20 @@ public class Jeux implements CaseClickListener {
     @Override
     public void notifierCaseClicked(Position position) {
         if (tourACroix) {
-            croix.notifierCaseClick(position);
+            jouer(croix.notifierCaseClick(position), Boite.Status.CROIX);
         } else {
-            cercle.notifierCaseClick(position);
+            jouer(cercle.notifierCaseClick(position), Boite.Status.CERCLE);
         }
     }
 
-    public PlateauDeJeu getPlateauDeJeu() {
+    private void jouer(Position emplacement, Boite.Status joueur) {
+        if (emplacement != null) {
+            plateauDeJeu.setStatus(emplacement, joueur);
+            tourACroix = !tourACroix;
+        }
+    }
+
+    PlateauDeJeu getPlateauDeJeu() {
         return plateauDeJeu;
     }
 }
