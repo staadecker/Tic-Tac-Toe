@@ -1,7 +1,8 @@
 package tictactoe.gui;
 
-import javafx.scene.image.Image;
+import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
@@ -13,9 +14,6 @@ public class Boite extends StackPane {
     private static final Border HIGHLIGHTED_BORDER = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
     private static final Border NORMAL_BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
 
-    private static final Image imageCroix = new Image("/x.png");
-    private static final Image imageCercle = new Image("/o.png");
-
     public enum Status {
         VIDE,
         CROIX,
@@ -25,17 +23,8 @@ public class Boite extends StackPane {
     @NotNull
     private Status status = Status.VIDE;
 
-    private final ImageView imageView = new ImageView();
-
     Boite(@NotNull Position position, @Nullable CaseClickListener listener) {
         super();
-
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(this.getHeight());
-        imageView.setFitWidth(this.getWidth());
-        this.getChildren().add(imageView);
-
-        this.setMinSize(0,0);
 
         this.setBorder(NORMAL_BORDER);
 
@@ -57,19 +46,22 @@ public class Boite extends StackPane {
 
         switch (status) {
             case CERCLE:
-                imageView.setImage(imageCercle);
-                break;
+                mettreImage("/x.png");
             case CROIX:
-                imageView.setImage(imageCroix);
-                break;
+                mettreImage("/o.png");
             case VIDE:
-                imageView.setImage(null);
-                break;
+                this.getChildren().clear();
         }
     }
 
     @NotNull
     Status getStatus() {
         return status;
+    }
+
+    private void mettreImage(String nomDuFichier) {
+        ImageView imageView = new ImageView(this.getClass().getResource(nomDuFichier).toString());
+        imageView.setPreserveRatio(true);
+        this.getChildren().addAll(imageView);
     }
 }
