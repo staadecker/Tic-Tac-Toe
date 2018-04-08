@@ -1,31 +1,28 @@
 package tictactoe;
 
+import tictactoe.gui.Boite;
 import tictactoe.gui.PlateauDeJeu;
 
-public class Jeux implements CaseClickListener {
+public class Jeux {
+    final PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
 
-    private final Joueur cercle;
-    private final Joueur croix;
+    private boolean isTourCroix = true;
 
-    private final PlateauDeJeu plateauDeJeu = new PlateauDeJeu(this);
-
-    private boolean tourACroix = true;
-
-    public Jeux(Joueur cercle, Joueur croix) {
-        this.cercle = cercle;
-        this.croix = croix;
-    }
-
-    @Override
-    public void notifierCaseClicked(Position position) {
-        if (tourACroix) {
-            croix.notifierCaseClick(position);
-        } else {
-            cercle.notifierCaseClick(position);
-        }
+    public boolean isTourCroix() {
+        return isTourCroix;
     }
 
     public PlateauDeJeu getPlateauDeJeu() {
         return plateauDeJeu;
+    }
+
+    public void jouer(Position position){
+        if (isTourCroix) {
+            plateauDeJeu.setStatus(position, Boite.Status.CROIX);
+        } else {
+            plateauDeJeu.setStatus(position, Boite.Status.CERCLE);
+        }
+
+        isTourCroix = !isTourCroix;
     }
 }

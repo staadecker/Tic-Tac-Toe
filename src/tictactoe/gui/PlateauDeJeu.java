@@ -10,17 +10,25 @@ public class PlateauDeJeu extends GridPane {
 
     private final Boite[][] boites = new Boite[3][3];
 
-    public PlateauDeJeu(CaseClickListener listener) {
+    public PlateauDeJeu() {
         super();
 
         for (int rangee = 0; rangee < boites.length; rangee++) {
             for (int colonne = 0; colonne < boites[rangee].length; colonne++) {
-                boites[rangee][colonne] = new Boite(new Position(rangee, colonne), listener);
+                boites[rangee][colonne] = new Boite(new Position(rangee, colonne));
                 this.add(boites[rangee][colonne], colonne, rangee);
             }
         }
 
         appliquerConstraintes();
+    }
+
+    public void addListener(CaseClickListener listener) {
+        for (Boite[] rangee : boites) {
+            for (Boite boite : rangee) {
+                boite.addListener(listener);
+            }
+        }
     }
 
     private void appliquerConstraintes() {

@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Jeux jeux = new Jeux(new JoueurHumain(), new JoueurHumain());
+        JeuxHumainContreHumain jeux = new JeuxHumainContreHumain();
 
         primaryStage.setScene(new Scene(jeux.getPlateauDeJeu()));
         primaryStage.setMaximized(true);
