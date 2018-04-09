@@ -32,13 +32,11 @@ public class PlateauDeJeu extends GridPane {
 
     private void appliquerConstraintes() {
         ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setFillWidth(true);
         columnConstraints.setHgrow(Priority.ALWAYS);
         this.getColumnConstraints().addAll(columnConstraints, columnConstraints, columnConstraints);
 
 
         RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setFillHeight(true);
         rowConstraints.setVgrow(Priority.ALWAYS);
         this.getRowConstraints().addAll(rowConstraints, rowConstraints, rowConstraints);
     }
