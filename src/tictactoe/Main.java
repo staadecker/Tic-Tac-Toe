@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         JeuxHumainContreHumain jeux = new JeuxHumainContreHumain();
 
-        primaryStage.setScene(new Scene(jeux.getPlateauDeJeu()));
+        primaryStage.setScene(new Scene(jeux.getPlateauDeJeu(), 400, 600));
         primaryStage.setMaximized(true);
         primaryStage.show();
     }
