@@ -13,8 +13,8 @@ public class Boite extends StackPane {
     private static final Border HIGHLIGHTED_BORDER = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
     private static final Border NORMAL_BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
 
-    private static final Image IMAGE_CERCLE = new Image("/o.png");
-    private static final Image IMAGE_CROIX = new Image("/x.png");
+    private static final Image IMAGE_CERCLE = new Image("o.png");
+    private static final Image IMAGE_CROIX = new Image("x.png");
 
     public enum Status {
         VIDE,
@@ -58,10 +58,13 @@ public class Boite extends StackPane {
         switch (status) {
             case CERCLE:
                 imageView.setImage(IMAGE_CERCLE);
+                break;
             case CROIX:
                 imageView.setImage(IMAGE_CROIX);
+                break;
             case VIDE:
                 imageView.setImage(null);
+                break;
         }
     }
 
