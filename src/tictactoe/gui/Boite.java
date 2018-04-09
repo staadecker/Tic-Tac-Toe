@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tictactoe.CaseClickListener;
+import tictactoe.Joueur;
 import tictactoe.Position;
 
 public class Boite extends StackPane {
@@ -16,14 +17,8 @@ public class Boite extends StackPane {
     private static final Image IMAGE_CERCLE = new Image("o.png");
     private static final Image IMAGE_CROIX = new Image("x.png");
 
-    public enum Status {
-        VIDE,
-        CROIX,
-        CERCLE
-    }
-
-    @NotNull
-    private Status status = Status.VIDE;
+    @Nullable
+    private Joueur status;
 
     private final ImageView imageView = new ImageView();
 
@@ -40,36 +35,32 @@ public class Boite extends StackPane {
 
     void addListener(@NotNull CaseClickListener listener){
         this.setOnMouseClicked(event -> {
-            if (status == Status.VIDE) {
+            if (status == null) {
                 listener.notifierCaseClicked(position);
             }
         });
 
         this.setOnMouseEntered(event -> {
-            if (status == Status.VIDE) this.setBorder(HIGHLIGHTED_BORDER);
+            if (status == null) this.setBorder(HIGHLIGHTED_BORDER);
         });
 
         this.setOnMouseExited(event -> this.setBorder(NORMAL_BORDER));
     }
 
-    void setStatus(Status status) {
+    void setStatus(Joueur status) {
         this.status = status;
 
-        switch (status) {
-            case CERCLE:
-                imageView.setImage(IMAGE_CERCLE);
-                break;
-            case CROIX:
-                imageView.setImage(IMAGE_CROIX);
-                break;
-            case VIDE:
-                imageView.setImage(null);
-                break;
+        if (status == null){
+            imageView.setImage(null);
+        } else if (status == Joueur.CROIX){
+            imageView.setImage(IMAGE_CROIX);
+        } else {
+            imageView.setImage(IMAGE_CERCLE);
         }
     }
 
-    @NotNull
-    Status getStatus() {
+    @Nullable
+    Joueur getStatus() {
         return status;
     }
 }

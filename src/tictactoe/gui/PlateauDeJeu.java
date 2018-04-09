@@ -1,9 +1,8 @@
 package tictactoe.gui;
 
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import org.jetbrains.annotations.Contract;
 import tictactoe.CaseClickListener;
+import tictactoe.Joueur;
 import tictactoe.Position;
 
 public class PlateauDeJeu extends GridPane {
@@ -44,12 +43,12 @@ public class PlateauDeJeu extends GridPane {
         this.getRowConstraints().addAll(rowConstraints, rowConstraints, rowConstraints);
     }
 
-    public void setStatus(Position position, Boite.Status status) {
+    public void setStatus(Position position, Joueur status) {
         boites[position.rangee][position.colonne].setStatus(status);
     }
 
-    public Boite.Status[][] getStatus() {
-        Boite.Status[][] status = new Boite.Status[boites.length][boites[0].length];
+    public Joueur[][] getStatus() {
+        Joueur[][] status = new Joueur[boites.length][boites[0].length];
 
         for (int rangee = 0; rangee < status.length; rangee++) {
             for (int colonne = 0; colonne < boites[rangee].length; colonne++) {

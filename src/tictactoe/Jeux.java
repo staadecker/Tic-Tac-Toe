@@ -6,10 +6,10 @@ import tictactoe.gui.PlateauDeJeu;
 public class Jeux {
     final PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
 
-    private boolean isTourCroix = true;
+    private Joueur tourA = Joueur.CROIX;
 
-    public boolean isTourCroix() {
-        return isTourCroix;
+    public Joueur tourA() {
+        return tourA;
     }
 
     public PlateauDeJeu getPlateauDeJeu() {
@@ -17,12 +17,16 @@ public class Jeux {
     }
 
     public void jouer(Position position){
-        if (isTourCroix) {
-            plateauDeJeu.setStatus(position, Boite.Status.CROIX);
-        } else {
-            plateauDeJeu.setStatus(position, Boite.Status.CERCLE);
-        }
+        plateauDeJeu.setStatus(position, tourA);
 
-        isTourCroix = !isTourCroix;
+        changerTour();
+    }
+
+    private void changerTour(){
+        if (tourA == Joueur.CROIX){
+            tourA = Joueur.CERCLE;
+        } else {
+            tourA = Joueur.CROIX;
+        }
     }
 }
