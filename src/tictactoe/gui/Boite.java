@@ -11,8 +11,8 @@ import tictactoe.Joueur;
 import tictactoe.Position;
 
 public class Boite extends Pane {
-    private static final Border HIGHLIGHTED_BORDER = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
-    private static final Border NORMAL_BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, BorderWidths.DEFAULT));
+    private static final Border HIGHLIGHTED_BORDER = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
+    private static final Border NORMAL_BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(4)));
 
     private static final Image IMAGE_CERCLE = new Image("o.png");
     private static final Image IMAGE_CROIX = new Image("x.png");
@@ -63,8 +63,10 @@ public class Boite extends Pane {
             imageView.setImage(null);
         } else if (status == Joueur.CROIX) {
             imageView.setImage(IMAGE_CROIX);
+            this.setBorder(NORMAL_BORDER);
         } else {
             imageView.setImage(IMAGE_CERCLE);
+            this.setBorder(NORMAL_BORDER);
         }
     }
 
