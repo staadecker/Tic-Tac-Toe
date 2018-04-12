@@ -1,16 +1,23 @@
-package tictactoe.gui;
+package tictactoe;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
-import tictactoe.CaseClickListener;
-import tictactoe.Joueur;
-import tictactoe.Position;
+
+import java.io.IOException;
 
 public class PlateauDeJeu extends GridPane {
 
     private final Boite[][] boites = new Boite[3][3];
 
     public PlateauDeJeu() {
-        super();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/plateau.fxml"));
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
 
         for (int rangee = 0; rangee < boites.length; rangee++) {
             for (int colonne = 0; colonne < boites[rangee].length; colonne++) {
@@ -22,10 +29,10 @@ public class PlateauDeJeu extends GridPane {
         appliquerConstraintes();
     }
 
-    public void addListener(CaseClickListener listener) {
+    void setListener(CaseClickListener listener) {
         for (Boite[] rangee : boites) {
             for (Boite boite : rangee) {
-                boite.addListener(listener);
+                boite.setListener(listener);
             }
         }
     }
@@ -41,11 +48,11 @@ public class PlateauDeJeu extends GridPane {
         this.getRowConstraints().addAll(rowConstraints, rowConstraints, rowConstraints);
     }
 
-    public void setStatus(Position position, Joueur status) {
+    void setStatus(Position position, Joueur status) {
         boites[position.rangee][position.colonne].setStatus(status);
     }
 
-    public Joueur[][] getStatus() {
+    Joueur[][] getStatus() {
         Joueur[][] status = new Joueur[boites.length][boites[0].length];
 
         for (int rangee = 0; rangee < status.length; rangee++) {

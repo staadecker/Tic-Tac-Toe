@@ -1,10 +1,11 @@
 package tictactoe;
 
-import tictactoe.gui.Boite;
-import tictactoe.gui.PlateauDeJeu;
-
 public class Jeux {
-    final PlateauDeJeu plateauDeJeu = new PlateauDeJeu();
+    final PlateauDeJeu plateauDeJeu;
+
+    public Jeux(PlateauDeJeu plateauDeJeu) {
+        this.plateauDeJeu = plateauDeJeu;
+    }
 
     private Joueur tourA = Joueur.CROIX;
 

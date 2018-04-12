@@ -1,4 +1,4 @@
-package tictactoe.gui;
+package tictactoe;
 
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
