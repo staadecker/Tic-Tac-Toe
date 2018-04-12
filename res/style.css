@@ -1,6 +1,7 @@
-#boite{
-    -fx-background-size: cover;
+#boite {
+    -fx-background-size: contain;
     -fx-border-style: solid;
+    -fx-background-position: center center;
 }
 
 .boite-normal {
