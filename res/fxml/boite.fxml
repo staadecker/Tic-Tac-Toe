@@ -3,14 +3,20 @@
 <?import javafx.scene.image.ImageView?>
 
 <?import javafx.scene.image.Image?>
+<?import java.net.URL?>
 <fx:root fx:id="boite" xmlns="http://javafx.com/javafx/8.0.121"
          xmlns:fx="http://javafx.com/fxml/1"
          type="javafx.scene.layout.Pane" onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter"
-         onMouseExited="#handleMouseExit">
+         onMouseExited="#handleMouseExit" styleClass="boite-normal">
+
     <fx:define>
         <Image fx:id="cercle" url="@../o.png"/>
         <Image fx:id="croix" url="@../x.png"/>
     </fx:define>
+
+    <stylesheets>
+        <URL value="@../style.css" />
+    </stylesheets>
 
     <ImageView fx:id="imageView" preserveRatio="true" fitHeight="${boite.height}" fitWidth="${boite.width}"/>
 </fx:root>

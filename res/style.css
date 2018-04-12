@@ -1,0 +1,11 @@
+.boite-normal {
+    -fx-border-color: black;
+    -fx-border-width: 4;
+    -fx-border-style: solid;
+}
+
+.boite-hover {
+    -fx-border-color: blue;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}

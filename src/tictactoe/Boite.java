@@ -7,29 +7,28 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
+@SuppressWarnings("WeakerAccess")
 public class Boite extends Pane {
     private final ObjectProperty<Position> position = new ReadOnlyObjectWrapper<>();
 
-    private static final Border HIGHLIGHTED_BORDER = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
+    @FXML
+    private static Image cercle;
 
-    private static final Border NORMAL_BORDER = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(4)));
-
-    private static final Image IMAGE_CERCLE = new Image("o.png");
-    private static final Image IMAGE_CROIX = new Image("x.png");
-
-    @Nullable
-    private Joueur status;
+    @FXML
+    private static Image croix;
 
     @FXML
     private ImageView imageView;
 
     @FXML
     private Boite boite;
+
+    @Nullable
+    private Joueur status;
 
     @Nullable
     private CaseClickListener listener;
@@ -61,12 +60,12 @@ public class Boite extends Pane {
 
     @FXML
     protected void handleMouseEnter() {
-        if (status == null) boite.setBorder(HIGHLIGHTED_BORDER);
+        if (status == null) boite.getStyleClass().setAll("boite-hover");
     }
 
     @FXML
     protected void handleMouseExit() {
-        boite.setBorder(NORMAL_BORDER);
+        boite.getStyleClass().setAll("boite-normal");
     }
 
     void setStatus(Joueur status) {
@@ -75,11 +74,11 @@ public class Boite extends Pane {
         if (status == null) {
             imageView.setImage(null);
         } else if (status == Joueur.CROIX) {
-            imageView.setImage(IMAGE_CROIX);
-            boite.setBorder(NORMAL_BORDER);
+            imageView.setImage(croix);
+            boite.getStyleClass().setAll("boite-hover");
         } else {
-            imageView.setImage(IMAGE_CERCLE);
-            boite.setBorder(NORMAL_BORDER);
+            imageView.setImage(cercle);
+            boite.getStyleClass().setAll("boite-normal");
         }
     }
 

@@ -1,9 +1,9 @@
 package tictactoe;
 
-public class Jeux {
+class Jeux {
     final MainController plateauDeJeu;
 
-    public Jeux(MainController plateauDeJeu) {
+    Jeux(MainController plateauDeJeu) {
         this.plateauDeJeu = plateauDeJeu;
     }
 
@@ -17,7 +17,7 @@ public class Jeux {
         return plateauDeJeu;
     }
 
-    public void jouer(Position position){
+    void jouer(Position position){
         plateauDeJeu.setStatus(position, tourA);
 
         changerTour();
