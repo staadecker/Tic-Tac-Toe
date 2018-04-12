@@ -1,15 +1,11 @@
 package tictactoe;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class Main extends Application {
     public static void main(String[] args){
@@ -17,12 +13,12 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         JeuxHumainContreHumain jeux = new JeuxHumainContreHumain();
 
-        Parent pointage = FXMLLoader.load(getClass().getResource("/pointage.fxml"));
+        primaryStage.setScene(new Scene(jeux.getPlateauDeJeu(), 600, 600));
 
-        VBox root = new VBox(pointage, jeux.getPlateauDeJeu());
+        VBox root = new VBox(jeux.getPlateauDeJeu());
         VBox.setVgrow(jeux.getPlateauDeJeu(), Priority.ALWAYS);
         root.setPadding(new Insets(10));
         root.setSpacing(10);
