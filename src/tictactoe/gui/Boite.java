@@ -1,6 +1,5 @@
 package tictactoe.gui;
 
-import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -21,7 +20,7 @@ public class Boite extends Pane {
     @Nullable
     private Joueur status;
 
-    @FXML private ImageView imageView;
+    private final ImageView imageView = new ImageView();
 
     private final Position position;
 
