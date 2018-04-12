@@ -20,7 +20,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        primaryStage.setScene(new Scene(new FXMLLoader(getClass().getResource("/fxml/main.fxml")).load(), 600, 600));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        fxmlLoader.setController(new MainController());
+
+        primaryStage.setScene(new Scene(fxmlLoader.load()));
 //        primaryStage.setMaximized(true);
         primaryStage.show();
     }

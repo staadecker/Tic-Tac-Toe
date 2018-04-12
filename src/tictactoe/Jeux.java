@@ -1,9 +1,9 @@
 package tictactoe;
 
 public class Jeux {
-    final PlateauDeJeu plateauDeJeu;
+    final MainController plateauDeJeu;
 
-    public Jeux(PlateauDeJeu plateauDeJeu) {
+    public Jeux(MainController plateauDeJeu) {
         this.plateauDeJeu = plateauDeJeu;
     }
 
@@ -13,7 +13,7 @@ public class Jeux {
         return tourA;
     }
 
-    public PlateauDeJeu getPlateauDeJeu() {
+    public MainController getPlateauDeJeu() {
         return plateauDeJeu;
     }
 

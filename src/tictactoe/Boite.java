@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
-class Boite extends Pane {
+public class Boite extends Pane {
     private final ObjectProperty<Position> position = new ReadOnlyObjectWrapper<>();
 
     private static final Border HIGHLIGHTED_BORDER = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, null, new BorderWidths(2)));
@@ -34,7 +34,6 @@ class Boite extends Pane {
     @Nullable
     private CaseClickListener listener;
 
-
     Boite(Position position) {
         this.position.setValue(position);
 
@@ -49,24 +48,24 @@ class Boite extends Pane {
         }
     }
 
-    public void setListener(@Nullable CaseClickListener listener) {
+    void setListener(@Nullable CaseClickListener listener) {
         this.listener = listener;
     }
 
     @FXML
-    protected void handleMouseClicked() {
+    protected void handleMouseClick() {
         if (status == null && listener != null) {
             listener.notifierCaseClicked(position.get());
         }
     }
 
     @FXML
-    protected void handleMouseEntered() {
+    protected void handleMouseEnter() {
         if (status == null) boite.setBorder(HIGHLIGHTED_BORDER);
     }
 
     @FXML
-    protected void handleMouseExited() {
+    protected void handleMouseExit() {
         boite.setBorder(NORMAL_BORDER);
     }
 

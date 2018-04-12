@@ -1,28 +1,16 @@
 package tictactoe;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
-public class Algorithm {
+class Algorithm {
     @Contract(pure = true)
-    public static Joueur getGagnant(Joueur[][] status) {
+    static Joueur getGagnant(Joueur[][] status) {
         for (Joueur[] rangee : status) {
-            Joueur premiereValeur = rangee[0];
+            Joueur estSuite = estSuite(rangee);
 
-            if (premiereValeur == null) {
-                break;
-            }
-
-            boolean win = true;
-
-            for (int colonne = 1; colonne < status[0].length; colonne++) {
-                if (premiereValeur != rangee[colonne]) {
-                    win = false;
-                    break;
-                }
-            }
-
-            if (win){
-                return premiereValeur;
+            if (estSuite != null){
+                return estSuite;
             }
         }
 
@@ -78,5 +66,19 @@ public class Algorithm {
         }
 
         return null;
+    }
+
+    @Nullable
+    @Contract(pure = true)
+    private static Joueur estSuite(Joueur[] suite){
+        Joueur premier = suite[0];
+
+        for (Joueur joueur : suite){
+            if (premier != joueur){
+                return null;
+            }
+        }
+
+        return premier;
     }
 }
