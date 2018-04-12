@@ -4,8 +4,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,15 +12,6 @@ import java.io.IOException;
 @SuppressWarnings("WeakerAccess")
 public class Boite extends Pane {
     private final ObjectProperty<Position> position = new ReadOnlyObjectWrapper<>();
-
-    @FXML
-    private static Image cercle;
-
-    @FXML
-    private static Image croix;
-
-    @FXML
-    private ImageView imageView;
 
     @FXML
     private Boite boite;
@@ -72,12 +61,12 @@ public class Boite extends Pane {
         this.status = status;
 
         if (status == null) {
-            imageView.setImage(null);
+            boite.setStyle("-fx-background-image: none;");
         } else if (status == Joueur.CROIX) {
-            imageView.setImage(croix);
+            boite.setStyle("-fx-background-image: url(x.png);");
             boite.getStyleClass().setAll("boite-hover");
         } else {
-            imageView.setImage(cercle);
+            boite.setStyle("-fx-background-image: url(o.png)");
             boite.getStyleClass().setAll("boite-normal");
         }
     }

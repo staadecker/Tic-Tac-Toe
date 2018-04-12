@@ -8,4 +8,9 @@ class Position {
         this.rangee = rangee;
         this.colonne = colonne;
     }
+
+    @Override
+    public String toString() {
+        return "rangee: " + rangee + " colonne: " + colonne;
+    }
 }

@@ -33,8 +33,6 @@ public class MainController implements Initializable {
         }
     }
 
-
-
     void setStatus(Position position, Joueur status) {
         boites[position.rangee][position.colonne].setStatus(status);
     }
