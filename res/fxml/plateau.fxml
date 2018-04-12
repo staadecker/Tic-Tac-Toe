@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <?import tictactoe.PlateauDeJeu?>
-<PlateauDeJeu gridLinesVisible="true" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="tictactoe.PlateauDeJeu">
+<PlateauDeJeu gridLinesVisible="true" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tictactoe.PlateauDeJeu">
    <rowConstraints>
       <RowConstraints vgrow="ALWAYS" />
       <RowConstraints  vgrow="ALWAYS" />
