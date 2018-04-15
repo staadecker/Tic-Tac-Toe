@@ -19,9 +19,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle(TITRE);
 
+        Jeu jeux = new Jeu();
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
 
-        fxmlLoader.setController(new MainController());
+        fxmlLoader.setController(new MainController(jeux));
 
         primaryStage.setScene(new Scene(fxmlLoader.load()));
 //        primaryStage.setMaximized(true);
