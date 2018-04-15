@@ -1,5 +1,5 @@
 package tictactoe;
 
-interface CaseClickListener {
+public interface CaseClickListener {
     void notifierCaseClicked(Position position);
 }

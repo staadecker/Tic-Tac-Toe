@@ -1,4 +1,4 @@
-package tictactoe;
+package tictactoe.gui;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 import org.jetbrains.annotations.Nullable;
+import tictactoe.CaseClickListener;
+import tictactoe.Joueur;
+import tictactoe.Position;
 
 import java.io.IOException;
 

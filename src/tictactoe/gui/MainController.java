@@ -1,8 +1,12 @@
-package tictactoe;
+package tictactoe.gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
+import tictactoe.CaseClickListener;
+import tictactoe.JeuxHumainContreHumain;
+import tictactoe.Joueur;
+import tictactoe.Position;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,7 +29,7 @@ public class MainController implements Initializable {
         JeuxHumainContreHumain jeux = new JeuxHumainContreHumain(this);
     }
 
-    void setListener(CaseClickListener listener) {
+    public void setListener(CaseClickListener listener) {
         for (Boite[] rangee : boites) {
             for (Boite boite : rangee) {
                 boite.setListener(listener);
@@ -33,11 +37,11 @@ public class MainController implements Initializable {
         }
     }
 
-    void setStatus(Position position, Joueur status) {
+    public void setStatus(Position position, Joueur status) {
         boites[position.rangee][position.colonne].setStatus(status);
     }
 
-    Joueur[][] getStatus() {
+    public Joueur[][] getStatus() {
         Joueur[][] status = new Joueur[boites.length][boites[0].length];
 
         for (int rangee = 0; rangee < status.length; rangee++) {

@@ -1,10 +1,14 @@
 package tictactoe;
 
-class Position {
-    final int rangee;
-    final int colonne;
+/**
+ * Définie une position sur le plateau de jeu.
+ * (0,0) est la case en haut à gauche
+ */
+public class Position {
+    public final int rangee;
+    public final int colonne;
 
-    Position(int rangee, int colonne) {
+    public Position(int rangee, int colonne) {
         this.rangee = rangee;
         this.colonne = colonne;
     }

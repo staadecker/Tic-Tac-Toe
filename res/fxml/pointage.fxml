@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox spacing="30.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tictactoe.PointageController">
+<HBox spacing="30.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tictactoe.gui.PointageController">
     <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
         <Text text="CERCLE" />
         <Text fx:id="scoreCercle" text="0 pt" />

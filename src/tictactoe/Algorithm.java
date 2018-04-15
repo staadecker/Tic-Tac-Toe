@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 class Algorithm {
+    @Nullable
     @Contract(pure = true)
     static Joueur getGagnant(Joueur[][] status) {
         for (Joueur[] rangee : status) {

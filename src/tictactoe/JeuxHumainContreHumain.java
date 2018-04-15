@@ -1,8 +1,10 @@
 package tictactoe;
 
+import tictactoe.gui.MainController;
+
 public class JeuxHumainContreHumain extends Jeux implements CaseClickListener {
 
-    JeuxHumainContreHumain(MainController plateauDeJeu) {
+    public JeuxHumainContreHumain(MainController plateauDeJeu) {
         super(plateauDeJeu);
         plateauDeJeu.setListener(this);
     }

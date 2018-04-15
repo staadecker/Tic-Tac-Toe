@@ -1,6 +1,8 @@
 package tictactoe;
 
-class Jeux {
+import tictactoe.gui.MainController;
+
+public class Jeux {
     final MainController plateauDeJeu;
 
     Jeux(MainController plateauDeJeu) {
