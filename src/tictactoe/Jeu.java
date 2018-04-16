@@ -3,21 +3,23 @@ package tictactoe;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
-public class Jeu {
-    private final List<List<ReadOnlyObjectWrapper<CaseStatus>>> statusCase;
+public abstract class Jeu implements CaseClickListener{
+    private final StructurePlateau<ReadOnlyObjectWrapper<CaseStatus>> statusCase = creeStructureTableau();
 
-    private final ReadOnlyObjectWrapper<JeuStatus> statusJeu;
+    private final ReadOnlyObjectWrapper<JeuStatus> statusJeu = new ReadOnlyObjectWrapper<>(JeuStatus.TOUR_CROIX);
 
-    public Jeu() {
-        statusCase = creePlateauVide();
-        statusJeu = new ReadOnlyObjectWrapper<>(JeuStatus.TOUR_CROIX);
+    public ReadOnlyObjectProperty<JeuStatus> jeuProperty(){
+        return statusJeu.getReadOnlyProperty();
+    }
+
+    public ReadOnlyObjectProperty<CaseStatus> caseProperty(Position position) {
+        return statusCase.get(position).getReadOnlyProperty();
     }
 
     void jouer(Position position) {
-        ReadOnlyObjectWrapper<CaseStatus> caseAJouer = statusCase.get(position.rangee).get(position.colonne);
+        ReadOnlyObjectWrapper<CaseStatus> caseAJouer = statusCase.get(position);
 
         if (statusJeu.get() == JeuStatus.TOUR_CROIX) {
             caseAJouer.set(CaseStatus.CROIX);
@@ -28,25 +30,15 @@ public class Jeu {
         }
     }
 
-    public ReadOnlyObjectProperty<JeuStatus> jeuProperty(){
-        return statusJeu.getReadOnlyProperty();
-    }
+    private static StructurePlateau<ReadOnlyObjectWrapper<CaseStatus>> creeStructureTableau() {
+        StructurePlateau<ReadOnlyObjectWrapper<CaseStatus>> data = new StructurePlateau<>();
 
-    public ReadOnlyObjectProperty<CaseStatus> caseProperty(Position position) {
-        return statusCase.get(position.rangee).get(position.colonne).getReadOnlyProperty();
-    }
+        Iterator<Position> iterator = data.iterator();
 
-    private static List<List<ReadOnlyObjectWrapper<CaseStatus>>> creePlateauVide() {
-        List<List<ReadOnlyObjectWrapper<CaseStatus>>> plateau = new ArrayList<>(3);
-
-        for (int iRangee = 0; iRangee < 3; iRangee++) {
-            List<ReadOnlyObjectWrapper<CaseStatus>> rangee = new ArrayList<>(3);
-            for (int iColonne = 0; iColonne < 3; iColonne++) {
-                rangee.add(new ReadOnlyObjectWrapper<>(CaseStatus.VIDE));
-            }
-
-            plateau.add(rangee);
+        while (iterator.hasNext()) {
+            data.set(iterator.next(), new ReadOnlyObjectWrapper<>(CaseStatus.VIDE));
         }
-        return plateau;
+
+        return data;
     }
 }

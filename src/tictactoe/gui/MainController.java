@@ -6,46 +6,42 @@ import javafx.scene.layout.GridPane;
 import tictactoe.*;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
     @FXML
     private GridPane plateauDeJeu;
 
-    private final Jeu jeu;
-
-    private final List<List<Case>> cases = new ArrayList<>();
+    private final StructurePlateau<Case> cases = new StructurePlateau<>();
 
     public MainController(Jeu jeu) {
-        this.jeu = jeu;
+        Iterator<Position> iterator = cases.iterator();
+
+        while (iterator.hasNext()) {
+            Position position = iterator.next();
+
+            cases.set(position, new Case(position));
+
+            cases.get(position).statusProperty().bind(jeu.caseProperty(position));
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        for (int rangeeIndex = 0; rangeeIndex < 3; rangeeIndex++) {
-            List<Case> rangee = new ArrayList<>(3);
+        Iterator<Position> iterator = cases.iterator();
 
-            for (int colonne = 0; colonne < 3; colonne++) {
-                Position position = new Position(rangeeIndex, colonne);
+        while (iterator.hasNext()) {
+            Position position = iterator.next();
 
-                rangee.add(new Case(position));
-
-                rangee.get(colonne).statusProperty().bind(jeu.caseProperty(position));
-
-                plateauDeJeu.add(rangee.get(colonne), colonne, rangeeIndex);
-            }
-
-            cases.add(rangee);
+            plateauDeJeu.add(cases.get(position), position.colonne, position.rangee);
         }
     }
 
     public void setListener(CaseClickListener listener) {
-        for (List<Case> rangee : cases) {
-            for (Case boite : rangee) {
-                boite.setListener(listener);
-            }
+        Iterator<Position> iterator = cases.iterator();
+
+        while (iterator.hasNext()) {
+            cases.get(iterator.next()).setListener(listener);
         }
     }
 }

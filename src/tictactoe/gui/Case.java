@@ -15,7 +15,7 @@ import tictactoe.Position;
 import java.io.IOException;
 
 @SuppressWarnings("WeakerAccess")
-public class Case extends Pane implements ChangeListener<CaseStatus> {
+public class Case extends Pane {
     @NotNull
     private final ReadOnlyObjectWrapper<CaseStatus> status = new ReadOnlyObjectWrapper<>();
 
@@ -41,7 +41,22 @@ public class Case extends Pane implements ChangeListener<CaseStatus> {
             throw new RuntimeException(exception);
         }
 
-        status.addListener(this);
+        status.addListener((observable, oldValue, newValue) -> {
+            if (newValue == CaseStatus.VIDE) {
+                boite.setStyle("-fx-background-image: none;");
+            } else if (newValue == CaseStatus.CROIX) {
+                boite.setStyle("-fx-background-image: url(x.png);");
+                boite.getStyleClass().setAll("boite-hover");
+            } else {
+                boite.setStyle("-fx-background-image: url(o.png)");
+                boite.getStyleClass().setAll("boite-normal");
+            }
+        });
+    }
+
+    @NotNull
+    ReadOnlyObjectWrapper<CaseStatus> statusProperty() {
+        return status;
     }
 
     void setListener(@Nullable CaseClickListener listener) {
@@ -63,23 +78,5 @@ public class Case extends Pane implements ChangeListener<CaseStatus> {
     @FXML
     protected void handleMouseExit() {
         boite.getStyleClass().setAll("boite-normal");
-    }
-
-    @Override
-    public void changed(ObservableValue<? extends CaseStatus> observable, CaseStatus oldValue, CaseStatus newValue) {
-        if (newValue == CaseStatus.VIDE) {
-            boite.setStyle("-fx-background-image: none;");
-        } else if (newValue == CaseStatus.CROIX) {
-            boite.setStyle("-fx-background-image: url(x.png);");
-            boite.getStyleClass().setAll("boite-hover");
-        } else {
-            boite.setStyle("-fx-background-image: url(o.png)");
-            boite.getStyleClass().setAll("boite-normal");
-        }
-    }
-
-    @NotNull
-    ReadOnlyObjectWrapper<CaseStatus> statusProperty() {
-        return status;
     }
 }
