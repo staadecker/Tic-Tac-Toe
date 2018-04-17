@@ -1,21 +1,17 @@
 package tictactoe.gui;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import tictactoe.CaseStatus;
-import tictactoe.CaseClickListener;
 import tictactoe.Position;
 
 import java.io.IOException;
 
 @SuppressWarnings("WeakerAccess")
-public class Case extends Pane {
+public class Boite extends Pane {
     @NotNull
     private final ReadOnlyObjectWrapper<CaseStatus> status = new ReadOnlyObjectWrapper<>();
 
@@ -23,12 +19,12 @@ public class Case extends Pane {
     private final Position position;
 
     @FXML
-    private Case boite;
+    private Boite boite;
 
     @Nullable
-    private CaseClickListener listener;
+    private Boite.ClickListener listener;
 
-    Case(@NotNull Position position) {
+    Boite(@NotNull Position position) {
         this.position = position;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/boite.fxml"));
@@ -59,7 +55,7 @@ public class Case extends Pane {
         return status;
     }
 
-    void setListener(@Nullable CaseClickListener listener) {
+    void setListener(@Nullable Boite.ClickListener listener) {
         this.listener = listener;
     }
 
@@ -78,5 +74,15 @@ public class Case extends Pane {
     @FXML
     protected void handleMouseExit() {
         boite.getStyleClass().setAll("boite-normal");
+    }
+
+    public interface ClickListener {
+        void notifierCaseClicked(Position position);
+    }
+
+    public enum CaseStatus {
+        CROIX,
+        CERCLE,
+        VIDE
     }
 }

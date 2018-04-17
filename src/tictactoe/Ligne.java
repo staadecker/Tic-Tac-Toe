@@ -3,42 +3,43 @@ package tictactoe;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import tictactoe.gui.Boite;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Ligne implements ChangeListener<CaseStatus> {
+public class Ligne implements ChangeListener<Boite.CaseStatus> {
+    private List<ReadOnlyObjectProperty<Boite.CaseStatus>> ligne = new ArrayList<>();
 
-    private final List<ReadOnlyObjectProperty<CaseStatus>> ligne;
+    private final GagnantListener listener;
 
-    private final LigneListener listener;
+    Ligne(GagnantListener gagnantListener) {
+        this.listener = gagnantListener;
+    }
 
-    public Ligne(List<ReadOnlyObjectProperty<CaseStatus>> cases, LigneListener listener) {
-        this.listener = listener;
-        this.ligne = cases;
-
-        for (ReadOnlyObjectProperty<CaseStatus> uneCase : ligne) {
-            uneCase.addListener(this);
-        }
+    void ajouter(ReadOnlyObjectProperty<Boite.CaseStatus> caseAAjouter){
+        caseAAjouter.addListener(this);
+        ligne.add(caseAAjouter);
     }
 
     @Override
-    public void changed(ObservableValue<? extends CaseStatus> observable, CaseStatus oldValue, CaseStatus newValue) {
-        if (newValue == CaseStatus.VIDE) return;
+    public void changed(ObservableValue<? extends Boite.CaseStatus> observable, Boite.CaseStatus oldValue, Boite.CaseStatus newValue) {
+        if (newValue == Boite.CaseStatus.VIDE) return;
 
-        for (ReadOnlyObjectProperty<CaseStatus> caseAVerifier : ligne) {
+        for (ReadOnlyObjectProperty<Boite.CaseStatus> caseAVerifier : ligne) {
             if (caseAVerifier.get() != newValue) {
                 return;
             }
         }
 
-        if (newValue == CaseStatus.CROIX) {
+        if (newValue == Boite.CaseStatus.CROIX) {
             listener.notifierGagnantX();
         } else {
             listener.notifierGagnantO();
         }
     }
 
-    public interface LigneListener {
+    public interface GagnantListener {
         void notifierGagnantX();
 
         void notifierGagnantO();

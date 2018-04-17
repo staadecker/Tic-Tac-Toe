@@ -3,64 +3,87 @@ package tictactoe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-public class StructurePlateau<T> implements Iterable {
-    private static final int GRANDEUR = 3;
+public class StructurePlateau<T> implements Iterable<Position> {
+    private static final int GRANDEUR = 3; //Le nombre de colonne et de rangée
 
-    private T[][] data = (T[][]) new Object[GRANDEUR][GRANDEUR];
+    private List<List<T>> tableau = new ArrayList<>(GRANDEUR);
 
     public StructurePlateau() {
+        this(null);
     }
 
-    public StructurePlateau(@Nullable T defaultValue) {
-        Iterator<Position> iterator = iterator();
+    private StructurePlateau(@Nullable T valeurParDefaut) {
+        for (int indexRangee = 0; indexRangee < GRANDEUR; indexRangee++) {
+            //Cree une rangée avec la valeur par défaut
+            ArrayList<T> rangee = new ArrayList<>(GRANDEUR);
 
-        while (iterator.hasNext()) {
-            set(iterator.next(), defaultValue);
+            for (int indexColonne = 0; indexColonne < GRANDEUR; indexColonne++) {
+                rangee.add(valeurParDefaut);
+            }
+
+            //Ajouter la rangée au tableau
+            tableau.add(rangee);
         }
     }
 
     public T get(Position position) {
-        return data[position.rangee][position.colonne];
+        return tableau.get(position.rangee).get(position.colonne);
     }
 
     public void set(Position position, T valeur) {
-        data[position.rangee][position.colonne] = valeur;
+        tableau.get(position.rangee).set(position.colonne, valeur);
     }
 
-    public T[] getColonne(int index) {
-        T[] colonne = (T[]) new Object[GRANDEUR];
+    List<T> getDiagonaleGaucheDroit() {
+        List<T> diagonale = new ArrayList<>(GRANDEUR);
 
         for (int i = 0; i < GRANDEUR; i++) {
-            colonne[i] = data[i][index];
-        }
-
-        return colonne;
-    }
-
-    public T[] getRangee(int index) {
-        return data[index];
-    }
-
-    public T[] getDiagonaleGaucheDroit() {
-        T[] diagonale = (T[]) new Object[GRANDEUR];
-
-        for (int i = 0; i < GRANDEUR; i++) {
-            diagonale[i] = data[i][i];
+            diagonale.add(tableau.get(i).get(i));
         }
 
         return diagonale;
     }
 
-    public T[] getDiagonaleDroiteGauche() {
-        T[] diagonale = (T[]) new Object[GRANDEUR];
+    List<T> getDiagonaleDroiteGauche() {
+        List<T> diagonale = new ArrayList<>(GRANDEUR);
 
         for (int i = 0; i < GRANDEUR; i++) {
-            diagonale[i] = data[i][GRANDEUR - 1 - i];
+            diagonale.add(tableau.get(i).get(GRANDEUR - 1 - i));
         }
 
         return diagonale;
+    }
+
+    Iterator<List<T>> iteratorRangee() {
+        return tableau.iterator();
+    }
+
+    Iterator<List<T>> iteratorColonne() {
+        return new Iterator<List<T>>() {
+            private int index;
+
+            @Override
+            public boolean hasNext() {
+                return index != GRANDEUR;
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> colonne = new ArrayList<>(GRANDEUR);
+
+                for (int i = 0; i < GRANDEUR; i++) {
+                    colonne.add(tableau.get(index).get(i));
+                }
+
+                index++;
+
+                return colonne;
+            }
+        };
     }
 
     @NotNull
