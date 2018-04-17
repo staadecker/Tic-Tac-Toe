@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 
 public class StructurePlateau<T> implements Iterable {
-    public static final int GRANDEUR = 3;
+    private static final int GRANDEUR = 3;
 
     private T[][] data = (T[][]) new Object[GRANDEUR][GRANDEUR];
 
@@ -27,6 +27,40 @@ public class StructurePlateau<T> implements Iterable {
 
     public void set(Position position, T valeur) {
         data[position.rangee][position.colonne] = valeur;
+    }
+
+    public T[] getColonne(int index) {
+        T[] colonne = (T[]) new Object[GRANDEUR];
+
+        for (int i = 0; i < GRANDEUR; i++) {
+            colonne[i] = data[i][index];
+        }
+
+        return colonne;
+    }
+
+    public T[] getRangee(int index) {
+        return data[index];
+    }
+
+    public T[] getDiagonaleGaucheDroit() {
+        T[] diagonale = (T[]) new Object[GRANDEUR];
+
+        for (int i = 0; i < GRANDEUR; i++) {
+            diagonale[i] = data[i][i];
+        }
+
+        return diagonale;
+    }
+
+    public T[] getDiagonaleDroiteGauche() {
+        T[] diagonale = (T[]) new Object[GRANDEUR];
+
+        for (int i = 0; i < GRANDEUR; i++) {
+            diagonale[i] = data[i][GRANDEUR - 1 - i];
+        }
+
+        return diagonale;
     }
 
     @NotNull
