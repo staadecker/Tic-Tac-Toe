@@ -6,16 +6,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
 import tictactoe.Jeu;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 @SuppressWarnings("WeakerAccess")
-public class PointageController implements ChangeListener<Jeu.JeuStatus>, Initializable {
+public class PointageController implements ChangeListener<Jeu.JeuStatus> {
     @FXML
     private Text textScoreCercle;
     @FXML
@@ -28,8 +24,8 @@ public class PointageController implements ChangeListener<Jeu.JeuStatus>, Initia
         jeuStatus.addListener(this);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         textScoreCercle.textProperty().bind(Bindings.convert(scoreCercle));
         textScoreCroix.textProperty().bind(Bindings.convert(scoreCroix));
     }

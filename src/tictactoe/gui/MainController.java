@@ -11,7 +11,7 @@ import tictactoe.*;
 import java.net.URL;
 import java.util.*;
 
-public class MainController implements Initializable {
+public class MainController {
     @FXML
     private GridPane plateauDeJeu;
 
@@ -35,8 +35,8 @@ public class MainController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         for (Position position : boites) {
             plateauDeJeu.add(boites.get(position), position.colonne, position.rangee);
         }
