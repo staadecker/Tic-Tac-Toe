@@ -64,22 +64,22 @@ public class StructurePlateau<T> implements Iterable<Position> {
 
     Iterator<List<T>> iteratorColonne() {
         return new Iterator<List<T>>() {
-            private int index;
+            private int indexColonne;
 
             @Override
             public boolean hasNext() {
-                return index != GRANDEUR;
+                return indexColonne != GRANDEUR;
             }
 
             @Override
             public List<T> next() {
                 List<T> colonne = new ArrayList<>(GRANDEUR);
 
-                for (int i = 0; i < GRANDEUR; i++) {
-                    colonne.add(tableau.get(index).get(i));
+                for (int indexRangee = 0; indexRangee < GRANDEUR; indexRangee++) {
+                    colonne.add(tableau.get(indexRangee).get(indexColonne));
                 }
 
-                index++;
+                indexColonne++;
 
                 return colonne;
             }
