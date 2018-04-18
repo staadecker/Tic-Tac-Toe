@@ -17,7 +17,7 @@ public class MainController implements Initializable {
     public MainController(Jeu jeu) {
         for (Position position : boites) {
             Boite boite = new Boite(position);
-            boite.statusProperty().bind(jeu.caseProperty(position));
+            boite.statusProperty().bind(jeu.boiteProperty(position));
             boites.set(position, boite);
         }
     }

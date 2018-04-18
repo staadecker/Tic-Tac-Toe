@@ -25,8 +25,7 @@ public class StructurePlateau<T> implements Iterable<Position> {
                 rangee.add(valeurParDefaut);
             }
 
-            //Ajouter la rangée au tableau
-            tableau.add(rangee);
+            tableau.add(rangee); //Ajouter la rangée au tableau
         }
     }
 

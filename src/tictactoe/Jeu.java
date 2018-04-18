@@ -9,31 +9,31 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener {
-    private final StructurePlateau<ReadOnlyObjectWrapper<Boite.CaseStatus>> statusCases = creeCasesVide();
+    private final StructurePlateau<ReadOnlyObjectWrapper<Boite.BoiteStatus>> statusBoite = creeCasesVide();
 
     private final ReadOnlyObjectWrapper<JeuStatus> statusJeu = new ReadOnlyObjectWrapper<>(JeuStatus.TOUR_CROIX);
 
     public Jeu() {
-        Iterator<List<ReadOnlyObjectWrapper<Boite.CaseStatus>>> iteratorRangee = statusCases.iteratorRangee();
+        Iterator<List<ReadOnlyObjectWrapper<Boite.BoiteStatus>>> iteratorRangee = statusBoite.iteratorRangee();
 
         while (iteratorRangee.hasNext()){
             creeLigne(iteratorRangee.next());
         }
 
-        Iterator<List<ReadOnlyObjectWrapper<Boite.CaseStatus>>> iteratorColonne = statusCases.iteratorColonne();
+        Iterator<List<ReadOnlyObjectWrapper<Boite.BoiteStatus>>> iteratorColonne = statusBoite.iteratorColonne();
 
         while (iteratorColonne.hasNext()){
             creeLigne(iteratorColonne.next());
         }
 
-        creeLigne(statusCases.getDiagonaleGaucheDroit());
-        creeLigne(statusCases.getDiagonaleDroiteGauche());
+        creeLigne(statusBoite.getDiagonaleGaucheDroit());
+        creeLigne(statusBoite.getDiagonaleDroiteGauche());
     }
 
-    private void creeLigne(@NotNull List<ReadOnlyObjectWrapper<Boite.CaseStatus>> liste){
+    private void creeLigne(@NotNull List<ReadOnlyObjectWrapper<Boite.BoiteStatus>> liste){
         Ligne ligne = new Ligne(this);
 
-        for (ReadOnlyObjectWrapper<Boite.CaseStatus> caseDansLaLigne : liste){
+        for (ReadOnlyObjectWrapper<Boite.BoiteStatus> caseDansLaLigne : liste){
             ligne.ajouter(caseDansLaLigne.getReadOnlyProperty());
         }
     }
@@ -42,18 +42,18 @@ public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener 
         return statusJeu.getReadOnlyProperty();
     }
 
-    public ReadOnlyObjectProperty<Boite.CaseStatus> caseProperty(Position position) {
-        return statusCases.get(position).getReadOnlyProperty();
+    public ReadOnlyObjectProperty<Boite.BoiteStatus> boiteProperty(Position position) {
+        return statusBoite.get(position).getReadOnlyProperty();
     }
 
     void jouer(Position position) {
-        ReadOnlyObjectWrapper<Boite.CaseStatus> caseAJouer = statusCases.get(position);
+        ReadOnlyObjectWrapper<Boite.BoiteStatus> boiteProperty = statusBoite.get(position);
 
         if (statusJeu.get() == JeuStatus.TOUR_CROIX) {
-            caseAJouer.set(Boite.CaseStatus.CROIX);
+            boiteProperty.set(Boite.BoiteStatus.CROIX);
             statusJeu.set(JeuStatus.TOUR_CERCLE);
         } else if (statusJeu.get() == JeuStatus.TOUR_CERCLE) {
-            caseAJouer.set(Boite.CaseStatus.CERCLE);
+            boiteProperty.set(Boite.BoiteStatus.CERCLE);
             statusJeu.set(JeuStatus.TOUR_CROIX);
         }
     }
@@ -70,11 +70,11 @@ public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener 
         statusJeu.set(JeuStatus.CERCLE_GAGNE);
     }
 
-    private static StructurePlateau<ReadOnlyObjectWrapper<Boite.CaseStatus>> creeCasesVide() {
-        StructurePlateau<ReadOnlyObjectWrapper<Boite.CaseStatus>> data = new StructurePlateau<>();
+    private static StructurePlateau<ReadOnlyObjectWrapper<Boite.BoiteStatus>> creeCasesVide() {
+        StructurePlateau<ReadOnlyObjectWrapper<Boite.BoiteStatus>> data = new StructurePlateau<>();
 
         for (Position position : data) {
-            data.set(position, new ReadOnlyObjectWrapper<>(Boite.CaseStatus.VIDE));
+            data.set(position, new ReadOnlyObjectWrapper<>(Boite.BoiteStatus.VIDE));
         }
 
         return data;

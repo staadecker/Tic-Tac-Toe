@@ -4,7 +4,7 @@ import tictactoe.gui.Boite;
 
 public class JeuHumainContreHumain extends Jeu implements Boite.ClickListener {
     @Override
-    public void notifierCaseClicked(Position position) {
+    public void notifierBoiteClicked(Position position) {
         jouer(position);
     }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 @SuppressWarnings("WeakerAccess")
 public class Boite extends Pane {
     @NotNull
-    private final ReadOnlyObjectWrapper<CaseStatus> status = new ReadOnlyObjectWrapper<>();
+    private final ReadOnlyObjectWrapper<BoiteStatus> status = new ReadOnlyObjectWrapper<>();
 
     @NotNull
     private final Position position;
@@ -38,9 +38,9 @@ public class Boite extends Pane {
         }
 
         status.addListener((observable, oldValue, newValue) -> {
-            if (newValue == CaseStatus.VIDE) {
+            if (newValue == BoiteStatus.VIDE) {
                 boite.setStyle("-fx-background-image: none;");
-            } else if (newValue == CaseStatus.CROIX) {
+            } else if (newValue == BoiteStatus.CROIX) {
                 boite.setStyle("-fx-background-image: url(x.png);");
                 boite.getStyleClass().setAll("boite-hover");
             } else {
@@ -51,7 +51,7 @@ public class Boite extends Pane {
     }
 
     @NotNull
-    ReadOnlyObjectWrapper<CaseStatus> statusProperty() {
+    ReadOnlyObjectWrapper<BoiteStatus> statusProperty() {
         return status;
     }
 
@@ -61,14 +61,14 @@ public class Boite extends Pane {
 
     @FXML
     protected void handleMouseClick() {
-        if (status.get().equals(CaseStatus.VIDE) && listener != null) {
-            listener.notifierCaseClicked(position);
+        if (status.get().equals(BoiteStatus.VIDE) && listener != null) {
+            listener.notifierBoiteClicked(position);
         }
     }
 
     @FXML
     protected void handleMouseEnter() {
-        if (status.get().equals(CaseStatus.VIDE)) boite.getStyleClass().setAll("boite-hover");
+        if (status.get().equals(BoiteStatus.VIDE)) boite.getStyleClass().setAll("boite-hover");
     }
 
     @FXML
@@ -77,10 +77,10 @@ public class Boite extends Pane {
     }
 
     public interface ClickListener {
-        void notifierCaseClicked(Position position);
+        void notifierBoiteClicked(Position position);
     }
 
-    public enum CaseStatus {
+    public enum BoiteStatus {
         CROIX,
         CERCLE,
         VIDE
