@@ -37,6 +37,10 @@ public class StructurePlateau<T> implements Iterable<Position> {
         tableau.get(position.rangee).set(position.colonne, valeur);
     }
 
+    public int size(){
+        return GRANDEUR * GRANDEUR;
+    }
+
     List<T> getDiagonaleGaucheDroit() {
         List<T> diagonale = new ArrayList<>(GRANDEUR);
 

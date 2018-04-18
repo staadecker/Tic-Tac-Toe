@@ -9,9 +9,19 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener {
+    public enum JeuStatus {
+        TOUR_CROIX,
+        TOUR_CERCLE,
+        EGALITE,
+        CROIX_GAGNE,
+        CERCLE_GAGNE
+    }
+
     private final StructurePlateau<ReadOnlyObjectWrapper<Boite.BoiteStatus>> statusBoite = creeCasesVide();
 
     private final ReadOnlyObjectWrapper<JeuStatus> statusJeu = new ReadOnlyObjectWrapper<>(JeuStatus.TOUR_CROIX);
+
+    private int boiteNonVide = 0;
 
     public Jeu() {
         Iterator<List<ReadOnlyObjectWrapper<Boite.BoiteStatus>>> iteratorRangee = statusBoite.iteratorRangee();
@@ -30,22 +40,6 @@ public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener 
         creeLigne(statusBoite.getDiagonaleDroiteGauche());
     }
 
-    private void creeLigne(@NotNull List<ReadOnlyObjectWrapper<Boite.BoiteStatus>> liste){
-        Ligne ligne = new Ligne(this);
-
-        for (ReadOnlyObjectWrapper<Boite.BoiteStatus> caseDansLaLigne : liste){
-            ligne.ajouter(caseDansLaLigne.getReadOnlyProperty());
-        }
-    }
-
-    public ReadOnlyObjectProperty<JeuStatus> jeuProperty(){
-        return statusJeu.getReadOnlyProperty();
-    }
-
-    public ReadOnlyObjectProperty<Boite.BoiteStatus> boiteProperty(Position position) {
-        return statusBoite.get(position).getReadOnlyProperty();
-    }
-
     void jouer(Position position) {
         ReadOnlyObjectWrapper<Boite.BoiteStatus> boiteProperty = statusBoite.get(position);
 
@@ -56,18 +50,38 @@ public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener 
             boiteProperty.set(Boite.BoiteStatus.CERCLE);
             statusJeu.set(JeuStatus.TOUR_CROIX);
         }
+
+        boiteNonVide++;
+
+        if (boiteNonVide == statusBoite.size()){
+            statusJeu.set(JeuStatus.EGALITE);
+        }
+    }
+
+    private void creeLigne(@NotNull List<ReadOnlyObjectWrapper<Boite.BoiteStatus>> liste){
+        Ligne ligne = new Ligne(this);
+
+        for (ReadOnlyObjectWrapper<Boite.BoiteStatus> caseDansLaLigne : liste){
+            ligne.ajouter(caseDansLaLigne.getReadOnlyProperty());
+        }
     }
 
     @Override
     public void notifierGagnantX() {
-        System.out.println("X gagnant");
         statusJeu.set(JeuStatus.CROIX_GAGNE);
     }
 
     @Override
     public void notifierGagnantO() {
-        System.out.println("O gagnant");
         statusJeu.set(JeuStatus.CERCLE_GAGNE);
+    }
+
+    public ReadOnlyObjectProperty<Boite.BoiteStatus> boiteProperty(Position position) {
+        return statusBoite.get(position).getReadOnlyProperty();
+    }
+
+    public ReadOnlyObjectProperty<JeuStatus> jeuProperty(){
+        return statusJeu.getReadOnlyProperty();
     }
 
     private static StructurePlateau<ReadOnlyObjectWrapper<Boite.BoiteStatus>> creeCasesVide() {
@@ -78,13 +92,5 @@ public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener 
         }
 
         return data;
-    }
-
-    public enum JeuStatus {
-        TOUR_CROIX,
-        TOUR_CERCLE,
-        EGALITE,
-        CROIX_GAGNE,
-        CERCLE_GAGNE
     }
 }
