@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<fx:root fx:id="boite" xmlns="http://javafx.com/javafx/8.0.121"
-         xmlns:fx="http://javafx.com/fxml/1"
-         type="javafx.scene.layout.Pane" onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter"
-         onMouseExited="#handleMouseExit" styleClass="boite-normal">
+<fx:root xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+         type="javafx.scene.layout.Pane"
+         onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit"
+         styleClass="boite-normal" id="boite">
 
     <stylesheets>
         <URL value="@../style.css"/>
