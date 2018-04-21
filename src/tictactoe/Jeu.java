@@ -45,16 +45,25 @@ public abstract class Jeu implements Ligne.GagnantListener, Boite.ClickListener 
 
         if (statusJeu.get() == JeuStatus.TOUR_CROIX) {
             boiteProperty.set(Boite.BoiteStatus.CROIX);
-            statusJeu.set(JeuStatus.TOUR_CERCLE);
         } else if (statusJeu.get() == JeuStatus.TOUR_CERCLE) {
             boiteProperty.set(Boite.BoiteStatus.CERCLE);
-            statusJeu.set(JeuStatus.TOUR_CROIX);
+        }
+
+        if (statusJeu.get() == JeuStatus.CERCLE_GAGNE || statusJeu.get() == JeuStatus.CROIX_GAGNE){
+            System.out.println("Fin");
         }
 
         boiteNonVide++;
 
         if (boiteNonVide == statusBoite.size()){
             statusJeu.set(JeuStatus.EGALITE);
+            System.out.println("Fin");
+        }
+
+        if (statusJeu.get() == JeuStatus.TOUR_CERCLE){
+            statusJeu.set(JeuStatus.TOUR_CROIX);
+        } else {
+            statusJeu.set(JeuStatus.TOUR_CERCLE);
         }
     }
 
