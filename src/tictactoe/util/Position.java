@@ -1,4 +1,4 @@
-package tictactoe;
+package tictactoe.util;
 
 import org.jetbrains.annotations.Contract;
 

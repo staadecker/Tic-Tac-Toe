@@ -1,4 +1,4 @@
-package tictactoe;
+package tictactoe.util;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -9,12 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ligne implements ChangeListener<Boite.BoiteStatus> {
-    private List<ReadOnlyObjectProperty<Boite.BoiteStatus>> ligne = new ArrayList<>();
+    private final List<ReadOnlyObjectProperty<Boite.BoiteStatus>> ligne;
 
-    private final GagnantListener listener;
+    private final Verificateur.GagnantListener listener;
 
-    Ligne(GagnantListener gagnantListener) {
+    Ligne(Verificateur.GagnantListener gagnantListener) {
+        this(gagnantListener, new ArrayList<>());
+    }
+
+    Ligne(Verificateur.GagnantListener gagnantListener, List<ReadOnlyObjectProperty<Boite.BoiteStatus>> ligne){
         this.listener = gagnantListener;
+        this.ligne = ligne;
+
+        for (ReadOnlyObjectProperty<Boite.BoiteStatus> boite : ligne){
+            boite.addListener(this);
+        }
     }
 
     void ajouter(ReadOnlyObjectProperty<Boite.BoiteStatus> caseAAjouter){
@@ -39,9 +48,4 @@ public class Ligne implements ChangeListener<Boite.BoiteStatus> {
         }
     }
 
-    public interface GagnantListener {
-        void notifierGagnantX();
-
-        void notifierGagnantO();
-    }
 }

@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
-import tictactoe.Jeu;
+import tictactoe.JeuBase;
 
 /**
  * Controlle la zone qui montre les points
@@ -21,7 +21,7 @@ public class PointageController {
     private final SimpleIntegerProperty scoreCercle = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty scoreCroix = new SimpleIntegerProperty(0);
 
-    public void bindJeu(@NotNull ReadOnlyObjectProperty<Jeu.JeuStatus> jeuStatus) {
+    public void bindJeu(@NotNull ReadOnlyObjectProperty<JeuBase.JeuStatus> jeuStatus) {
         jeuStatus.addListener(
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {

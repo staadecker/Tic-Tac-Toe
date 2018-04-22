@@ -1,15 +1,10 @@
 package tictactoe.gui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Window;
 import tictactoe.*;
-
-import java.net.URL;
-import java.util.*;
+import tictactoe.util.Position;
+import tictactoe.util.StructurePlateau;
 
 public class MainController {
     /**
@@ -39,7 +34,8 @@ public class MainController {
 
         for (Position position : boites) {
             Boite boite = new Boite(position);
-            boite.statusProperty().bind(jeu.boiteProperty(position));
+            boite.statusProperty().bind(jeu.boiteStatusProperty(position));
+            boite.setListener(jeu);
             boites.set(position, boite);
         }
     }
@@ -54,12 +50,6 @@ public class MainController {
             plateauDeJeu.add(boites.get(position), position.colonne, position.rangee);
         }
 
-        pointageController.bindJeu(jeu.jeuProperty()); //Attacher le controlleur de pointage au jeu
-    }
-
-    public void setListener(Boite.ClickListener listener) {
-        for (Position position : boites) {
-            boites.get(position).setListener(listener);
-        }
+        pointageController.bindJeu(jeu.jeuStatusProperty()); //Attacher le controlleur de pointage au jeu
     }
 }
