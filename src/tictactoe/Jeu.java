@@ -8,7 +8,7 @@ import tictactoe.util.Position;
  * Défini le model de jeu
  * Extends Boite.ClickListener car un jeu voudra toujours savoir quand une des boites a été appuyé
  */
-public interface Jeu extends Boite.ClickListener {
+public interface Jeu extends ClickListener {
     /**
      * Les différents status possible pour un jeu
      */
@@ -34,8 +34,9 @@ public interface Jeu extends Boite.ClickListener {
 
     /**
      * Le status d'une des boites
+     *
      * @param position la position de la boite
      * @return le status
      */
-    ReadOnlyObjectProperty<Boite.BoiteStatus> boiteStatusProperty(Position position);
+    ReadOnlyObjectProperty<Boite.Status> boiteStatusProperty(Position position);
 }

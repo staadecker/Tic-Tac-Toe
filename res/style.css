@@ -4,12 +4,13 @@
     -fx-background-position: center center;
 }
 
-.boite-normal {
+.bordure-normale {
     -fx-border-color: black;
     -fx-border-width: 4;
 }
 
-.boite-hover {
+/*noinspection CssUnusedSymbol*/
+.bordure-hover {
     -fx-border-color: blue;
     -fx-border-width: 2;
 }

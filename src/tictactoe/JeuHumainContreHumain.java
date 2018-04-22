@@ -1,9 +1,12 @@
 package tictactoe;
 
-import tictactoe.gui.Boite;
 import tictactoe.util.Position;
 
-public class JeuHumainContreHumain extends JeuBase implements Boite.ClickListener {
+/**
+ * Définit un jeu humain contre humain
+ * Quand une boite est appuyer cela signifie qu'elle est joué
+ */
+public class JeuHumainContreHumain extends JeuBase implements ClickListener {
     @Override
     public void notifierBoiteClicked(Position position) {
         jouer(position);

@@ -2,13 +2,17 @@ package tictactoe.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import tictactoe.*;
+import org.jetbrains.annotations.NotNull;
+import tictactoe.Jeu;
 import tictactoe.util.Position;
 import tictactoe.util.StructurePlateau;
 
+/**
+ * Class qui controlle l'interface graphique du jeu
+ */
 public class MainController {
     /**
-     * Le tableau à remplir avec des cases
+     * Le tableau à remplir avec des boites
      */
     @FXML
     private GridPane plateauDeJeu;
@@ -20,23 +24,27 @@ public class MainController {
     private PointageController pointageController;
 
     /**
-     * Liste de boites
+     * Liste de toutes les boites
      */
+    @NotNull
     private final StructurePlateau<Boite> boites = new StructurePlateau<>();
 
     /**
-     * Le jeu
+     * Le modèle de jeu
      */
+    @NotNull
     private final Jeu jeu;
 
-    public MainController(Jeu jeu) {
+    /**
+     * @param jeu le model de jeu
+     */
+    public MainController(@NotNull Jeu jeu) {
         this.jeu = jeu;
 
         for (Position position : boites) {
-            Boite boite = new Boite(position);
-            boite.statusProperty().bind(jeu.boiteStatusProperty(position));
-            boite.setListener(jeu);
-            boites.set(position, boite);
+            Boite boite = new Boite(position, jeu);
+            boite.statusProperty().bind(jeu.boiteStatusProperty(position)); //Attacher la boite au model pour que si le model change la boite change avec
+            boites.set(position, boite); //Ajouter la boite à la liste
         }
     }
 
