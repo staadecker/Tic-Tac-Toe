@@ -21,7 +21,7 @@ public class Main extends Application {
 
         Jeu jeu = new JeuHumainContreHumain();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
 
         MainController controller = new MainController(jeu);
         fxmlLoader.setController(controller);

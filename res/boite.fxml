@@ -7,6 +7,6 @@
          styleClass="boite-normal" id="boite">
 
     <stylesheets>
-        <URL value="@../style.css"/>
+        <URL value="@style.css"/>
     </stylesheets>
 </fx:root>

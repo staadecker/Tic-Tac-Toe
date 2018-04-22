@@ -71,7 +71,7 @@ public class Boite extends Pane {
         );
 
         //Attacher l'objet au fxml
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/boite.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boite.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
