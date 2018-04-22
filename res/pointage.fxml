@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Separator?>
 <HBox spacing="30.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="tictactoe.gui.PointageController">
     <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
-        <Text text="CERCLE"/>
-        <Text fx:id="textScoreCercle" text="0 pt"/>
+        <Text text="CERCLE">
+            <font>
+                <Font size="30"/>
+            </font>
+        </Text>
+        <Text fx:id="textScoreCercle" text="0 pt">
+            <font>
+                <Font size="30"/>
+            </font>
+        </Text>
     </VBox>
+    <Separator orientation="VERTICAL" id="separator"/>
     <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
-        <Text text="CROIX"/>
-        <Text fx:id="textScoreCroix" text="0 pt"/>
+        <Text text="CROIX">
+            <font>
+                <Font size="30"/>
+            </font>
+        </Text>
+        <Text fx:id="textScoreCroix" text="0 pt">
+            <font>
+                <Font size="30"/>
+            </font>
+        </Text>
     </VBox>
 </HBox>

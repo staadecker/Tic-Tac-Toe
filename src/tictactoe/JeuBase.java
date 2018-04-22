@@ -90,6 +90,11 @@ public abstract class JeuBase implements Jeu, Verificateur.GagnantListener {
         return statusJeu.getReadOnlyProperty();
     }
 
+    @Override
+    public JeuStatus getJeuStatus() {
+        return statusJeu.get();
+    }
+
     /**
      * @return Un tableau contenant des ReadOnlyObjectWrappers avec une valeur par défaut de Boite.Status.VIDE
      */

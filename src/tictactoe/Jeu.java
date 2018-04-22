@@ -30,7 +30,9 @@ public interface Jeu extends ClickListener {
     /**
      * @return le status du jeu actuel
      */
-    ReadOnlyObjectProperty<JeuBase.JeuStatus> jeuStatusProperty();
+    ReadOnlyObjectProperty<Jeu.JeuStatus> jeuStatusProperty();
+
+    Jeu.JeuStatus getJeuStatus();
 
     /**
      * Le status d'une des boites

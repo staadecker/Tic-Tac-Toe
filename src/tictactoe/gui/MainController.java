@@ -1,6 +1,9 @@
 package tictactoe.gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 import tictactoe.Jeu;
@@ -10,12 +13,15 @@ import tictactoe.util.StructurePlateau;
 /**
  * Class qui controlle l'interface graphique du jeu
  */
-public class MainController {
+public class MainController implements ChangeListener<Jeu.JeuStatus> {
     /**
      * Le tableau à remplir avec des boites
      */
     @FXML
     private GridPane plateauDeJeu;
+
+    @FXML
+    private Label textStatus;
 
     /**
      * Le controller de la zone de pointage
@@ -41,6 +47,8 @@ public class MainController {
     public MainController(@NotNull Jeu jeu) {
         this.jeu = jeu;
 
+        jeu.jeuStatusProperty().addListener(this);
+
         for (Position position : boites) {
             Boite boite = new Boite(position, jeu);
             boite.statusProperty().bind(jeu.boiteStatusProperty(position)); //Attacher la boite au model pour que si le model change la boite change avec
@@ -59,5 +67,31 @@ public class MainController {
         }
 
         pointageController.bindJeu(jeu.jeuStatusProperty()); //Attacher le controlleur de pointage au jeu
+        updateStatus(jeu.getJeuStatus());
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Jeu.JeuStatus> observable, Jeu.JeuStatus oldValue, Jeu.JeuStatus newValue) {
+        updateStatus(newValue);
+    }
+
+    private void updateStatus(Jeu.JeuStatus newValue) {
+        switch (newValue) {
+            case TOUR_CERCLE:
+                textStatus.setText("Tour à O");
+                break;
+            case TOUR_CROIX:
+                textStatus.setText("Tour à X");
+                break;
+            case CERCLE_GAGNE:
+                textStatus.setText("Cercle a gagné");
+                break;
+            case CROIX_GAGNE:
+                textStatus.setText("Croix a gagné");
+                break;
+            case EGALITE:
+                textStatus.setText("Égalité");
+                break;
+        }
     }
 }

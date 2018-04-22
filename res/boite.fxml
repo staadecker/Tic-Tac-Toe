@@ -7,7 +7,5 @@
          onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit"
          styleClass="bordure-normale" id="boite">
 
-    <stylesheets>
-        <URL value="@style.css"/>
-    </stylesheets>
+
 </fx:root>
