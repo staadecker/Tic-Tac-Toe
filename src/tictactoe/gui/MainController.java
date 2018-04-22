@@ -1,7 +1,5 @@
 package tictactoe.gui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -13,7 +11,7 @@ import tictactoe.util.StructurePlateau;
 /**
  * Class qui controlle l'interface graphique du jeu
  */
-public class MainController implements ChangeListener<Jeu.JeuStatus> {
+public class MainController {
     /**
      * Le tableau à remplir avec des boites
      */
@@ -47,7 +45,7 @@ public class MainController implements ChangeListener<Jeu.JeuStatus> {
     public MainController(@NotNull Jeu jeu) {
         this.jeu = jeu;
 
-        jeu.jeuStatusProperty().addListener(this);
+        jeu.jeuStatusProperty().addListener((observable, oldValue, newValue) -> updateStatus(newValue));
 
         for (Position position : boites) {
             Boite boite = new Boite(position, jeu);
@@ -70,12 +68,7 @@ public class MainController implements ChangeListener<Jeu.JeuStatus> {
         updateStatus(jeu.getJeuStatus());
     }
 
-    @Override
-    public void changed(ObservableValue<? extends Jeu.JeuStatus> observable, Jeu.JeuStatus oldValue, Jeu.JeuStatus newValue) {
-        updateStatus(newValue);
-    }
-
-    private void updateStatus(Jeu.JeuStatus newValue) {
+    private void updateStatus(@NotNull Jeu.JeuStatus newValue) {
         switch (newValue) {
             case TOUR_CERCLE:
                 textStatus.setText("Tour à O");

@@ -12,6 +12,8 @@ import tictactoe.JeuBase;
  * Controlle la zone qui montre les points
  */
 public class PointageController {
+    private static final String UNITE_POINT = "pt";
+
     @FXML
     private Text textScoreCercle;
     @FXML
@@ -23,9 +25,9 @@ public class PointageController {
     @FXML
     public void initialize() {
         //Attacher la boite de texte avec le score propriété de score
-        //Bindings.convert() car la propriété est un IntegerProperty et le text est un StringProperty
-        textScoreCercle.textProperty().bind(Bindings.convert(scoreCercle));
-        textScoreCroix.textProperty().bind(Bindings.convert(scoreCroix));
+        //Bindings.concat() pour mettre tout ajouter les unités
+        textScoreCercle.textProperty().bind(Bindings.concat(scoreCercle, " ", UNITE_POINT));
+        textScoreCroix.textProperty().bind(Bindings.concat(scoreCroix, " " , UNITE_POINT));
     }
 
     /**
