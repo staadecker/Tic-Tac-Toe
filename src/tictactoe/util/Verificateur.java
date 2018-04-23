@@ -15,7 +15,7 @@ import java.util.List;
  * Au lieu de revérifier l'état du plateau après chaque tour, le listener vérifie que la rangée, colonne au diagonale qui a été modifié
  * Pour détecter des égalité, le verificateur compte le nombre de boites remplies (non-vide).
  */
-public class Verificateur implements ChangeListener<Boite.Status> {
+public class Verificateur implements ChangeListener<VerificateurLigne.Status> {
     /**
      * Interface qui définit le listener qui sera notifié en cas d'égalité ou de gagnant
      */
@@ -30,105 +30,68 @@ public class Verificateur implements ChangeListener<Boite.Status> {
     @NotNull
     private final GagnantListener listener;
 
-    private int boiteVide;
+    private final int nombreDeLignes;
+    private int nombreDeEgalite = 0;
 
     @SuppressWarnings("ConstantConditions")
     public Verificateur(@NotNull GagnantListener listener, @NotNull StructurePlateau<ReadOnlyObjectProperty<Boite.Status>> statusBoite) {
         this.listener = listener;
-        this.boiteVide = statusBoite.size();
+        int nombreDeLignes = 0;
 
         //Pour chaque rangée créé un vérificateur de ligne
         Iterator<List<ReadOnlyObjectProperty<Boite.Status>>> iteratorRangee = statusBoite.iteratorRangee();
 
         while (iteratorRangee.hasNext()) {
-            new VerificateurLigne(listener, iteratorRangee.next());
+            new VerificateurLigne(iteratorRangee.next()).statusProperty().addListener(this);
+            nombreDeLignes++;
         }
 
         //Créé un vérificateur de ligne pour chaque colonne
         Iterator<List<ReadOnlyObjectProperty<Boite.Status>>> iteratorColonne = statusBoite.iteratorColonne();
 
         while (iteratorColonne.hasNext()) {
-            new VerificateurLigne(listener, iteratorColonne.next());
+            new VerificateurLigne(iteratorColonne.next()).statusProperty().addListener(this);
+            nombreDeLignes++;
         }
 
         //Crée un vérificateur de ligne pour les deux diagonales
-        new VerificateurLigne(listener, statusBoite.getDiagonaleGaucheDroit());
-        new VerificateurLigne(listener, statusBoite.getDiagonaleDroiteGauche());
+        new VerificateurLigne(statusBoite.getDiagonaleGaucheDroit()).statusProperty().addListener(this);
+        new VerificateurLigne(statusBoite.getDiagonaleDroiteGauche()).statusProperty().addListener(this);
+        nombreDeLignes += 2;
 
-        for (Position position : statusBoite) {
-            //Necessaire pour que le compter boiteVide commence avec le bon chiffre
-            if (statusBoite.get(position).get() != Boite.Status.VIDE) {
-                boiteVide--;
-            }
+        this.nombreDeLignes = nombreDeLignes;
 
-            //Ajouter un listener pour être notifié quand les boites changent pour pouvoir détecter les égalités
-            statusBoite.get(position).addListener(this);
-        }
+//        for (Position position : statusBoite) {
+//            //Necessaire pour que le compter boiteVide commence avec le bon chiffre
+//            if (statusBoite.get(position).get() != Boite.Status.VIDE) {
+//                boiteVide--;
+//            }
+//
+//            //Ajouter un listener pour être notifié quand les boites changent pour pouvoir détecter les égalités
+//            statusBoite.get(position).addListener(this);
+//        }
     }
 
-    /**
-     * Appelé quand une boite change d'état
-     */
     @Override
-    public void changed(ObservableValue<? extends Boite.Status> observable, Boite.Status oldValue, Boite.Status newValue) {
-        //Si la boite était vide (et ne l'est plus) soustraire 1 au compter
-        if (oldValue == Boite.Status.VIDE) {
-            boiteVide--;
+    public void changed(ObservableValue<? extends VerificateurLigne.Status> observable, VerificateurLigne.Status oldValue, VerificateurLigne.Status newValue) {
+        if (oldValue == VerificateurLigne.Status.EGALITE){
+            nombreDeEgalite--;
         }
 
-        //Si la boite devient vide ajouter 1 au compter
-        if (newValue == Boite.Status.VIDE) {
-            boiteVide++;
+        if (newValue == VerificateurLigne.Status.EGALITE){
+            nombreDeEgalite++;
         }
 
-        //Si aucunes boites est vide, c'est une égalité
-        if (boiteVide == 0) {
+        if (newValue == VerificateurLigne.Status.X_GAGNE){
+            listener.notifierGagnantX();
+        }
+
+        if (newValue == VerificateurLigne.Status.O_GAGNE){
+            listener.notifierGagnantO();
+        }
+
+        if (nombreDeEgalite == nombreDeLignes){
             listener.notifierEgalite();
         }
-    }
-
-    /**
-     * Object qui vérifie un ligne pour des gagnants dans une ligne (par example des colonnes ou des rangée)
-     */
-    class VerificateurLigne implements ChangeListener<Boite.Status> {
-        //La liste de boites formant la ligne
-        @NotNull
-        private final List<ReadOnlyObjectProperty<Boite.Status>> ligne;
-
-        //Le listener à notifier si il y a un gagnant
-        @NotNull
-        private final GagnantListener listener;
-
-        VerificateurLigne(@NotNull GagnantListener gagnantListener, List<ReadOnlyObjectProperty<Boite.Status>> ligne) {
-            this.listener = gagnantListener;
-            this.ligne = ligne;
-
-            //Se faire notifier si une des boites dans la ligne change
-            for (ReadOnlyObjectProperty<Boite.Status> etatBoite : ligne) {
-                etatBoite.addListener(this);
-            }
-        }
-
-        /**
-         * Appelé quand une des boites dans la ligne change
-         */
-        @Override
-        public void changed(ObservableValue<? extends Boite.Status> observable, Boite.Status oldValue, Boite.Status newValue) {
-            if (newValue == Boite.Status.VIDE) return; //Si la boite est devenu vide aucun gagnant
-
-            //Vérifier quand chaque boite dans la ligne est identique (tous des X ou tous de O)
-            for (ReadOnlyObjectProperty<Boite.Status> caseAVerifier : ligne) {
-                if (caseAVerifier.get() != newValue) return; //Si non identique pas de gagnants
-
-            }
-
-            //Si identique notifier le listener du gagnant
-            if (newValue == Boite.Status.CROIX) {
-                listener.notifierGagnantX();
-            } else {
-                listener.notifierGagnantO();
-            }
-        }
-
     }
 }
