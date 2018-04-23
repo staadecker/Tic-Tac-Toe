@@ -11,7 +11,7 @@
                 <Font size="30"/>
             </font>
         </Text>
-        <Text fx:id="textScoreCercle" text="0 pt">
+        <Text fx:id="textScoreCercle">
             <font>
                 <Font size="30"/>
             </font>
@@ -24,7 +24,7 @@
                 <Font size="30"/>
             </font>
         </Text>
-        <Text fx:id="textScoreCroix" text="0 pt">
+        <Text fx:id="textScoreCroix">
             <font>
                 <Font size="30"/>
             </font>

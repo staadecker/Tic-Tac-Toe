@@ -48,6 +48,10 @@ public class PointageController {
                         case CERCLE_GAGNE:
                             scoreCercle.set(scoreCercle.getValue() + 1);
                             break;
+                        case EGALITE:
+                            scoreCroix.set(scoreCroix.getValue() + 1);
+                            scoreCercle.set(scoreCercle.getValue() + 1);
+                            break;
                     }
                 }
         );
