@@ -19,25 +19,14 @@ public abstract class JeuBase implements Jeu {
      * Les X commence toujours
      */
     @NotNull
-    private final ReadOnlyObjectWrapper<JeuStatus> statusJeu = new ReadOnlyObjectWrapper<>(JeuStatus.TOUR_CROIX);
+    private final ReadOnlyObjectWrapper<StatusJeu> statusJeu = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
+
+    private boolean tourAX;
 
     JeuBase() {
-        //Creer le verificateur
-        new Verificateur(creeReadOnlyStatusBoite(statusBoite)).statusProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    switch (newValue) {
-                        case X_GAGNE:
-                            statusJeu.set(JeuStatus.CROIX_GAGNE);
-                            break;
-                        case O_GAGNE:
-                            statusJeu.set(JeuStatus.CERCLE_GAGNE);
-                            break;
-                        case EGALITE:
-                            statusJeu.set(JeuStatus.EGALITE);
-                            break;
-                    }
-                }
-        );
+        recommencer();
+
+        statusJeu.bind(new Verificateur(creeReadOnlyStatusBoite(statusBoite)).statusProperty());  //Creer le verificateur
     }
 
     /**
@@ -47,29 +36,19 @@ public abstract class JeuBase implements Jeu {
      */
     @SuppressWarnings("ConstantConditions")
     public void jouer(Position position) {
-        switch (statusJeu.get()) {
-            case TOUR_CROIX:
+        if (statusJeu.get() == StatusJeu.EN_PARTIE) {
+            if (tourAX) {
                 //Si au tour de X changer la boite pour X
                 statusBoite.get(position).set(Boite.Status.CROIX);
-                break;
-            case TOUR_CERCLE:
+            } else {
                 //Si au tour de O changer la boite pour O
                 statusBoite.get(position).set(Boite.Status.CERCLE);
-                break;
-            default:
-                return;
-        }
+            }
 
-        switch (statusJeu.get()) {
-            //Changer le tour à l'autre joueur
-            case TOUR_CERCLE:
-                statusJeu.set(JeuStatus.TOUR_CROIX);
-                break;
-            case TOUR_CROIX:
-                statusJeu.set(JeuStatus.TOUR_CERCLE);
-                break;
+            tourAX = !tourAX;
         }
     }
+
 
     @Override
     public void recommencer() {
@@ -77,7 +56,7 @@ public abstract class JeuBase implements Jeu {
             statusBoite.get(position).set(Boite.Status.VIDE);
         }
 
-        statusJeu.set(JeuStatus.TOUR_CROIX);
+        tourAX = true;
     }
 
     //METHODES DE PROPRIÉTÉ JAVAFX
@@ -87,12 +66,12 @@ public abstract class JeuBase implements Jeu {
         return statusBoite.get(position).getReadOnlyProperty();
     }
 
-    public ReadOnlyObjectProperty<JeuStatus> jeuStatusProperty() {
+    public ReadOnlyObjectProperty<StatusJeu> jeuStatusProperty() {
         return statusJeu.getReadOnlyProperty();
     }
 
     @Override
-    public JeuStatus getJeuStatus() {
+    public StatusJeu getJeuStatus() {
         return statusJeu.get();
     }
 
@@ -121,5 +100,10 @@ public abstract class JeuBase implements Jeu {
         }
 
         return readOnlyBoite;
+    }
+
+    @Override
+    public boolean isTourAX() {
+        return tourAX;
     }
 }

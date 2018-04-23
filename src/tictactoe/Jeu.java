@@ -10,17 +10,6 @@ import tictactoe.util.Position;
  */
 public interface Jeu extends ClickListener {
     /**
-     * Les différents status possible pour un jeu
-     */
-    enum JeuStatus {
-        TOUR_CROIX,
-        TOUR_CERCLE,
-        EGALITE,
-        CROIX_GAGNE,
-        CERCLE_GAGNE
-    }
-
-    /**
      * Pour jouer dans une boite
      *
      * @param position la position de la boite où l'on veut jouer
@@ -32,9 +21,11 @@ public interface Jeu extends ClickListener {
     /**
      * @return le status du jeu actuel
      */
-    ReadOnlyObjectProperty<Jeu.JeuStatus> jeuStatusProperty();
+    ReadOnlyObjectProperty<StatusJeu> jeuStatusProperty();
 
-    Jeu.JeuStatus getJeuStatus();
+    StatusJeu getJeuStatus();
+
+    boolean isTourAX();
 
     /**
      * Le status d'une des boites

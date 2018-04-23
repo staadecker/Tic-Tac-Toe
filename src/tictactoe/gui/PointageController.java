@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
 import tictactoe.JeuBase;
+import tictactoe.StatusJeu;
 
 /**
  * Controlle la zone qui montre les points
@@ -35,17 +36,17 @@ public class PointageController {
      *
      * @param jeuStatus la propriété du status de jeu
      */
-    void attacherStatusJeu(@NotNull ReadOnlyObjectProperty<JeuBase.JeuStatus> jeuStatus) {
+    void attacherStatusJeu(@NotNull ReadOnlyObjectProperty<StatusJeu> jeuStatus) {
         //Si la propriété de status de jeu change...
         jeuStatus.addListener(
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
                         //Si les X gagne, +1 pour les X
-                        case CROIX_GAGNE:
+                        case X_GAGNE:
                             scoreCroix.set(scoreCroix.getValue() + 1);
                             break;
                         //Si les O gagne +1 pour les O
-                        case CERCLE_GAGNE:
+                        case O_GAGNE:
                             scoreCercle.set(scoreCercle.getValue() + 1);
                             break;
                         case EGALITE:

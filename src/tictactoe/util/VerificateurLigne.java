@@ -5,6 +5,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
+import tictactoe.StatusJeu;
 import tictactoe.gui.Boite;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 class VerificateurLigne implements ChangeListener<Boite.Status> {
 
-    private final ReadOnlyObjectWrapper<Verificateur.Status> status = new ReadOnlyObjectWrapper<>(Verificateur.Status.INDETERMINE);
+    private final ReadOnlyObjectWrapper<StatusJeu> status = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
 
     //La liste de boites formant la ligne
     @NotNull
@@ -37,26 +38,26 @@ class VerificateurLigne implements ChangeListener<Boite.Status> {
         //Si il y a une boite de vide c'est indeterminé
         for (ReadOnlyObjectProperty<Boite.Status> boite : ligne) {
             if (boite.get() == Boite.Status.VIDE) {
-                status.set(Verificateur.Status.INDETERMINE);
+                status.set(StatusJeu.EN_PARTIE);
                 return;
             }
         }
 
         for (ReadOnlyObjectProperty<Boite.Status> boite : ligne) {
             if (newValue != boite.get()){
-                status.set(Verificateur.Status.EGALITE);
+                status.set(StatusJeu.EGALITE);
                 return;
             }
         }
 
         if (newValue == Boite.Status.CROIX){
-            status.set(Verificateur.Status.X_GAGNE);
+            status.set(StatusJeu.X_GAGNE);
         } else {
-            status.set(Verificateur.Status.O_GAGNE);
+            status.set(StatusJeu.O_GAGNE);
         }
     }
 
-    ReadOnlyObjectProperty<Verificateur.Status> statusProperty() {
+    ReadOnlyObjectProperty<StatusJeu> statusProperty() {
         return status.getReadOnlyProperty();
     }
 }

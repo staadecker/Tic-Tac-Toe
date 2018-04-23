@@ -39,7 +39,7 @@ public class MainController {
     @FXML
     public void initialize() {
         pointageController.attacherStatusJeu(jeu.jeuStatusProperty()); //Attacher le controlleur de pointage au jeu
-        textStatusController.attacherStatusJeu(jeu.jeuStatusProperty());
+        textStatusController.attacherStatusJeu(jeu);
         plateauController.attacherJeu(jeu);
     }
 

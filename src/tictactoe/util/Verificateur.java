@@ -5,6 +5,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
+import tictactoe.StatusJeu;
 import tictactoe.gui.Boite;
 
 import java.util.Iterator;
@@ -16,15 +17,9 @@ import java.util.List;
  * Au lieu de revérifier l'état du plateau après chaque tour, le listener vérifie que la rangée, colonne au diagonale qui a été modifié
  * Pour détecter des égalité, le verificateur compte le nombre de boites remplies (non-vide).
  */
-public class Verificateur implements ChangeListener<Verificateur.Status> {
-    public enum Status {
-        X_GAGNE,
-        O_GAGNE,
-        EGALITE,
-        INDETERMINE
-    }
+public class Verificateur implements ChangeListener<StatusJeu> {
 
-    private final ReadOnlyObjectWrapper<Status> status = new ReadOnlyObjectWrapper<>(Status.INDETERMINE);
+    private final ReadOnlyObjectWrapper<StatusJeu> status = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
 
     private final int nombreDeLignes;
     private int nombreDeEgalite = 0;
@@ -68,17 +63,17 @@ public class Verificateur implements ChangeListener<Verificateur.Status> {
     }
 
     @Override
-    public void changed(ObservableValue<? extends Status> observable, Status oldValue, Status newValue) {
-        if (oldValue == Status.EGALITE) {
+    public void changed(ObservableValue<? extends StatusJeu> observable, StatusJeu oldValue, StatusJeu newValue) {
+        if (oldValue == StatusJeu.EGALITE) {
             nombreDeEgalite--;
         }
 
-        if (newValue == Status.EGALITE) {
+        if (newValue == StatusJeu.EGALITE) {
             nombreDeEgalite++;
         }
 
         switch (newValue) {
-            case INDETERMINE:
+            case EN_PARTIE:
             case O_GAGNE:
             case X_GAGNE:
                 status.set(newValue);
@@ -86,11 +81,11 @@ public class Verificateur implements ChangeListener<Verificateur.Status> {
         }
 
         if (nombreDeEgalite == nombreDeLignes){
-            status.set(Status.EGALITE);
+            status.set(StatusJeu.EGALITE);
         }
     }
 
-    public ReadOnlyObjectProperty<Status> statusProperty() {
+    public ReadOnlyObjectProperty<StatusJeu> statusProperty() {
         return status.getReadOnlyProperty();
     }
 }
