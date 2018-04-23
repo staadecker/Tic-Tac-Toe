@@ -4,7 +4,7 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="tictactoe.gui.PlateauController"
-          fx:id="plateauDeJeu">
+          fx:id="plateauDeJeu" prefWidth="${plateauDeJeu.height}">
     <rowConstraints>
         <RowConstraints vgrow="ALWAYS"/>
         <RowConstraints vgrow="ALWAYS"/>
