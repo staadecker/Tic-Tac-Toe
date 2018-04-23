@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import tictactoe.gui.MainController;
+import tictactoe.gui.PlateauController;
 
 import java.io.IOException;
 

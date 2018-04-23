@@ -1,5 +1,6 @@
 package tictactoe.gui;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,8 @@ public class Boite extends Pane {
      */
     @NotNull
     private final SimpleObjectProperty<Status> status = new SimpleObjectProperty<>(Status.VIDE);
+
+    private final SimpleBooleanProperty shouldHighlight = new SimpleBooleanProperty(true);
 
     /**
      * Position de la boite sur le tableau
@@ -106,7 +109,7 @@ public class Boite extends Pane {
      */
     @FXML
     private void handleMouseEnter() {
-        if (status.get().equals(Status.VIDE)) this.getStyleClass().setAll("bordure-hover");
+        if (status.get().equals(Status.VIDE) && shouldHighlight.get()) this.getStyleClass().setAll("bordure-hover");
     }
 
     /**
@@ -120,5 +123,9 @@ public class Boite extends Pane {
     @NotNull
     SimpleObjectProperty<Status> statusProperty() {
         return status;
+    }
+
+    SimpleBooleanProperty shouldHighlightProperty() {
+        return shouldHighlight;
     }
 }
