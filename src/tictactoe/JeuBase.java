@@ -11,7 +11,7 @@ import tictactoe.util.Verificateur;
 /**
  * La base d'un jeu. Défini tout sauf comment et quand les joueurs vont jouer
  */
-public abstract class JeuBase implements Jeu, Verificateur.GagnantListener {
+public abstract class JeuBase implements Jeu {
     @NotNull
     private final StructurePlateau<ReadOnlyObjectWrapper<Boite.Status>> statusBoite = creeCasesVide();
 
@@ -22,7 +22,22 @@ public abstract class JeuBase implements Jeu, Verificateur.GagnantListener {
     private final ReadOnlyObjectWrapper<JeuStatus> statusJeu = new ReadOnlyObjectWrapper<>(JeuStatus.TOUR_CROIX);
 
     JeuBase() {
-        new Verificateur(this, creeReadOnlyStatusBoite(statusBoite)); //Créer le vérificateur
+        //Creer le verificateur
+        new Verificateur(creeReadOnlyStatusBoite(statusBoite)).statusProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    switch (newValue) {
+                        case X_GAGNE:
+                            statusJeu.set(JeuStatus.CROIX_GAGNE);
+                            break;
+                        case O_GAGNE:
+                            statusJeu.set(JeuStatus.CERCLE_GAGNE);
+                            break;
+                        case EGALITE:
+                            statusJeu.set(JeuStatus.EGALITE);
+                            break;
+                    }
+                }
+        );
     }
 
     /**
@@ -58,28 +73,11 @@ public abstract class JeuBase implements Jeu, Verificateur.GagnantListener {
 
     @Override
     public void recommencer() {
-        for (Position position : statusBoite){
+        for (Position position : statusBoite) {
             statusBoite.get(position).set(Boite.Status.VIDE);
         }
 
         statusJeu.set(JeuStatus.TOUR_CROIX);
-    }
-
-    //METHODS APPELÉ PAR LE VÉRIFICATEUR
-
-    @Override
-    public void notifierGagnantX() {
-        statusJeu.set(JeuStatus.CROIX_GAGNE);
-    }
-
-    @Override
-    public void notifierGagnantO() {
-        statusJeu.set(JeuStatus.CERCLE_GAGNE);
-    }
-
-    @Override
-    public void notifierEgalite() {
-        statusJeu.set(JeuStatus.EGALITE);
     }
 
     //METHODES DE PROPRIÉTÉ JAVAFX

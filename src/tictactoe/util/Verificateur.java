@@ -1,6 +1,7 @@
 package tictactoe.util;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
@@ -15,27 +16,21 @@ import java.util.List;
  * Au lieu de revérifier l'état du plateau après chaque tour, le listener vérifie que la rangée, colonne au diagonale qui a été modifié
  * Pour détecter des égalité, le verificateur compte le nombre de boites remplies (non-vide).
  */
-public class Verificateur implements ChangeListener<VerificateurLigne.Status> {
-    /**
-     * Interface qui définit le listener qui sera notifié en cas d'égalité ou de gagnant
-     */
-    public interface GagnantListener {
-        void notifierGagnantX();
-
-        void notifierGagnantO();
-
-        void notifierEgalite();
+public class Verificateur implements ChangeListener<Verificateur.Status> {
+    public enum Status {
+        X_GAGNE,
+        O_GAGNE,
+        EGALITE,
+        INDETERMINE
     }
 
-    @NotNull
-    private final GagnantListener listener;
+    private final ReadOnlyObjectWrapper<Status> status = new ReadOnlyObjectWrapper<>(Status.INDETERMINE);
 
     private final int nombreDeLignes;
     private int nombreDeEgalite = 0;
 
     @SuppressWarnings("ConstantConditions")
-    public Verificateur(@NotNull GagnantListener listener, @NotNull StructurePlateau<ReadOnlyObjectProperty<Boite.Status>> statusBoite) {
-        this.listener = listener;
+    public Verificateur(@NotNull StructurePlateau<ReadOnlyObjectProperty<Boite.Status>> statusBoite) {
         int nombreDeLignes = 0;
 
         //Pour chaque rangée créé un vérificateur de ligne
@@ -73,25 +68,29 @@ public class Verificateur implements ChangeListener<VerificateurLigne.Status> {
     }
 
     @Override
-    public void changed(ObservableValue<? extends VerificateurLigne.Status> observable, VerificateurLigne.Status oldValue, VerificateurLigne.Status newValue) {
-        if (oldValue == VerificateurLigne.Status.EGALITE){
+    public void changed(ObservableValue<? extends Status> observable, Status oldValue, Status newValue) {
+        if (oldValue == Status.EGALITE) {
             nombreDeEgalite--;
         }
 
-        if (newValue == VerificateurLigne.Status.EGALITE){
+        if (newValue == Status.EGALITE) {
             nombreDeEgalite++;
         }
 
-        if (newValue == VerificateurLigne.Status.X_GAGNE){
-            listener.notifierGagnantX();
-        }
-
-        if (newValue == VerificateurLigne.Status.O_GAGNE){
-            listener.notifierGagnantO();
+        switch (newValue) {
+            case INDETERMINE:
+            case O_GAGNE:
+            case X_GAGNE:
+                status.set(newValue);
+                return;
         }
 
         if (nombreDeEgalite == nombreDeLignes){
-            listener.notifierEgalite();
+            status.set(Status.EGALITE);
         }
+    }
+
+    public ReadOnlyObjectProperty<Status> statusProperty() {
+        return status.getReadOnlyProperty();
     }
 }

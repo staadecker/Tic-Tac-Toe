@@ -13,14 +13,8 @@ import java.util.List;
  * Object qui vérifie un ligne pour des gagnants dans une ligne (par example des colonnes ou des rangée)
  */
 class VerificateurLigne implements ChangeListener<Boite.Status> {
-    enum Status {
-        X_GAGNE,
-        O_GAGNE,
-        EGALITE,
-        INDETERMINE
-    }
 
-    private final ReadOnlyObjectWrapper<Status> status = new ReadOnlyObjectWrapper<>(Status.INDETERMINE);
+    private final ReadOnlyObjectWrapper<Verificateur.Status> status = new ReadOnlyObjectWrapper<>(Verificateur.Status.INDETERMINE);
 
     //La liste de boites formant la ligne
     @NotNull
@@ -43,26 +37,26 @@ class VerificateurLigne implements ChangeListener<Boite.Status> {
         //Si il y a une boite de vide c'est indeterminé
         for (ReadOnlyObjectProperty<Boite.Status> boite : ligne) {
             if (boite.get() == Boite.Status.VIDE) {
-                status.set(Status.INDETERMINE);
+                status.set(Verificateur.Status.INDETERMINE);
                 return;
             }
         }
 
         for (ReadOnlyObjectProperty<Boite.Status> boite : ligne) {
             if (newValue != boite.get()){
-                status.set(Status.EGALITE);
+                status.set(Verificateur.Status.EGALITE);
                 return;
             }
         }
 
         if (newValue == Boite.Status.CROIX){
-            status.set(Status.X_GAGNE);
+            status.set(Verificateur.Status.X_GAGNE);
         } else {
-            status.set(Status.O_GAGNE);
+            status.set(Verificateur.Status.O_GAGNE);
         }
     }
 
-    ReadOnlyObjectProperty<Status> statusProperty() {
+    ReadOnlyObjectProperty<Verificateur.Status> statusProperty() {
         return status.getReadOnlyProperty();
     }
 }
