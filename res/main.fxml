@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<VBox alignment="CENTER" prefHeight="700.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.121"
+<VBox alignment="CENTER" prefHeight="800.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@style.css"/>
@@ -15,19 +13,6 @@
     </padding>
 
     <fx:include fx:id="pointage" source="pointage.fxml"/>
-
-    <GridPane fx:id="plateauDeJeu" VBox.vgrow="ALWAYS">
-        <rowConstraints>
-            <RowConstraints vgrow="ALWAYS"/>
-            <RowConstraints vgrow="ALWAYS"/>
-            <RowConstraints vgrow="ALWAYS"/>
-        </rowConstraints>
-        <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS"/>
-            <ColumnConstraints hgrow="ALWAYS"/>
-            <ColumnConstraints hgrow="ALWAYS"/>
-        </columnConstraints>
-    </GridPane>
-
+    <fx:include source="plateau.fxml" fx:id="plateau" VBox.vgrow="SOMETIMES"/>
     <fx:include source="text-status.fxml" fx:id="textStatus"/>
 </VBox>

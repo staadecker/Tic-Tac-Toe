@@ -42,15 +42,13 @@ public class Boite extends Pane {
      * Listener à notifier quand la boite est appuyée
      */
     @Nullable
-    private final ClickListener listener;
+    private ClickListener listener;
 
     /**
      * @param position la position the la boite
-     * @param listener le listener à notifier quand la boite est appuyé
      */
-    Boite(@NotNull Position position, @Nullable ClickListener listener) {
+    Boite(@NotNull Position position) {
         this.position = position;
-        this.listener = listener;
 
         //Quand le status change...
         status.addListener(
@@ -82,6 +80,13 @@ public class Boite extends Pane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    /**
+     * @param listener le listener à notifier quand la boite est appuyé
+     */
+    void attachListener(ClickListener listener){
+        this.listener = listener;
     }
 
     /**

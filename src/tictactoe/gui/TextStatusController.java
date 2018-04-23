@@ -12,7 +12,7 @@ public class TextStatusController implements ChangeListener<Jeu.JeuStatus> {
     @FXML
     private Label label;
 
-    void attacherJeu(ReadOnlyObjectProperty<Jeu.JeuStatus> jeuStatus){
+    void attacherStatusJeu(ReadOnlyObjectProperty<Jeu.JeuStatus> jeuStatus){
         jeuStatus.addListener(this);
         updateStatus(jeuStatus.get());
     }

@@ -1,26 +1,13 @@
 package tictactoe.gui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 import tictactoe.Jeu;
-import tictactoe.util.Position;
-import tictactoe.util.StructurePlateau;
 
 /**
  * Class qui controlle l'interface graphique du jeu
  */
 public class MainController {
-    /**
-     * Le tableau à remplir avec des boites
-     */
-    @FXML
-    private GridPane plateauDeJeu;
-
-    @FXML
-    private Label textStatus;
-
     /**
      * Le controller de la zone de pointage
      */
@@ -30,11 +17,8 @@ public class MainController {
     @FXML
     private TextStatusController textStatusController;
 
-    /**
-     * Liste de toutes les boites
-     */
-    @NotNull
-    private final StructurePlateau<Boite> boites = new StructurePlateau<>();
+    @FXML
+    private PlateauController plateauController;
 
     /**
      * Le modèle de jeu
@@ -47,12 +31,6 @@ public class MainController {
      */
     public MainController(@NotNull Jeu jeu) {
         this.jeu = jeu;
-
-        for (Position position : boites) {
-            Boite boite = new Boite(position, jeu);
-            boite.statusProperty().bind(jeu.boiteStatusProperty(position)); //Attacher la boite au model pour que si le model change la boite change avec
-            boites.set(position, boite); //Ajouter la boite à la liste
-        }
     }
 
     /**
@@ -60,12 +38,8 @@ public class MainController {
      */
     @FXML
     public void initialize() {
-        //Ajouter chaque boite au grid pane
-        for (Position position : boites) {
-            plateauDeJeu.add(boites.get(position), position.colonne, position.rangee);
-        }
-
-        pointageController.attacherJeu(jeu.jeuStatusProperty()); //Attacher le controlleur de pointage au jeu
-        textStatusController.attacherJeu(jeu.jeuStatusProperty());
+        pointageController.attacherStatusJeu(jeu.jeuStatusProperty()); //Attacher le controlleur de pointage au jeu
+        textStatusController.attacherStatusJeu(jeu.jeuStatusProperty());
+        plateauController.attacherJeu(jeu);
     }
 }
