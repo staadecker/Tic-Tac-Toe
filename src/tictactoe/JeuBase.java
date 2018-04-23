@@ -46,13 +46,7 @@ public abstract class JeuBase implements Jeu, Verificateur.GagnantListener {
         }
 
         switch (statusJeu.get()) {
-            case EGALITE:
-            case CROIX_GAGNE:
-            case CERCLE_GAGNE:
-                //Si le changement de la boite à créé un gagnant et le vérificateur à notifier le jeu du gagnant
-                System.out.println(statusJeu.get().toString());
-                break;
-            //Sinon changer le tour à l'autre joueur
+            //Changer le tour à l'autre joueur
             case TOUR_CERCLE:
                 statusJeu.set(JeuStatus.TOUR_CROIX);
                 break;

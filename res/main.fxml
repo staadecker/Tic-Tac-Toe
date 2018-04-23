@@ -5,19 +5,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-<VBox alignment="CENTER" prefHeight="700.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.121"
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@style.css"/>
     </stylesheets>
-
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets topRightBottomLeft="20"/>
     </padding>
 
     <fx:include fx:id="pointage" source="pointage.fxml"/>
 
-    <GridPane fx:id="plateauDeJeu" gridLinesVisible="true" VBox.vgrow="ALWAYS">
+    <GridPane fx:id="plateauDeJeu" VBox.vgrow="ALWAYS">
         <rowConstraints>
             <RowConstraints vgrow="ALWAYS"/>
             <RowConstraints vgrow="ALWAYS"/>
@@ -30,12 +29,5 @@
         </columnConstraints>
     </GridPane>
 
-    <Label fx:id="textStatus">
-        <padding>
-            <Insets topRightBottomLeft="10"/>
-        </padding>
-        <font>
-            <Font size="30"/>
-        </font>
-    </Label>
+    <fx:include source="text-status.fxml" fx:id="textStatus"/>
 </VBox>

@@ -35,7 +35,7 @@ public class PointageController {
      *
      * @param jeuStatus la propriété du status de jeu
      */
-    void bindJeu(@NotNull ReadOnlyObjectProperty<JeuBase.JeuStatus> jeuStatus) {
+    void attacherJeu(@NotNull ReadOnlyObjectProperty<JeuBase.JeuStatus> jeuStatus) {
         //Si la propriété de status de jeu change...
         jeuStatus.addListener(
                 (observable, oldValue, newValue) -> {
