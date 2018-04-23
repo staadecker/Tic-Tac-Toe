@@ -26,8 +26,6 @@ public class Main extends Application {
 
         JeuHumainContreHumain jeu = new JeuHumainContreHumain(); //Créer le jeu
 
-        MainController controller = new MainController(jeu); //Créer le controller de l'interface
-
         //Créer l'interface
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
         fxmlLoader.setControllerFactory(param -> {

@@ -23,8 +23,6 @@ public interface Jeu extends ClickListener {
      */
     ReadOnlyObjectProperty<StatusJeu> jeuStatusProperty();
 
-    StatusJeu getJeuStatus();
-
     boolean isTourAX();
 
     /**

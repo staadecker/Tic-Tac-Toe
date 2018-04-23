@@ -53,6 +53,7 @@ public abstract class JeuBase implements Jeu {
     @Override
     public void recommencer() {
         for (Position position : statusBoite) {
+            //noinspection ConstantConditions
             statusBoite.get(position).set(Boite.Status.VIDE);
         }
 
@@ -68,11 +69,6 @@ public abstract class JeuBase implements Jeu {
 
     public ReadOnlyObjectProperty<StatusJeu> jeuStatusProperty() {
         return statusJeu.getReadOnlyProperty();
-    }
-
-    @Override
-    public StatusJeu getJeuStatus() {
-        return statusJeu.get();
     }
 
     /**

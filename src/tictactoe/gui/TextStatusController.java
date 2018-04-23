@@ -1,6 +1,5 @@
 package tictactoe.gui;
 
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -13,7 +12,7 @@ public class TextStatusController implements ChangeListener<StatusJeu> {
     @FXML
     private Label label;
 
-    private Jeu jeu;
+    private final Jeu jeu;
 
     public TextStatusController(Jeu jeu) {
         this.jeu = jeu;

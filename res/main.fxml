@@ -16,17 +16,16 @@
         <Insets topRightBottomLeft="20"/>
     </padding>
 
-    <fx:include fx:id="pointage" source="pointage.fxml"/>
-    <fx:include source="plateau.fxml" fx:id="plateau" VBox.vgrow="SOMETIMES"/>
-    <fx:include source="text-status.fxml" fx:id="textStatus"/>
+    <fx:include source="pointage.fxml"/>
+    <fx:include source="plateau.fxml" VBox.vgrow="SOMETIMES"/>
+    <fx:include source="text-status.fxml"/>
+
     <Separator/>
 
     <Button text="Nouvelle Partie" onAction="#recommencer">
         <graphic>
             <ImageView>
-                <image>
-                    <Image url="image/reset.png"/>
-                </image>
+                <Image url="image/reset.png"/>
             </ImageView>
         </graphic>
     </Button>

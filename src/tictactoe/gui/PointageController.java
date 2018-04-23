@@ -1,14 +1,10 @@
 package tictactoe.gui;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
-import org.jetbrains.annotations.NotNull;
 import tictactoe.Jeu;
-import tictactoe.JeuBase;
-import tictactoe.StatusJeu;
 
 /**
  * Controlle la zone qui montre les points
