@@ -27,6 +27,8 @@ public interface Jeu extends ClickListener {
      */
     void jouer(Position position);
 
+    void recommencer();
+
     /**
      * @return le status du jeu actuel
      */

@@ -59,12 +59,12 @@ public class Boite extends Pane {
                             break;
                         case CROIX:
                             // Mettre l'image X et enlever la bordure-hover
-                            this.setStyle("-fx-background-image: url(x.png);");
+                            this.setStyle("-fx-background-image: url(image/x.png);");
                             this.getStyleClass().setAll("bordure-normale");
                             break;
                         case CERCLE:
                             // Mettre l'image O et enlever la bordure-hover
-                            this.setStyle("-fx-background-image: url(o.png)");
+                            this.setStyle("-fx-background-image: url(image/o.png)");
                             this.getStyleClass().setAll("bordure-normale");
                     }
                 }

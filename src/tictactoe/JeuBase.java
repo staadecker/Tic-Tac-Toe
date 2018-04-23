@@ -56,6 +56,15 @@ public abstract class JeuBase implements Jeu, Verificateur.GagnantListener {
         }
     }
 
+    @Override
+    public void recommencer() {
+        for (Position position : statusBoite){
+            statusBoite.get(position).set(Boite.Status.VIDE);
+        }
+
+        statusJeu.set(JeuStatus.TOUR_CROIX);
+    }
+
     //METHODS APPELÉ PAR LE VÉRIFICATEUR
 
     @Override

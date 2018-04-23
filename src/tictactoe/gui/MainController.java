@@ -42,4 +42,9 @@ public class MainController {
         textStatusController.attacherStatusJeu(jeu.jeuStatusProperty());
         plateauController.attacherJeu(jeu);
     }
+
+    @FXML
+    private void recommencer(){
+        jeu.recommencer();
+    }
 }

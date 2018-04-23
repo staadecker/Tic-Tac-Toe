@@ -6,13 +6,13 @@
           fx:controller="tictactoe.gui.PlateauController"
           fx:id="plateauDeJeu" prefWidth="${plateauDeJeu.height}">
     <rowConstraints>
-        <RowConstraints vgrow="ALWAYS"/>
-        <RowConstraints vgrow="ALWAYS"/>
-        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints vgrow="SOMETIMES"/>
+        <RowConstraints vgrow="SOMETIMES"/>
+        <RowConstraints vgrow="SOMETIMES"/>
     </rowConstraints>
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS"/>
-        <ColumnConstraints hgrow="ALWAYS"/>
-        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+        <ColumnConstraints hgrow="SOMETIMES"/>
     </columnConstraints>
 </GridPane>
