@@ -9,18 +9,6 @@ import tictactoe.Jeu;
  */
 public class MainController {
     /**
-     * Le controller de la zone de pointage
-     */
-    @FXML
-    private PointageController pointageController;
-
-    @FXML
-    private TextStatusController textStatusController;
-
-    @FXML
-    private PlateauController plateauController;
-
-    /**
      * Le modèle de jeu
      */
     @NotNull
@@ -31,16 +19,6 @@ public class MainController {
      */
     public MainController(@NotNull Jeu jeu) {
         this.jeu = jeu;
-    }
-
-    /**
-     * Appeler après que le FXML est chargé
-     */
-    @FXML
-    public void initialize() {
-        pointageController.attacherStatusJeu(jeu.jeuStatusProperty()); //Attacher le controlleur de pointage au jeu
-        textStatusController.attacherStatusJeu(jeu);
-        plateauController.attacherJeu(jeu);
     }
 
     @FXML

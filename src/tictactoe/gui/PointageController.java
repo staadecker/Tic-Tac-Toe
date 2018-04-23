@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
+import tictactoe.Jeu;
 import tictactoe.JeuBase;
 import tictactoe.StatusJeu;
 
@@ -23,22 +24,9 @@ public class PointageController {
     private final SimpleIntegerProperty scoreCercle = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty scoreCroix = new SimpleIntegerProperty(0);
 
-    @FXML
-    public void initialize() {
-        //Attacher la boite de texte avec le score propriété de score
-        //Bindings.concat() pour mettre tout ajouter les unités
-        textScoreCercle.textProperty().bind(Bindings.concat(scoreCercle, " ", UNITE_POINT));
-        textScoreCroix.textProperty().bind(Bindings.concat(scoreCroix, " " , UNITE_POINT));
-    }
-
-    /**
-     * Attacher le status de jeu au controller de pointage
-     *
-     * @param jeuStatus la propriété du status de jeu
-     */
-    void attacherStatusJeu(@NotNull ReadOnlyObjectProperty<StatusJeu> jeuStatus) {
+    public PointageController(Jeu jeu) {
         //Si la propriété de status de jeu change...
-        jeuStatus.addListener(
+        jeu.jeuStatusProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
                         //Si les X gagne, +1 pour les X
@@ -56,5 +44,13 @@ public class PointageController {
                     }
                 }
         );
+    }
+
+    @FXML
+    public void initialize() {
+        //Attacher la boite de texte avec le score propriété de score
+        //Bindings.concat() pour mettre tout ajouter les unités
+        textScoreCercle.textProperty().bind(Bindings.concat(scoreCercle, " ", UNITE_POINT));
+        textScoreCroix.textProperty().bind(Bindings.concat(scoreCroix, " " , UNITE_POINT));
     }
 }

@@ -15,10 +15,14 @@ public class TextStatusController implements ChangeListener<StatusJeu> {
 
     private Jeu jeu;
 
-    void attacherStatusJeu(Jeu jeu){
+    public TextStatusController(Jeu jeu) {
         this.jeu = jeu;
 
         jeu.jeuStatusProperty().addListener(this);
+    }
+
+    @FXML
+    private void initialize(){
         updateStatus(jeu.jeuStatusProperty().get());
     }
 

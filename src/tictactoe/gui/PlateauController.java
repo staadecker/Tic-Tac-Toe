@@ -24,26 +24,13 @@ public class PlateauController {
     @FXML
     private GridPane plateauDeJeu;
 
-    public PlateauController() {
+    public PlateauController(Jeu jeu) {
         for (Position position : boites) {
             Boite boite = new Boite(position);
             boite.shouldHighlightProperty().bind(shouldHighlight);
+            boite.attachListener(jeu);
+            boite.statusProperty().bind(jeu.boiteStatusProperty(position));
             boites.set(position, boite); //Ajouter la boite à la liste
-        }
-    }
-
-    @FXML
-    private void initialize() {
-        //Ajouter chaque boite au grid pane
-        for (Position position : boites) {
-            plateauDeJeu.add(boites.get(position), position.colonne, position.rangee);
-        }
-    }
-
-    void attacherJeu(@NotNull Jeu jeu) {
-        for (Position position : boites) {
-            boites.get(position).attachListener(jeu);
-            boites.get(position).statusProperty().bind(jeu.boiteStatusProperty(position)); //Attacher la boite au model pour que si le model change la boite change avec
         }
 
         jeu.jeuStatusProperty().addListener(
@@ -55,5 +42,13 @@ public class PlateauController {
                     }
                 }
         );
+    }
+
+    @FXML
+    private void initialize() {
+        //Ajouter chaque boite au grid pane
+        for (Position position : boites) {
+            plateauDeJeu.add(boites.get(position), position.colonne, position.rangee);
+        }
     }
 }

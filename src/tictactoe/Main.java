@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import tictactoe.gui.MainController;
 import tictactoe.gui.PlateauController;
+import tictactoe.gui.PointageController;
+import tictactoe.gui.TextStatusController;
 
 import java.io.IOException;
 
@@ -28,7 +30,21 @@ public class Main extends Application {
 
         //Créer l'interface
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        fxmlLoader.setController(controller); //Attacher l'interface au controller
+        fxmlLoader.setControllerFactory(param -> {
+            if (param == MainController.class) return new MainController(jeu);
+            if (param == PointageController.class) return new PointageController(jeu);
+            if (param == TextStatusController.class) return new TextStatusController(jeu);
+            if (param == PlateauController.class) return new PlateauController(jeu);
+
+            else {
+                try {
+                    return param.newInstance();
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                    throw new RuntimeException(exc);
+                }
+            }
+        });
 
         //Montrer l'interface
         primaryStage.setScene(new Scene(fxmlLoader.load()));
