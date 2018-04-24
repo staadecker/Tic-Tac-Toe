@@ -3,7 +3,7 @@ package tictactoe;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.jetbrains.annotations.NotNull;
-import tictactoe.gui.Boite;
+import tictactoe.gui.BoiteController;
 import tictactoe.util.Position;
 import tictactoe.util.StructurePlateau;
 import tictactoe.util.Verificateur;
@@ -13,7 +13,7 @@ import tictactoe.util.Verificateur;
  */
 public abstract class JeuBase implements Jeu {
     @NotNull
-    private final StructurePlateau<ReadOnlyObjectWrapper<Boite.Status>> statusBoite = creeCasesVide();
+    private final StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> statusBoite = creeCasesVide();
 
     /**
      * Les X commence toujours
@@ -39,10 +39,10 @@ public abstract class JeuBase implements Jeu {
         if (statusJeu.get() == StatusJeu.EN_PARTIE) {
             if (tourAX) {
                 //Si au tour de X changer la boite pour X
-                statusBoite.get(position).set(Boite.Status.CROIX);
+                statusBoite.get(position).set(BoiteController.Status.CROIX);
             } else {
                 //Si au tour de O changer la boite pour O
-                statusBoite.get(position).set(Boite.Status.CERCLE);
+                statusBoite.get(position).set(BoiteController.Status.CERCLE);
             }
 
             tourAX = !tourAX;
@@ -54,7 +54,7 @@ public abstract class JeuBase implements Jeu {
     public void recommencer() {
         for (Position position : statusBoite) {
             //noinspection ConstantConditions
-            statusBoite.get(position).set(Boite.Status.VIDE);
+            statusBoite.get(position).set(BoiteController.Status.VIDE);
         }
 
         tourAX = true;
@@ -63,7 +63,7 @@ public abstract class JeuBase implements Jeu {
     //METHODES DE PROPRIÉTÉ JAVAFX
 
     @SuppressWarnings("ConstantConditions")
-    public ReadOnlyObjectProperty<Boite.Status> boiteStatusProperty(Position position) {
+    public ReadOnlyObjectProperty<BoiteController.Status> boiteStatusProperty(Position position) {
         return statusBoite.get(position).getReadOnlyProperty();
     }
 
@@ -72,13 +72,13 @@ public abstract class JeuBase implements Jeu {
     }
 
     /**
-     * @return Un tableau contenant des ReadOnlyObjectWrappers avec une valeur par défaut de Boite.Status.VIDE
+     * @return Un tableau contenant des ReadOnlyObjectWrappers avec une valeur par défaut de BoiteController.Status.VIDE
      */
-    private static StructurePlateau<ReadOnlyObjectWrapper<Boite.Status>> creeCasesVide() {
-        StructurePlateau<ReadOnlyObjectWrapper<Boite.Status>> data = new StructurePlateau<>();
+    private static StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> creeCasesVide() {
+        StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> data = new StructurePlateau<>();
 
         for (Position position : data) {
-            data.set(position, new ReadOnlyObjectWrapper<>(Boite.Status.VIDE));
+            data.set(position, new ReadOnlyObjectWrapper<>(BoiteController.Status.VIDE));
         }
 
         return data;
@@ -88,8 +88,8 @@ public abstract class JeuBase implements Jeu {
      * Retourne un tableau avec les ReadOnlyObjectProperty correspondant au cases
      */
     @SuppressWarnings("ConstantConditions")
-    private static StructurePlateau<ReadOnlyObjectProperty<Boite.Status>> creeReadOnlyStatusBoite(@NotNull StructurePlateau<ReadOnlyObjectWrapper<Boite.Status>> statusBoite) {
-        StructurePlateau<ReadOnlyObjectProperty<Boite.Status>> readOnlyBoite = new StructurePlateau<>();
+    private static StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> creeReadOnlyStatusBoite(@NotNull StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> statusBoite) {
+        StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> readOnlyBoite = new StructurePlateau<>();
 
         for (Position position : statusBoite) {
             readOnlyBoite.set(position, statusBoite.get(position).getReadOnlyProperty());

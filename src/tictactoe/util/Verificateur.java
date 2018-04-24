@@ -6,7 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
 import tictactoe.StatusJeu;
-import tictactoe.gui.Boite;
+import tictactoe.gui.BoiteController;
 
 import java.util.Iterator;
 import java.util.List;
@@ -25,11 +25,11 @@ public class Verificateur implements ChangeListener<StatusJeu> {
     private int nombreDeEgalite = 0;
 
     @SuppressWarnings("ConstantConditions")
-    public Verificateur(@NotNull StructurePlateau<ReadOnlyObjectProperty<Boite.Status>> statusBoite) {
+    public Verificateur(@NotNull StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> statusBoite) {
         int nombreDeLignes = 0;
 
         //Pour chaque rangée créé un vérificateur de ligne
-        Iterator<List<ReadOnlyObjectProperty<Boite.Status>>> iteratorRangee = statusBoite.iteratorRangee();
+        Iterator<List<ReadOnlyObjectProperty<BoiteController.Status>>> iteratorRangee = statusBoite.iteratorRangee();
 
         while (iteratorRangee.hasNext()) {
             new VerificateurLigne(iteratorRangee.next()).statusProperty().addListener(this);
@@ -37,7 +37,7 @@ public class Verificateur implements ChangeListener<StatusJeu> {
         }
 
         //Créé un vérificateur de ligne pour chaque colonne
-        Iterator<List<ReadOnlyObjectProperty<Boite.Status>>> iteratorColonne = statusBoite.iteratorColonne();
+        Iterator<List<ReadOnlyObjectProperty<BoiteController.Status>>> iteratorColonne = statusBoite.iteratorColonne();
 
         while (iteratorColonne.hasNext()) {
             new VerificateurLigne(iteratorColonne.next()).statusProperty().addListener(this);
@@ -53,7 +53,7 @@ public class Verificateur implements ChangeListener<StatusJeu> {
 
 //        for (Position position : statusBoite) {
 //            //Necessaire pour que le compter boiteVide commence avec le bon chiffre
-//            if (statusBoite.get(position).get() != Boite.Status.VIDE) {
+//            if (statusBoite.get(position).get() != BoiteController.Status.VIDE) {
 //                boiteVide--;
 //            }
 //

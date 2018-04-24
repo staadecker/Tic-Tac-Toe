@@ -1,12 +1,12 @@
 package tictactoe;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
-import tictactoe.gui.Boite;
+import tictactoe.gui.BoiteController;
 import tictactoe.util.Position;
 
 /**
  * Défini le model de jeu
- * Extends Boite.ClickListener car un jeu voudra toujours savoir quand une des boites a été appuyé
+ * Extends BoiteController.ClickListener car un jeu voudra toujours savoir quand une des boites a été appuyé
  */
 public interface Jeu extends ClickListener {
     /**
@@ -31,5 +31,5 @@ public interface Jeu extends ClickListener {
      * @param position la position de la boite
      * @return le status
      */
-    ReadOnlyObjectProperty<Boite.Status> boiteStatusProperty(Position position);
+    ReadOnlyObjectProperty<BoiteController.Status> boiteStatusProperty(Position position);
 }

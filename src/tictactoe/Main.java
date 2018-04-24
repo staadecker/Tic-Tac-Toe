@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import tictactoe.gui.MainController;
-import tictactoe.gui.PlateauController;
-import tictactoe.gui.PointageController;
-import tictactoe.gui.TextStatusController;
+import tictactoe.gui.*;
 
 import java.io.IOException;
 
@@ -32,7 +29,7 @@ public class Main extends Application {
             if (param == MainController.class) return new MainController(jeu);
             if (param == PointageController.class) return new PointageController(jeu);
             if (param == TextStatusController.class) return new TextStatusController(jeu);
-            if (param == PlateauController.class) return new PlateauController(jeu);
+            if (param == BoiteController.class) return new BoiteController(jeu);
 
             else {
                 try {
