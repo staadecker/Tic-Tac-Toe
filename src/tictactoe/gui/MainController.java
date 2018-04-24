@@ -37,8 +37,7 @@ public class MainController {
 
             //Attacher l'objet au ficihier fxml
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boite.fxml"));
-            fxmlLoader.setRoot(new Boite(position));
-            fxmlLoader.setController(new BoiteController(jeu));
+            fxmlLoader.setController(new BoiteController(jeu, position));
 
             try {
                 plateauDeJeu.add(fxmlLoader.load(), position.colonne, position.rangee);

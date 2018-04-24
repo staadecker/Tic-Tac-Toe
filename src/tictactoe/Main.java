@@ -29,7 +29,6 @@ public class Main extends Application {
             if (param == MainController.class) return new MainController(jeu);
             if (param == PointageController.class) return new PointageController(jeu);
             if (param == TextStatusController.class) return new TextStatusController(jeu);
-            if (param == BoiteController.class) return new BoiteController(jeu);
 
             else {
                 try {

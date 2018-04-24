@@ -2,11 +2,13 @@ package tictactoe.gui;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tictactoe.ClickListener;
 import tictactoe.Jeu;
 import tictactoe.StatusJeu;
+import tictactoe.util.Position;
 
 /**
  * Une boite (case) du plateau de jeu tic-tac-toe pour l'interface graphique
@@ -23,7 +25,9 @@ public class BoiteController {
     }
 
     @FXML
-    private Boite boite;
+    private Pane boite;
+
+    private Position position;
 
     /**
      * Status de la boite
@@ -43,9 +47,10 @@ public class BoiteController {
     private final Jeu jeu;
 
 
-    public BoiteController(Jeu jeu) {
+    public BoiteController(Jeu jeu, Position position) {
         this.listener = jeu;
         this.jeu = jeu;
+        this.position = position;
 
         //Si le status du jeu n'est plus EN_PARTIE, shouldHighlight = false
         jeu.jeuStatusProperty().addListener(
@@ -55,7 +60,7 @@ public class BoiteController {
 
     @FXML
     private void initialize(){
-        status.bind(jeu.boiteStatusProperty(boite.getPosition()));
+        status.bind(jeu.boiteStatusProperty(position));
 
         //Quand le status change changer la boite
         status.addListener(
@@ -85,7 +90,7 @@ public class BoiteController {
     @FXML
     private void handleMouseClick() {
         if (status.get().equals(Status.VIDE) && listener != null) {
-            listener.notifierBoiteClicked(boite.getPosition());
+            listener.notifierBoiteClicked(position);
         }
     }
 
