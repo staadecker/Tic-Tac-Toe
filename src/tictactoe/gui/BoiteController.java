@@ -2,6 +2,8 @@ package tictactoe.gui;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +16,9 @@ import tictactoe.util.Position;
  * Une boite (case) du plateau de jeu tic-tac-toe pour l'interface graphique
  */
 public class BoiteController {
+    private static final Image IMAGE_X = new Image("/image/x.png");
+    private static final Image IMAGE_O = new Image("/image/o.png");
+
     /**
      * Les differents status possible pour la boite
      * Soit vide, avec un X, ou avec un O
@@ -26,6 +31,9 @@ public class BoiteController {
 
     @FXML
     private Pane boite;
+
+    @FXML
+    private ImageView image;
 
     private Position position;
 
@@ -67,16 +75,16 @@ public class BoiteController {
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
                         case VIDE:
-                            boite.setStyle("-fx-background-image: none;"); //Enelever l'image
+                            image.setImage(null); //Enelever l'image
                             break;
                         case CROIX:
                             // Mettre l'image X et enlever la bordure-hover
-                            boite.setStyle("-fx-background-image: url(image/x.png);");
+                            image.setImage(IMAGE_X);
                             boite.getStyleClass().setAll("bordure-normale");
                             break;
                         case CERCLE:
                             // Mettre l'image O et enlever la bordure-hover
-                            boite.setStyle("-fx-background-image: url(image/o.png)");
+                            image.setImage(IMAGE_O);
                             boite.getStyleClass().setAll("bordure-normale");
                     }
                 }

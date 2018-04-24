@@ -2,8 +2,11 @@
 
 <?import javafx.scene.layout.Pane?>
 
+<?import javafx.scene.image.ImageView?>
 <Pane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-         fx:id="boite"
-         onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit"
-         styleClass="bordure-normale">
+      fx:id="boite"
+      onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit"
+      styleClass="bordure-normale">
+
+    <ImageView fx:id="image" preserveRatio="true" fitWidth="${boite.width}"/>
 </Pane>
