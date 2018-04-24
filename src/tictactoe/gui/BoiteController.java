@@ -1,5 +1,6 @@
 package tictactoe.gui;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -44,8 +45,6 @@ public class BoiteController {
     @NotNull
     private final SimpleObjectProperty<Status> status = new SimpleObjectProperty<>(Status.VIDE);
 
-    private boolean shouldHighlight = true;
-
     /**
      * Listener à notifier quand la boite est appuyée
      */
@@ -59,11 +58,6 @@ public class BoiteController {
         this.listener = jeu;
         this.jeu = jeu;
         this.position = position;
-
-        //Si le status du jeu n'est plus EN_PARTIE, shouldHighlight = false
-        jeu.jeuStatusProperty().addListener(
-                (observable, oldValue, newValue) -> shouldHighlight = newValue == StatusJeu.EN_PARTIE
-        );
     }
 
     @FXML
@@ -79,11 +73,13 @@ public class BoiteController {
                             break;
                         case CROIX:
                             // Mettre l'image X et enlever la bordure-hover
+                            image.setOpacity(1);
                             image.setImage(IMAGE_X);
                             boite.getStyleClass().setAll("bordure-normale");
                             break;
                         case CERCLE:
                             // Mettre l'image O et enlever la bordure-hover
+                            image.setOpacity(1);
                             image.setImage(IMAGE_O);
                             boite.getStyleClass().setAll("bordure-normale");
                     }
@@ -108,7 +104,16 @@ public class BoiteController {
      */
     @FXML
     private void handleMouseEnter() {
-        if (status.get().equals(Status.VIDE) && shouldHighlight) boite.getStyleClass().setAll("bordure-hover");
+        if (status.get().equals(Status.VIDE) && jeu.jeuStatusProperty().get() == StatusJeu.EN_PARTIE){
+            boite.getStyleClass().setAll("bordure-hover");
+
+            image.setOpacity(0.5);
+            if (jeu.tourAXProperty().get()){
+                image.setImage(IMAGE_X);
+            } else {
+                image.setImage(IMAGE_O);
+            }
+        }
     }
 
     /**
@@ -117,5 +122,6 @@ public class BoiteController {
     @FXML
     private void handleMouseExit() {
         boite.getStyleClass().setAll("bordure-normale");
+        if (status.get() == Status.VIDE) image.setImage(null);
     }
 }
