@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import tictactoe.Jeu;
 import tictactoe.StatusJeu;
 
-public class TextStatusController implements ChangeListener<StatusJeu> {
+public class TextStatusController  {
     @FXML
     private Label label;
 
@@ -17,7 +17,13 @@ public class TextStatusController implements ChangeListener<StatusJeu> {
     public TextStatusController(Jeu jeu) {
         this.jeu = jeu;
 
-        jeu.jeuStatusProperty().addListener(this);
+        jeu.jeuStatusProperty().addListener((observable, oldValue, newValue) -> updateStatus(jeu.jeuStatusProperty().get()));
+
+        jeu.tourAXProperty().addListener((observable, oldValue, newValue) -> {
+            if (jeu.jeuStatusProperty().get() == StatusJeu.EN_PARTIE){
+                label.setText(newValue ? "Tour à X" : "Tour à O");
+            }
+        });
     }
 
     @FXML
@@ -25,15 +31,10 @@ public class TextStatusController implements ChangeListener<StatusJeu> {
         updateStatus(jeu.jeuStatusProperty().get());
     }
 
-    @Override
-    public void changed(ObservableValue<? extends StatusJeu> observable, StatusJeu oldValue, StatusJeu newValue) {
-        updateStatus(newValue);
-    }
-
     private void updateStatus(@NotNull StatusJeu valeur) {
         switch (valeur) {
             case EN_PARTIE:
-                label.setText(jeu.isTourAX() ? "Tour à X" : "Tour à O");
+                label.setText(jeu.tourAXProperty().get() ? "Tour à X" : "Tour à O");
                 break;
             case O_GAGNE:
                 label.setText("Cercle a gagné");

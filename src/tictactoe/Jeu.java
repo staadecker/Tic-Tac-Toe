@@ -1,5 +1,7 @@
 package tictactoe;
 
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +23,7 @@ public abstract class Jeu implements ClickListener{
     @NotNull
     private final ReadOnlyObjectWrapper<StatusJeu> statusJeu = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
 
-    private boolean tourAX;
+    private final ReadOnlyBooleanWrapper tourAX = new ReadOnlyBooleanWrapper();
 
     Jeu() {
         recommencer();
@@ -37,7 +39,7 @@ public abstract class Jeu implements ClickListener{
     @SuppressWarnings("ConstantConditions")
     public void jouer(Position position) {
         if (statusJeu.get() == StatusJeu.EN_PARTIE) {
-            if (tourAX) {
+            if (tourAX.get()) {
                 //Si au tour de X changer la boite pour X
                 statusBoite.get(position).set(BoiteController.Status.CROIX);
             } else {
@@ -45,7 +47,7 @@ public abstract class Jeu implements ClickListener{
                 statusBoite.get(position).set(BoiteController.Status.CERCLE);
             }
 
-            tourAX = !tourAX;
+            tourAX.set(!tourAX.get());
         }
     }
 
@@ -56,7 +58,7 @@ public abstract class Jeu implements ClickListener{
             statusBoite.get(position).set(BoiteController.Status.VIDE);
         }
 
-        tourAX = true;
+        tourAX.set(true);
     }
 
     //METHODES DE PROPRIÉTÉ JAVAFX
@@ -97,7 +99,7 @@ public abstract class Jeu implements ClickListener{
         return readOnlyBoite;
     }
 
-    public boolean isTourAX() {
-        return tourAX;
+    public ReadOnlyBooleanProperty tourAXProperty(){
+        return tourAX.getReadOnlyProperty();
     }
 }
