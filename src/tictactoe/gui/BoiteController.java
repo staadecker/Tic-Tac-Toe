@@ -55,7 +55,7 @@ public class BoiteController {
     private final Jeu jeu;
 
 
-    public BoiteController(Jeu jeu, Position position) {
+    BoiteController(Jeu jeu, Position position) {
         this.listener = jeu;
         this.jeu = jeu;
         this.position = position;
