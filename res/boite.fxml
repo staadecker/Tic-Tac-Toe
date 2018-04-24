@@ -28,10 +28,15 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.image.Image?>
 <Pane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-      fx:id="boite"
+      fx:id="contenaire"
       onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit"
       styleClass="bordure-normale">
+    <fx:define>
+        <Image url="image/o.png" fx:id="imageO"/>
+        <Image url="image/x.png" fx:id="imageX"/>
+    </fx:define>
 
-    <ImageView fx:id="image" preserveRatio="true" fitWidth="${boite.width}"/>
+    <ImageView fx:id="imageView" preserveRatio="true" fitWidth="${contenaire.width}"/>
 </Pane>

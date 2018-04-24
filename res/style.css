@@ -22,7 +22,8 @@
  * SOFTWARE.
  */
 
-#separator *.line {
+/* Pour que les separateurs soient plus épais */
+.separateur *.line {
     -fx-border-width: 2;
 }
 

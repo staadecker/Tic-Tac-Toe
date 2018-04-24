@@ -24,14 +24,12 @@
   ~ SOFTWARE.
   -->
 
-<?import javafx.geometry.Insets?>
+<!-- Le layout de la section qui montre le status du jeu -->
+
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Font?>
 <Label xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
        fx:controller="tictactoe.gui.TextStatusController" fx:id="label">
-    <padding>
-        <Insets topRightBottomLeft="10"/>
-    </padding>
     <font>
         <Font size="30"/>
     </font>

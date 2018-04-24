@@ -24,6 +24,8 @@
   ~ SOFTWARE.
   -->
 
+<!-- Le layout de la section qui montre les points -->
+
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -41,7 +43,7 @@
             </font>
         </Text>
     </VBox>
-    <Separator orientation="VERTICAL" id="separator"/>
+    <Separator orientation="VERTICAL" styleClass="separateur"/>
     <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS" fx:id="boxCroix">
         <Text text="CROIX">
             <font>

@@ -40,9 +40,6 @@ import tictactoe.util.Position;
  * Une boite (case) du plateau de jeu tic-tac-toe pour l'interface graphique
  */
 public class BoiteController {
-    private static final Image IMAGE_X = new Image("/image/x.png");
-    private static final Image IMAGE_O = new Image("/image/o.png");
-
     /**
      * Les differents status possible pour la boite
      * Soit vide, avec un X, ou avec un O
@@ -53,57 +50,72 @@ public class BoiteController {
         VIDE
     }
 
-    @FXML
-    private Pane boite;
+    //Du fichier FXML
 
     @FXML
-    private ImageView image;
+    private Image imageO;
 
-    private final Position position;
+    @FXML
+    private Image imageX;
+
+    @FXML
+    private Pane contenaire;
+
+    @FXML
+    private ImageView imageView;
 
     /**
-     * Status de la boite
+     * La position de la boite
+     */
+    @NotNull
+    private final Position position;
+
+    //TODO Remove status and just use model or make box separate
+    /**
+     * Le status de la boite
      * La valeur par défaut est vide
      */
     @NotNull
     private final SimpleObjectProperty<Status> status = new SimpleObjectProperty<>(Status.VIDE);
 
     /**
-     * Listener à notifier quand la boite est appuyée
+     * Le listener à notifier quand la boite est appuyée
      */
     @Nullable
-    private ClickListener listener;
+    private final ClickListener listener;
 
+    @NotNull
     private final Jeu jeu;
 
-    BoiteController(Jeu jeu, @Nullable ClickListener listener, Position position) {
+    BoiteController(@NotNull Jeu jeu, @Nullable ClickListener listener, @NotNull Position position) {
         this.listener = listener;
         this.jeu = jeu;
         this.position = position;
     }
 
+    /**
+     * Appelé par JavaFX
+     */
     @FXML
     private void initialize() {
-        status.bind(jeu.boiteStatusProperty(position));
+        status.bind(jeu.boiteStatusProperty(position)); //Attacher le status de la boite au status du jeu
 
-        //Quand le status change changer la boite
+        //Quand le status de la boite change, changer la boite
         status.addListener(
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
                         case VIDE:
-                            image.setImage(null); //Enelever l'image
+                            imageView.setImage(null); //Enelever l'image
                             break;
                         case CROIX:
                             // Mettre l'image X et enlever la bordure-hover
-                            image.setOpacity(1);
-                            image.setImage(IMAGE_X);
-                            boite.getStyleClass().setAll("bordure-normale");
+                            setX(false);
+                            contenaire.getStyleClass().setAll("bordure-normale");
                             break;
                         case CERCLE:
                             // Mettre l'image O et enlever la bordure-hover
-                            image.setOpacity(1);
-                            image.setImage(IMAGE_O);
-                            boite.getStyleClass().setAll("bordure-normale");
+                            setO(false);
+                            contenaire.getStyleClass().setAll("bordure-normale");
                     }
                 }
         );
@@ -127,13 +139,12 @@ public class BoiteController {
     @FXML
     private void handleMouseEnter() {
         if (status.get().equals(Status.VIDE) && jeu.jeuStatusProperty().get() == StatusJeu.EN_PARTIE) {
-            boite.getStyleClass().setAll("bordure-hover");
+            contenaire.getStyleClass().setAll("bordure-hover");
 
-            image.setOpacity(0.5);
             if (jeu.tourAXProperty().get()) {
-                image.setImage(IMAGE_X);
+                setX(true);
             } else {
-                image.setImage(IMAGE_O);
+                setO(true);
             }
         }
     }
@@ -143,7 +154,20 @@ public class BoiteController {
      */
     @FXML
     private void handleMouseExit() {
-        boite.getStyleClass().setAll("bordure-normale");
-        if (status.get() == Status.VIDE) image.setImage(null);
+        contenaire.getStyleClass().setAll("bordure-normale");
+        if (status.get() == Status.VIDE) imageView.setImage(null);
+    }
+
+    private void setX(boolean grayedOut){
+        setImage(grayedOut, imageX);
+    }
+
+    private void setO(boolean grayedOut){
+        setImage(grayedOut, imageO);
+    }
+
+    private void setImage(boolean grayedOut, Image image) {
+        imageView.setOpacity(grayedOut ? 0.5 : 1);
+        imageView.setImage(image);
     }
 }

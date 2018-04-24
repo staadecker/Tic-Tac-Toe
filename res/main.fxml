@@ -24,6 +24,8 @@
   ~ SOFTWARE.
   -->
 
+<!-- Le Layout principal du jeu-->
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Separator?>
@@ -57,7 +59,7 @@
 
     <fx:include source="text-status.fxml"/>
 
-    <Separator/>
+    <Separator styleClass="separateur"/>
 
     <Button text="Nouvelle Partie" onAction="#recommencer">
         <graphic>
