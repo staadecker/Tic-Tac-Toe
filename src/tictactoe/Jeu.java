@@ -1,35 +1,103 @@
 package tictactoe;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import org.jetbrains.annotations.NotNull;
 import tictactoe.gui.BoiteController;
 import tictactoe.util.Position;
+import tictactoe.util.StructurePlateau;
+import tictactoe.util.Verificateur;
 
 /**
- * Défini le model de jeu
- * Extends BoiteController.ClickListener car un jeu voudra toujours savoir quand une des boites a été appuyé
+ * La base d'un jeu. Défini tout sauf comment et quand les joueurs vont jouer
  */
-public interface Jeu extends ClickListener {
+public abstract class Jeu implements ClickListener{
+    @NotNull
+    private final StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> statusBoite = creeCasesVide();
+
     /**
-     * Pour jouer dans une boite
+     * Les X commence toujours
+     */
+    @NotNull
+    private final ReadOnlyObjectWrapper<StatusJeu> statusJeu = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
+
+    private boolean tourAX;
+
+    Jeu() {
+        recommencer();
+
+        statusJeu.bind(new Verificateur(creeReadOnlyStatusBoite(statusBoite)).statusProperty());  //Creer le verificateur
+    }
+
+    /**
+     * Appelé pour jouer
      *
      * @param position la position de la boite où l'on veut jouer
      */
-    void jouer(Position position);
+    @SuppressWarnings("ConstantConditions")
+    public void jouer(Position position) {
+        if (statusJeu.get() == StatusJeu.EN_PARTIE) {
+            if (tourAX) {
+                //Si au tour de X changer la boite pour X
+                statusBoite.get(position).set(BoiteController.Status.CROIX);
+            } else {
+                //Si au tour de O changer la boite pour O
+                statusBoite.get(position).set(BoiteController.Status.CERCLE);
+            }
 
-    void recommencer();
+            tourAX = !tourAX;
+        }
+    }
+
+
+    public void recommencer() {
+        for (Position position : statusBoite) {
+            //noinspection ConstantConditions
+            statusBoite.get(position).set(BoiteController.Status.VIDE);
+        }
+
+        tourAX = true;
+    }
+
+    //METHODES DE PROPRIÉTÉ JAVAFX
+
+    @SuppressWarnings("ConstantConditions")
+    public ReadOnlyObjectProperty<BoiteController.Status> boiteStatusProperty(Position position) {
+        return statusBoite.get(position).getReadOnlyProperty();
+    }
+
+    public ReadOnlyObjectProperty<StatusJeu> jeuStatusProperty() {
+        return statusJeu.getReadOnlyProperty();
+    }
 
     /**
-     * @return le status du jeu actuel
+     * @return Un tableau contenant des ReadOnlyObjectWrappers avec une valeur par défaut de BoiteController.Status.VIDE
      */
-    ReadOnlyObjectProperty<StatusJeu> jeuStatusProperty();
+    private static StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> creeCasesVide() {
+        StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> data = new StructurePlateau<>();
 
-    boolean isTourAX();
+        for (Position position : data) {
+            data.set(position, new ReadOnlyObjectWrapper<>(BoiteController.Status.VIDE));
+        }
+
+        return data;
+    }
 
     /**
-     * Le status d'une des boites
-     *
-     * @param position la position de la boite
-     * @return le status
+     * Retourne un tableau avec les ReadOnlyObjectProperty correspondant au cases
      */
-    ReadOnlyObjectProperty<BoiteController.Status> boiteStatusProperty(Position position);
+    @SuppressWarnings("ConstantConditions")
+    private static StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> creeReadOnlyStatusBoite(@NotNull StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> statusBoite) {
+        StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> readOnlyBoite = new StructurePlateau<>();
+
+        for (Position position : statusBoite) {
+            readOnlyBoite.set(position, statusBoite.get(position).getReadOnlyProperty());
+        }
+
+        return readOnlyBoite;
+    }
+
+    public boolean isTourAX() {
+        return tourAX;
+    }
 }
