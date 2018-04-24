@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.Pane?>
 
 <fx:root xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-         type="javafx.scene.layout.Pane" fx:controller="tictactoe.gui.BoiteController"
+         type="javafx.scene.layout.Pane"
          fx:id="boite"
          onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit"
          styleClass="bordure-normale">

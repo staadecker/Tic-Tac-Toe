@@ -1,11 +1,14 @@
 package tictactoe.gui;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
 import tictactoe.Jeu;
 import tictactoe.util.Position;
 import tictactoe.util.StructurePlateau;
+
+import java.io.IOException;
 
 /**
  * Class qui controlle l'interface graphique du jeu
@@ -31,19 +34,18 @@ public class MainController {
     private void initialize() {
         //Ajouter chaque boite au grid pane
         for (Position position : new StructurePlateau<>()) {
-            plateauDeJeu.add(new Boite((param) -> {
-                        if (param == BoiteController.class) return new BoiteController(jeu);
 
-                        else {
-                            try {
-                                return param.newInstance();
-                            } catch (Exception exc) {
-                                exc.printStackTrace();
-                                throw new RuntimeException(exc);
-                            }
-                        }
-                    }),
-                    position.colonne, position.rangee);
+            //Attacher l'objet au ficihier fxml
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boite.fxml"));
+            fxmlLoader.setRoot(new Boite(position));
+            fxmlLoader.setController(new BoiteController(jeu));
+
+            try {
+                plateauDeJeu.add(fxmlLoader.load(), position.colonne, position.rangee);
+            } catch (IOException exception) {
+                throw new RuntimeException(exception);
+            }
+
         }
     }
 
