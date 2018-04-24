@@ -78,6 +78,6 @@ public class MainController {
 
     @FXML
     private void recommencer() {
-        jeu.recommencer();
+        jeu.nouvellePartie();
     }
 }

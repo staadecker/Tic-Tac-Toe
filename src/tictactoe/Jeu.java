@@ -24,12 +24,9 @@
 
 package tictactoe;
 
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.jetbrains.annotations.NotNull;
-import tictactoe.gui.BoiteController;
 import tictactoe.util.Position;
 import tictactoe.util.StructurePlateau;
 import tictactoe.util.Verificateur;
@@ -38,21 +35,62 @@ import tictactoe.util.Verificateur;
  * La base d'un jeu. Défini tout sauf comment et quand les joueurs vont jouer
  */
 public class Jeu {
-    @NotNull
-    private final StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> statusBoite = creeCasesVide();
+    /**
+     * Les differents status possible pour la boite
+     * Soit vide, avec un X, ou avec un O
+     */
+    public enum BoiteStatus {
+        CROIX,
+        CERCLE,
+        VIDE
+    }
 
     /**
-     * Les X commence toujours
+     * Les differents status possible pour une partie
+     */
+    public enum JeuStatus {
+        CROIX_GAGNE,
+        CERCLE_GAGNE,
+        EGALITE,
+        INCOMPLET
+    }
+
+    /**
+     * Le different tour possible
+     */
+    public enum Tour {
+        CROIX,
+        CERCLE
+    }
+
+    /**
+     * Les status de chaque boite du plateau
      */
     @NotNull
-    private final ReadOnlyObjectWrapper<StatusJeu> statusJeu = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
+    private final StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite = creeCasesVide();
 
-    private final ReadOnlyBooleanWrapper tourAX = new ReadOnlyBooleanWrapper();
+    /**
+     * Le status du jeu qui est définit par le Verificateur
+     */
+    private final ReadOnlyObjectProperty<JeuStatus> statusJeu = new Verificateur(creeReadOnlyStatusBoite(statusBoite)).statusProperty();
+
+    /**
+     * Le tour du joueur
+     */
+    private final ReadOnlyObjectWrapper<Tour> tour = new ReadOnlyObjectWrapper<>();
 
     Jeu() {
-        recommencer();
+        nouvellePartie();
+    }
 
-        statusJeu.bind(new Verificateur(creeReadOnlyStatusBoite(statusBoite)).statusProperty());  //Creer le verificateur
+    public void nouvellePartie() {
+        //TODO Que le jour qui commence soit différent chaque fois
+        for (Position position : statusBoite) {
+            //noinspection ConstantConditions
+            statusBoite.get(position).set(BoiteStatus.VIDE);
+        }
+
+        tour.set(Tour.CROIX);
     }
 
     /**
@@ -61,69 +99,60 @@ public class Jeu {
      * @param position la position de la boite où l'on veut jouer
      */
     @SuppressWarnings("ConstantConditions")
-    public void jouer(Position position) {
-        if (statusJeu.get() == StatusJeu.EN_PARTIE) {
-            if (tourAX.get()) {
+    void jouer(Position position) {
+        if (statusJeu.get() == JeuStatus.INCOMPLET) {
+            if (tour.get() == Tour.CROIX) {
                 //Si au tour de X changer la boite pour X
-                statusBoite.get(position).set(BoiteController.Status.CROIX);
+                statusBoite.get(position).set(BoiteStatus.CROIX);
+                tour.set(Tour.CERCLE);
             } else {
                 //Si au tour de O changer la boite pour O
-                statusBoite.get(position).set(BoiteController.Status.CERCLE);
+                statusBoite.get(position).set(BoiteStatus.CERCLE);
+                tour.set(Tour.CROIX);
             }
-
-            tourAX.set(!tourAX.get());
         }
     }
 
-
-    public void recommencer() {
-        for (Position position : statusBoite) {
-            //noinspection ConstantConditions
-            statusBoite.get(position).set(BoiteController.Status.VIDE);
-        }
-
-        tourAX.set(true);
-    }
 
     //METHODES DE PROPRIÉTÉ JAVAFX
 
     @SuppressWarnings("ConstantConditions")
-    public ReadOnlyObjectProperty<BoiteController.Status> boiteStatusProperty(Position position) {
+    public ReadOnlyObjectProperty<BoiteStatus> boiteStatusProperty(Position position) {
         return statusBoite.get(position).getReadOnlyProperty();
     }
 
-    public ReadOnlyObjectProperty<StatusJeu> jeuStatusProperty() {
-        return statusJeu.getReadOnlyProperty();
+    public ReadOnlyObjectProperty<JeuStatus> jeuStatusProperty() {
+        return statusJeu;
+    }
+
+    public ReadOnlyObjectProperty<Tour> tourProperty() {
+        return tour.getReadOnlyProperty();
     }
 
     /**
-     * @return Un tableau contenant des ReadOnlyObjectWrappers avec une valeur par défaut de BoiteController.Status.VIDE
+     * @return Un tableau contenant des ReadOnlyObjectWrappers avec une valeur par défaut de BoiteStatus.VIDE
      */
-    private static StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> creeCasesVide() {
-        StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> data = new StructurePlateau<>();
+    private static StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> creeCasesVide() {
+        StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> data = new StructurePlateau<>();
 
         for (Position position : data) {
-            data.set(position, new ReadOnlyObjectWrapper<>(BoiteController.Status.VIDE));
+            data.set(position, new ReadOnlyObjectWrapper<>(BoiteStatus.VIDE));
         }
 
         return data;
     }
 
     /**
-     * Retourne un tableau avec les ReadOnlyObjectProperty correspondant au cases
+     * @return le même tableau mais avec les des ReadOnlyObjectProperty au lieu de ReadOnlyObjectWrapper
      */
     @SuppressWarnings("ConstantConditions")
-    private static StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> creeReadOnlyStatusBoite(@NotNull StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> statusBoite) {
-        StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> readOnlyBoite = new StructurePlateau<>();
+    private static StructurePlateau<ReadOnlyObjectProperty<BoiteStatus>> creeReadOnlyStatusBoite(@NotNull StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite) {
+        StructurePlateau<ReadOnlyObjectProperty<BoiteStatus>> readOnlyBoite = new StructurePlateau<>();
 
         for (Position position : statusBoite) {
             readOnlyBoite.set(position, statusBoite.get(position).getReadOnlyProperty());
         }
 
         return readOnlyBoite;
-    }
-
-    public ReadOnlyBooleanProperty tourAXProperty() {
-        return tourAX.getReadOnlyProperty();
     }
 }

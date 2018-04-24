@@ -24,7 +24,6 @@
 
 package tictactoe.gui;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,22 +32,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tictactoe.ClickListener;
 import tictactoe.Jeu;
-import tictactoe.StatusJeu;
 import tictactoe.util.Position;
 
 /**
  * Une boite (case) du plateau de jeu tic-tac-toe pour l'interface graphique
  */
-public class BoiteController {
-    /**
-     * Les differents status possible pour la boite
-     * Soit vide, avec un X, ou avec un O
-     */
-    public enum Status {
-        CROIX,
-        CERCLE,
-        VIDE
-    }
+class BoiteController {
 
     //Du fichier FXML
 
@@ -70,14 +59,6 @@ public class BoiteController {
     @NotNull
     private final Position position;
 
-    //TODO Remove status and just use model or make box separate
-    /**
-     * Le status de la boite
-     * La valeur par défaut est vide
-     */
-    @NotNull
-    private final SimpleObjectProperty<Status> status = new SimpleObjectProperty<>(Status.VIDE);
-
     /**
      * Le listener à notifier quand la boite est appuyée
      */
@@ -98,10 +79,8 @@ public class BoiteController {
      */
     @FXML
     private void initialize() {
-        status.bind(jeu.boiteStatusProperty(position)); //Attacher le status de la boite au status du jeu
-
         //Quand le status de la boite change, changer la boite
-        status.addListener(
+        jeu.boiteStatusProperty(position).addListener(
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
                         case VIDE:
@@ -127,7 +106,7 @@ public class BoiteController {
      */
     @FXML
     private void handleMouseClick() {
-        if (status.get().equals(Status.VIDE) && listener != null) {
+        if (jeu.boiteStatusProperty(position).get().equals(Jeu.BoiteStatus.VIDE) && listener != null) {
             listener.notifierBoiteClicked(position);
         }
     }
@@ -138,10 +117,10 @@ public class BoiteController {
      */
     @FXML
     private void handleMouseEnter() {
-        if (status.get().equals(Status.VIDE) && jeu.jeuStatusProperty().get() == StatusJeu.EN_PARTIE) {
+        if (jeu.boiteStatusProperty(position).get().equals(Jeu.BoiteStatus.VIDE) && jeu.jeuStatusProperty().get() == Jeu.JeuStatus.INCOMPLET) {
             contenaire.getStyleClass().setAll("bordure-hover");
 
-            if (jeu.tourAXProperty().get()) {
+            if (jeu.tourProperty().get() == Jeu.Tour.CROIX) {
                 setX(true);
             } else {
                 setO(true);
@@ -155,7 +134,7 @@ public class BoiteController {
     @FXML
     private void handleMouseExit() {
         contenaire.getStyleClass().setAll("bordure-normale");
-        if (status.get() == Status.VIDE) imageView.setImage(null);
+        if (jeu.boiteStatusProperty(position).get() == Jeu.BoiteStatus.VIDE) imageView.setImage(null);
     }
 
     private void setX(boolean grayedOut){

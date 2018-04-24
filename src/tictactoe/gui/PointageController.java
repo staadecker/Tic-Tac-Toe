@@ -58,11 +58,11 @@ public class PointageController {
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
                         //Si les X gagne, +1 pour les X
-                        case X_GAGNE:
+                        case CROIX_GAGNE:
                             scoreCroix.set(scoreCroix.getValue() + 1);
                             break;
                         //Si les O gagne +1 pour les O
-                        case O_GAGNE:
+                        case CERCLE_GAGNE:
                             scoreCercle.set(scoreCercle.getValue() + 1);
                             break;
                         case EGALITE:

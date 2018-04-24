@@ -29,27 +29,26 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
-import tictactoe.StatusJeu;
-import tictactoe.gui.BoiteController;
+import tictactoe.Jeu;
 
 import java.util.List;
 
 /**
  * Object qui vérifie un ligne pour des gagnants dans une ligne (par example des colonnes ou des rangée)
  */
-class VerificateurLigne implements ChangeListener<BoiteController.Status> {
+class VerificateurLigne implements ChangeListener<Jeu.BoiteStatus> {
 
-    private final ReadOnlyObjectWrapper<StatusJeu> status = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
+    private final ReadOnlyObjectWrapper<Jeu.JeuStatus> status = new ReadOnlyObjectWrapper<>(Jeu.JeuStatus.INCOMPLET);
 
     //La liste de boites formant la ligne
     @NotNull
-    private final List<ReadOnlyObjectProperty<BoiteController.Status>> ligne;
+    private final List<ReadOnlyObjectProperty<Jeu.BoiteStatus>> ligne;
 
-    VerificateurLigne(List<ReadOnlyObjectProperty<BoiteController.Status>> ligne) {
+    VerificateurLigne(List<ReadOnlyObjectProperty<Jeu.BoiteStatus>> ligne) {
         this.ligne = ligne;
 
         //Se faire notifier si une des boites dans la ligne change
-        for (ReadOnlyObjectProperty<BoiteController.Status> boite : ligne) {
+        for (ReadOnlyObjectProperty<Jeu.BoiteStatus> boite : ligne) {
             boite.addListener(this);
         }
     }
@@ -58,30 +57,30 @@ class VerificateurLigne implements ChangeListener<BoiteController.Status> {
      * Appelé quand une des boites dans la ligne change
      */
     @Override
-    public void changed(ObservableValue<? extends BoiteController.Status> observable, BoiteController.Status oldValue, BoiteController.Status newValue) {
+    public void changed(ObservableValue<? extends Jeu.BoiteStatus> observable, Jeu.BoiteStatus oldValue, Jeu.BoiteStatus newValue) {
         //Si il y a une boite de vide c'est indeterminé
-        for (ReadOnlyObjectProperty<BoiteController.Status> boite : ligne) {
-            if (boite.get() == BoiteController.Status.VIDE) {
-                status.set(StatusJeu.EN_PARTIE);
+        for (ReadOnlyObjectProperty<Jeu.BoiteStatus> boite : ligne) {
+            if (boite.get() == Jeu.BoiteStatus.VIDE) {
+                status.set(Jeu.JeuStatus.INCOMPLET);
                 return;
             }
         }
 
-        for (ReadOnlyObjectProperty<BoiteController.Status> boite : ligne) {
+        for (ReadOnlyObjectProperty<Jeu.BoiteStatus> boite : ligne) {
             if (newValue != boite.get()) {
-                status.set(StatusJeu.EGALITE);
+                status.set(Jeu.JeuStatus.EGALITE);
                 return;
             }
         }
 
-        if (newValue == BoiteController.Status.CROIX) {
-            status.set(StatusJeu.X_GAGNE);
+        if (newValue == Jeu.BoiteStatus.CROIX) {
+            status.set(Jeu.JeuStatus.CROIX_GAGNE);
         } else {
-            status.set(StatusJeu.O_GAGNE);
+            status.set(Jeu.JeuStatus.CERCLE_GAGNE);
         }
     }
 
-    ReadOnlyObjectProperty<StatusJeu> statusProperty() {
+    ReadOnlyObjectProperty<Jeu.JeuStatus> statusProperty() {
         return status.getReadOnlyProperty();
     }
 }

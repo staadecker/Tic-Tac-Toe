@@ -29,8 +29,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import org.jetbrains.annotations.NotNull;
-import tictactoe.StatusJeu;
-import tictactoe.gui.BoiteController;
+import tictactoe.Jeu;
 
 import java.util.Iterator;
 import java.util.List;
@@ -41,19 +40,19 @@ import java.util.List;
  * Au lieu de revérifier l'état du plateau après chaque tour, le listener vérifie que la rangée, colonne au diagonale qui a été modifié
  * Pour détecter des égalité, le verificateur compte le nombre de boites remplies (non-vide).
  */
-public class Verificateur implements ChangeListener<StatusJeu> {
+public class Verificateur implements ChangeListener<Jeu.JeuStatus> {
 
-    private final ReadOnlyObjectWrapper<StatusJeu> status = new ReadOnlyObjectWrapper<>(StatusJeu.EN_PARTIE);
+    private final ReadOnlyObjectWrapper<Jeu.JeuStatus> status = new ReadOnlyObjectWrapper<>(Jeu.JeuStatus.INCOMPLET);
 
     private final int nombreDeLignes;
     private int nombreDeEgalite = 0;
 
     @SuppressWarnings("ConstantConditions")
-    public Verificateur(@NotNull StructurePlateau<ReadOnlyObjectProperty<BoiteController.Status>> statusBoite) {
+    public Verificateur(@NotNull StructurePlateau<ReadOnlyObjectProperty<Jeu.BoiteStatus>> statusBoite) {
         int nombreDeLignes = 0;
 
         //Pour chaque rangée créé un vérificateur de ligne
-        Iterator<List<ReadOnlyObjectProperty<BoiteController.Status>>> iteratorRangee = statusBoite.iteratorRangee();
+        Iterator<List<ReadOnlyObjectProperty<Jeu.BoiteStatus>>> iteratorRangee = statusBoite.iteratorRangee();
 
         while (iteratorRangee.hasNext()) {
             new VerificateurLigne(iteratorRangee.next()).statusProperty().addListener(this);
@@ -61,7 +60,7 @@ public class Verificateur implements ChangeListener<StatusJeu> {
         }
 
         //Créé un vérificateur de ligne pour chaque colonne
-        Iterator<List<ReadOnlyObjectProperty<BoiteController.Status>>> iteratorColonne = statusBoite.iteratorColonne();
+        Iterator<List<ReadOnlyObjectProperty<Jeu.BoiteStatus>>> iteratorColonne = statusBoite.iteratorColonne();
 
         while (iteratorColonne.hasNext()) {
             new VerificateurLigne(iteratorColonne.next()).statusProperty().addListener(this);
@@ -77,7 +76,7 @@ public class Verificateur implements ChangeListener<StatusJeu> {
 
 //        for (Position position : statusBoite) {
 //            //Necessaire pour que le compter boiteVide commence avec le bon chiffre
-//            if (statusBoite.get(position).get() != BoiteController.Status.VIDE) {
+//            if (statusBoite.get(position).get() != BoiteController.BoiteStatus.VIDE) {
 //                boiteVide--;
 //            }
 //
@@ -87,29 +86,29 @@ public class Verificateur implements ChangeListener<StatusJeu> {
     }
 
     @Override
-    public void changed(ObservableValue<? extends StatusJeu> observable, StatusJeu oldValue, StatusJeu newValue) {
-        if (oldValue == StatusJeu.EGALITE) {
+    public void changed(ObservableValue<? extends Jeu.JeuStatus> observable, Jeu.JeuStatus oldValue, Jeu.JeuStatus newValue) {
+        if (oldValue == Jeu.JeuStatus.EGALITE) {
             nombreDeEgalite--;
         }
 
-        if (newValue == StatusJeu.EGALITE) {
+        if (newValue == Jeu.JeuStatus.EGALITE) {
             nombreDeEgalite++;
         }
 
         switch (newValue) {
-            case EN_PARTIE:
-            case O_GAGNE:
-            case X_GAGNE:
+            case INCOMPLET:
+            case CERCLE_GAGNE:
+            case CROIX_GAGNE:
                 status.set(newValue);
                 return;
         }
 
         if (nombreDeEgalite == nombreDeLignes) {
-            status.set(StatusJeu.EGALITE);
+            status.set(Jeu.JeuStatus.EGALITE);
         }
     }
 
-    public ReadOnlyObjectProperty<StatusJeu> statusProperty() {
+    public ReadOnlyObjectProperty<Jeu.JeuStatus> statusProperty() {
         return status.getReadOnlyProperty();
     }
 }
