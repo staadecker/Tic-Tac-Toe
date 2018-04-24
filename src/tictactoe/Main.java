@@ -21,12 +21,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle(TITRE);
 
-        JeuHumainContreHumain jeu = new JeuHumainContreHumain(); //Créer le jeu
+        Jeu jeu = new Jeu(); //Créer le jeu
+
+        HumainContreHumain strategie = new HumainContreHumain(jeu);
 
         //Créer l'interface
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
         fxmlLoader.setControllerFactory(param -> {
-            if (param == MainController.class) return new MainController(jeu);
+            if (param == MainController.class) return new MainController(jeu, strategie);
             if (param == PointageController.class) return new PointageController(jeu);
             if (param == TextStatusController.class) return new TextStatusController(jeu);
 

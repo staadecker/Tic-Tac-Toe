@@ -6,9 +6,16 @@ import tictactoe.util.Position;
  * Définit un jeu humain contre humain
  * Quand une boite est appuyer cela signifie qu'elle est joué
  */
-public class JeuHumainContreHumain extends Jeu implements ClickListener {
+public class HumainContreHumain implements ClickListener {
+
+    private final Jeu jeu;
+
+    HumainContreHumain(Jeu jeu) {
+        this.jeu = jeu;
+    }
+
     @Override
     public void notifierBoiteClicked(Position position) {
-        jouer(position);
+        jeu.jouer(position);
     }
 }

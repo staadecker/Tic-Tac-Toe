@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import org.jetbrains.annotations.NotNull;
+import tictactoe.ClickListener;
 import tictactoe.Jeu;
 import tictactoe.util.Position;
 import tictactoe.util.StructurePlateau;
@@ -20,14 +21,17 @@ public class MainController {
     @NotNull
     private final Jeu jeu;
 
+    private final ClickListener listener;
+
     @FXML
     private GridPane plateauDeJeu;
 
     /**
      * @param jeu le model de jeu
      */
-    public MainController(@NotNull Jeu jeu) {
+    public MainController(@NotNull Jeu jeu, ClickListener listener) {
         this.jeu = jeu;
+        this.listener = listener;
     }
 
     @FXML
@@ -37,7 +41,7 @@ public class MainController {
 
             //Attacher l'objet au ficihier fxml
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boite.fxml"));
-            fxmlLoader.setController(new BoiteController(jeu, position));
+            fxmlLoader.setController(new BoiteController(jeu, listener, position));
 
             try {
                 plateauDeJeu.add(fxmlLoader.load(), position.colonne, position.rangee);

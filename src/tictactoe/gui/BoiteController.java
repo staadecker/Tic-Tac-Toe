@@ -1,6 +1,5 @@
 package tictactoe.gui;
 
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -36,7 +35,7 @@ public class BoiteController {
     @FXML
     private ImageView image;
 
-    private Position position;
+    private final Position position;
 
     /**
      * Status de la boite
@@ -53,9 +52,8 @@ public class BoiteController {
 
     private final Jeu jeu;
 
-
-    BoiteController(Jeu jeu, Position position) {
-        this.listener = jeu;
+    BoiteController(Jeu jeu, @Nullable ClickListener listener, Position position) {
+        this.listener = listener;
         this.jeu = jeu;
         this.position = position;
     }

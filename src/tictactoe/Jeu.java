@@ -13,7 +13,7 @@ import tictactoe.util.Verificateur;
 /**
  * La base d'un jeu. Défini tout sauf comment et quand les joueurs vont jouer
  */
-public abstract class Jeu implements ClickListener{
+public class Jeu{
     @NotNull
     private final StructurePlateau<ReadOnlyObjectWrapper<BoiteController.Status>> statusBoite = creeCasesVide();
 
