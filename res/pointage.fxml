@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Separator?>
 <HBox spacing="30.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="tictactoe.gui.PointageController">
-    <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+    <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS" fx:id="boxCercle">
         <Text text="CERCLE">
             <font>
                 <Font size="30"/>
@@ -18,7 +18,7 @@
         </Text>
     </VBox>
     <Separator orientation="VERTICAL" id="separator"/>
-    <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+    <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS" fx:id="boxCroix">
         <Text text="CROIX">
             <font>
                 <Font size="30"/>

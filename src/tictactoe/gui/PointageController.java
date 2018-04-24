@@ -1,9 +1,17 @@
 package tictactoe.gui;
 
+import javafx.animation.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import tictactoe.Jeu;
 
 /**
@@ -16,6 +24,12 @@ public class PointageController {
     private Text textScoreCercle;
     @FXML
     private Text textScoreCroix;
+
+    @FXML
+    private VBox boxCercle;
+
+    @FXML
+    private VBox boxCroix;
 
     private final SimpleIntegerProperty scoreCercle = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty scoreCroix = new SimpleIntegerProperty(0);
@@ -48,5 +62,11 @@ public class PointageController {
         //Bindings.concat() pour mettre tout ajouter les unités
         textScoreCercle.textProperty().bind(Bindings.concat(scoreCercle, " ", UNITE_POINT));
         textScoreCroix.textProperty().bind(Bindings.concat(scoreCroix, " " , UNITE_POINT));
+
+        final Transition flashCercle = new FlashTransition(boxCercle);
+        final Transition flashCroix =  new FlashTransition(boxCroix);
+
+        textScoreCercle.textProperty().addListener((observable, oldValue, newValue) -> flashCercle.play());
+        textScoreCroix.textProperty().addListener((observable, oldValue, newValue) -> flashCroix.play());
     }
 }
