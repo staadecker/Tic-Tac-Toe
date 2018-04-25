@@ -25,7 +25,6 @@
 package tictactoe.util;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,7 +37,7 @@ import java.util.List;
  * <p>
  * Les classes peuvent accéder les données dans la structure à l'aide de {@link Position} sans devoir se soucier de comment les données sont organisées
  * <p>
- * À l'interne, la structure de données utilisé deux liste une dans l'autre pour stocker les données.
+ * À l'interne, la structure de données une liste qui stocke toutes les données en ordre de gauche à droite puis de haut en bas
  *
  * @param <T> Le type de donnée stockée
  */
@@ -47,45 +46,19 @@ public class Tableau<T> implements Iterable<Position> {
 
     //TODO Change to use single list
     @NotNull
-    private final List<List<T>> tableau = new ArrayList<>(GRANDEUR);
-
-    public Tableau() {
-        for (int indexRangee = 0; indexRangee < GRANDEUR; indexRangee++) {
-            //Cree une rangée avec la valeur par défaut
-            ArrayList<T> rangee = new ArrayList<>(GRANDEUR);
-
-            for (int indexColonne = 0; indexColonne < GRANDEUR; indexColonne++) {
-                rangee.add(null);
-            }
-
-            tableau.add(rangee); //Ajouter la rangée au tableau
-        }
-    }
+    private final List<T> tableau = new ArrayList<>(GRANDEUR * GRANDEUR);
 
     /**
      * @param position la position de la donnée désirée
      * @return la donnée désirée
      */
-    @Nullable
+    @NotNull
     public T get(@NotNull Position position) {
-        return tableau.get(position.rangee).get(position.colonne);
+        return tableau.get(getIndex(position));
     }
 
-    /**
-     * Change ou définit l'objet
-     *
-     * @param position la position à changer
-     * @param valeur   la nouvelle valeur
-     */
-    public void set(@NotNull Position position, @Nullable T valeur) {
-        tableau.get(position.rangee).set(position.colonne, valeur);
-    }
-
-    /**
-     * @return le nombre de données
-     */
-    int size() {
-        return GRANDEUR * GRANDEUR;
+    public void add(@NotNull Position position, @NotNull T valeur){
+        tableau.add(getIndex(position), valeur);
     }
 
     /**
@@ -96,7 +69,7 @@ public class Tableau<T> implements Iterable<Position> {
         List<T> diagonale = new ArrayList<>(GRANDEUR);
 
         for (int i = 0; i < GRANDEUR; i++) {
-            diagonale.add(tableau.get(i).get(i));
+            diagonale.add(tableau.get(getIndex(i, i)));
         }
 
         return diagonale;
@@ -110,10 +83,18 @@ public class Tableau<T> implements Iterable<Position> {
         List<T> diagonale = new ArrayList<>(GRANDEUR);
 
         for (int i = 0; i < GRANDEUR; i++) {
-            diagonale.add(tableau.get(i).get(GRANDEUR - 1 - i));
+            diagonale.add(tableau.get(getIndex(i, GRANDEUR - 1 - i)));
         }
 
         return diagonale;
+    }
+
+    private int getIndex(Position position){
+        return getIndex(position.rangee, position.colonne);
+    }
+
+    private int getIndex(int rangee, int colonne) {
+        return GRANDEUR * rangee + colonne;
     }
 
     /**
@@ -121,7 +102,28 @@ public class Tableau<T> implements Iterable<Position> {
      */
     @NotNull
     Iterator<List<T>> iteratorRangee() {
-        return tableau.iterator();
+        return new Iterator<List<T>>() {
+            private int rangee;
+
+            @Override
+            public boolean hasNext() {
+                return rangee != GRANDEUR;
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> rangeeResultat = new ArrayList<>(GRANDEUR);
+
+                //Ajouter pour chaque rangée l'objet de la colonne à la liste
+                for (int colonne = 0; colonne < GRANDEUR; colonne++) {
+                    rangeeResultat.add(tableau.get(getIndex(rangee, colonne)));
+                }
+
+                rangee++; //Passer à la prochaine colonne
+
+                return rangeeResultat;
+            }
+        };
     }
 
     /**
@@ -130,11 +132,11 @@ public class Tableau<T> implements Iterable<Position> {
     @NotNull
     Iterator<List<T>> iteratorColonne() {
         return new Iterator<List<T>>() {
-            private int indexColonne;
+            private int colonne;
 
             @Override
             public boolean hasNext() {
-                return indexColonne != GRANDEUR;
+                return colonne != GRANDEUR;
             }
 
             @NotNull
@@ -143,11 +145,11 @@ public class Tableau<T> implements Iterable<Position> {
                 List<T> colonneResultat = new ArrayList<>(GRANDEUR);
 
                 //Ajouter pour chaque rangée l'objet de la colonne à la liste
-                for (int indexRangee = 0; indexRangee < GRANDEUR; indexRangee++) {
-                    colonneResultat.add(tableau.get(indexRangee).get(indexColonne));
+                for (int rangee = 0; rangee < GRANDEUR; rangee++) {
+                    colonneResultat.add(tableau.get(getIndex(rangee, colonne)));
                 }
 
-                indexColonne++; //Passer à la prochaine colonne
+                colonne++; //Passer à la prochaine colonne
 
                 return colonneResultat;
             }

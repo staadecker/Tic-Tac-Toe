@@ -106,7 +106,6 @@ public class Jeu {
      *
      * @param position la position de la boite où l'on veut jouer
      */
-    @SuppressWarnings("ConstantConditions")
     void jouer(Position position) {
         if (calculateurStatus.getStatus() == JeuStatus.INCOMPLET) {
             if (getTour() == Tour.CROIX) {
@@ -124,12 +123,10 @@ public class Jeu {
 
     //METHODES DE PROPRIÉTÉ JAVAFX
 
-    @SuppressWarnings("ConstantConditions")
     public BoiteStatus getBoiteStatus(Position position){
         return statusBoite.get(position).get();
     }
 
-    @SuppressWarnings("ConstantConditions")
     public ReadOnlyObjectProperty<BoiteStatus> boiteStatusProperty(Position position) {
         return statusBoite.get(position).getReadOnlyProperty();
     }
@@ -157,7 +154,7 @@ public class Jeu {
         Tableau<ReadOnlyObjectWrapper<BoiteStatus>> data = new Tableau<>();
 
         for (Position position : data) {
-            data.set(position, new ReadOnlyObjectWrapper<>(BoiteStatus.VIDE));
+            data.add(position, new ReadOnlyObjectWrapper<>(BoiteStatus.VIDE));
         }
 
         return data;
@@ -166,12 +163,11 @@ public class Jeu {
     /**
      * @return le même tableau mais avec les des ReadOnlyObjectProperty au lieu de ReadOnlyObjectWrapper
      */
-    @SuppressWarnings("ConstantConditions")
     private static Tableau<ReadOnlyObjectProperty<BoiteStatus>> creeReadOnlyStatusBoite(@NotNull Tableau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite) {
         Tableau<ReadOnlyObjectProperty<BoiteStatus>> readOnlyBoite = new Tableau<>();
 
         for (Position position : statusBoite) {
-            readOnlyBoite.set(position, statusBoite.get(position).getReadOnlyProperty());
+            readOnlyBoite.add(position, statusBoite.get(position).getReadOnlyProperty());
         }
 
         return readOnlyBoite;
