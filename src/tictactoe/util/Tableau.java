@@ -42,11 +42,11 @@ import java.util.List;
  * @param <T> Le type de donnée stockée
  */
 public class Tableau<T> implements Iterable<T> {
-    private static final int GRANDEUR = 3; //Le nombre de colonne et de rangée
-
-    //TODO Change to use single list
+    /**
+     * La liste contenant les données
+     */
     @NotNull
-    private final List<T> tableau = new ArrayList<>(GRANDEUR * GRANDEUR);
+    private final List<T> liste = new ArrayList<>(Position.MAXIMUM * Position.MAXIMUM);
 
     /**
      * @param position la position de la donnée désirée
@@ -54,11 +54,11 @@ public class Tableau<T> implements Iterable<T> {
      */
     @NotNull
     public T get(@NotNull Position position) {
-        return tableau.get(getIndex(position));
+        return liste.get(getIndex(position));
     }
 
     public void add(@NotNull Position position, @NotNull T valeur){
-        tableau.add(getIndex(position), valeur);
+        liste.add(getIndex(position), valeur);
     }
 
     /**
@@ -66,10 +66,10 @@ public class Tableau<T> implements Iterable<T> {
      */
     @NotNull
     List<T> getDiagonaleGaucheDroit() {
-        List<T> diagonale = new ArrayList<>(GRANDEUR);
+        List<T> diagonale = new ArrayList<>(Position.MAXIMUM);
 
-        for (int i = 0; i < GRANDEUR; i++) {
-            diagonale.add(tableau.get(getIndex(i, i)));
+        for (int i = 0; i < Position.MAXIMUM; i++) {
+            diagonale.add(liste.get(getIndex(i, i)));
         }
 
         return diagonale;
@@ -80,10 +80,10 @@ public class Tableau<T> implements Iterable<T> {
      */
     @NotNull
     List<T> getDiagonaleDroiteGauche() {
-        List<T> diagonale = new ArrayList<>(GRANDEUR);
+        List<T> diagonale = new ArrayList<>(Position.MAXIMUM);
 
-        for (int i = 0; i < GRANDEUR; i++) {
-            diagonale.add(tableau.get(getIndex(i, GRANDEUR - 1 - i)));
+        for (int i = 0; i < Position.MAXIMUM; i++) {
+            diagonale.add(liste.get(getIndex(i, Position.MAXIMUM - 1 - i)));
         }
 
         return diagonale;
@@ -94,7 +94,7 @@ public class Tableau<T> implements Iterable<T> {
     }
 
     private int getIndex(int rangee, int colonne) {
-        return GRANDEUR * rangee + colonne;
+        return Position.MAXIMUM * rangee + colonne;
     }
 
     /**
@@ -107,16 +107,16 @@ public class Tableau<T> implements Iterable<T> {
 
             @Override
             public boolean hasNext() {
-                return rangee != GRANDEUR;
+                return rangee != Position.MAXIMUM;
             }
 
             @Override
             public List<T> next() {
-                List<T> rangeeResultat = new ArrayList<>(GRANDEUR);
+                List<T> rangeeResultat = new ArrayList<>(Position.MAXIMUM);
 
                 //Ajouter pour chaque rangée l'objet de la colonne à la liste
-                for (int colonne = 0; colonne < GRANDEUR; colonne++) {
-                    rangeeResultat.add(tableau.get(getIndex(rangee, colonne)));
+                for (int colonne = 0; colonne < Position.MAXIMUM; colonne++) {
+                    rangeeResultat.add(liste.get(getIndex(rangee, colonne)));
                 }
 
                 rangee++; //Passer à la prochaine colonne
@@ -136,17 +136,17 @@ public class Tableau<T> implements Iterable<T> {
 
             @Override
             public boolean hasNext() {
-                return colonne != GRANDEUR;
+                return colonne != Position.MAXIMUM;
             }
 
             @NotNull
             @Override
             public List<T> next() {
-                List<T> colonneResultat = new ArrayList<>(GRANDEUR);
+                List<T> colonneResultat = new ArrayList<>(Position.MAXIMUM);
 
                 //Ajouter pour chaque rangée l'objet de la colonne à la liste
-                for (int rangee = 0; rangee < GRANDEUR; rangee++) {
-                    colonneResultat.add(tableau.get(getIndex(rangee, colonne)));
+                for (int rangee = 0; rangee < Position.MAXIMUM; rangee++) {
+                    colonneResultat.add(liste.get(getIndex(rangee, colonne)));
                 }
 
                 colonne++; //Passer à la prochaine colonne
@@ -163,18 +163,16 @@ public class Tableau<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            private Position position = new Position(0, 0); //Position de départ
+            private PositionIterator positionIterator = new PositionIterator();
 
             @Override
             public synchronized boolean hasNext() {
-                return position.hasNext();
+                return positionIterator.hasNext();
             }
 
             @Override
             public synchronized T next() {
-                Position resultat = position;
-                position = position.next();
-                return Tableau.this.get(resultat);
+                return Tableau.this.get(positionIterator.next());
             }
         };
     }

@@ -29,6 +29,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.jetbrains.annotations.NotNull;
 import tictactoe.util.CalculateurStatus;
 import tictactoe.util.Position;
+import tictactoe.util.PositionIterator;
 import tictactoe.util.Tableau;
 
 /**
@@ -152,11 +153,11 @@ public class Jeu {
     private static Tableau<ReadOnlyObjectWrapper<BoiteStatus>> creeCasesVide() {
         Tableau<ReadOnlyObjectWrapper<BoiteStatus>> data = new Tableau<>();
 
-        Position position = new Position(0, 0);
+        PositionIterator iterator = new PositionIterator();
 
-        while (position.hasNext()){
+        while (iterator.hasNext()){
+            Position position = iterator.next();
             data.add(position, new ReadOnlyObjectWrapper<>(BoiteStatus.VIDE));
-            position = position.next();
         }
 
         return data;
@@ -168,11 +169,11 @@ public class Jeu {
     private static Tableau<ReadOnlyObjectProperty<BoiteStatus>> creeReadOnlyStatusBoite(@NotNull Tableau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite) {
         Tableau<ReadOnlyObjectProperty<BoiteStatus>> readOnlyBoite = new Tableau<>();
 
-        Position position = new Position(0,0);
+        PositionIterator iterator = new PositionIterator();
 
-        while (position.hasNext()){
+        while (iterator.hasNext()){
+            Position position = iterator.next();
             readOnlyBoite.add(position, statusBoite.get(position).getReadOnlyProperty());
-            position = position.next();
         }
 
         return readOnlyBoite;

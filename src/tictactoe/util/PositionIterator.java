@@ -24,39 +24,34 @@
 
 package tictactoe.util;
 
-import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * Définie une position sur le plateau de jeu.
- * (0,0) est la case en haut à gauche
- */
-public class Position {
-    static final int MAXIMUM = 3;
+import java.util.Iterator;
 
-    public final int rangee;
-    public final int colonne;
+public class PositionIterator implements Iterator<Position> {
+    @Nullable
+    private Position compterPosition;
 
-    Position(int rangee, int colonne) {
-        if (rangee < 0 || colonne < 0 || rangee >= MAXIMUM || colonne >= MAXIMUM) {
-            throw new IndexOutOfBoundsException("Position invalide");
+    /**
+     * @return vrai si compter pas encore créé ou pas encore à la dernière position
+     */
+    @Override
+    public boolean hasNext() {
+        return compterPosition == null || !(compterPosition.rangee == Position.MAXIMUM - 1 && compterPosition.colonne == Position.MAXIMUM - 1);
+    }
+
+    @Override
+    public Position next() {
+        if (compterPosition == null) {
+            compterPosition = new Position(0, 0);
+        } else {
+            try {
+                compterPosition = new Position(compterPosition.rangee, compterPosition.colonne + 1);
+            } catch (IndexOutOfBoundsException e1) {
+                compterPosition = new Position(compterPosition.rangee + 1, 0);
+            }
         }
 
-        this.rangee = rangee;
-        this.colonne = colonne;
-    }
-
-    @Override
-    public String toString() {
-        return "rangee: " + rangee + " colonne: " + colonne;
-    }
-
-    @Contract(value = "null -> false", pure = true)
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (obj == this) return true;
-        if (!(obj instanceof Position)) return false;
-
-        return rangee == ((Position) obj).rangee && colonne == ((Position) obj).colonne;
+        return compterPosition;
     }
 }

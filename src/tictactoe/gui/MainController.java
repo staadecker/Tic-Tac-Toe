@@ -31,9 +31,11 @@ import org.jetbrains.annotations.NotNull;
 import tictactoe.ClickListener;
 import tictactoe.Jeu;
 import tictactoe.util.Position;
+import tictactoe.util.PositionIterator;
 import tictactoe.util.Tableau;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * Class qui controlle l'interface graphique du jeu
@@ -60,10 +62,12 @@ public class MainController {
 
     @FXML
     private void initialize() {
-        Position position = new Position(0,0);
+        Iterator<Position> iterator = new PositionIterator();
 
         //Ajouter chaque boite au grid pane
-        while (position.hasNext()) {
+        while (iterator.hasNext()) {
+            Position position = iterator.next();
+
             //Attacher l'objet au ficihier fxml
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boite.fxml"));
             fxmlLoader.setController(new BoiteController(jeu, listener, position));
@@ -73,8 +77,6 @@ public class MainController {
             } catch (IOException exception) {
                 throw new RuntimeException(exception);
             }
-
-            position = position.next();
         }
     }
 
