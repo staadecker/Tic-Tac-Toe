@@ -24,7 +24,6 @@
 
 package tictactoe.gui;
 
-import javafx.animation.Transition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -36,10 +35,11 @@ import tictactoe.Jeu;
  * Controlle la zone qui montre les points
  */
 public class PointageController {
-    private static final String UNITE_POINT = "pt";
+    private static final String UNITE = "pt";
 
     @FXML
     private Text textScoreCercle;
+
     @FXML
     private Text textScoreCroix;
 
@@ -49,11 +49,12 @@ public class PointageController {
     @FXML
     private VBox boxCroix;
 
+    //Propriétés qui représentent le score des deux joueurs
     private final SimpleIntegerProperty scoreCercle = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty scoreCroix = new SimpleIntegerProperty(0);
 
     public PointageController(Jeu jeu) {
-        //Si la propriété de status de jeu change...
+        //Quand le status du jeu change, changer la propriété du score
         jeu.jeuStatusProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
@@ -76,15 +77,13 @@ public class PointageController {
 
     @FXML
     public void initialize() {
-        //Attacher la boite de texte avec le score propriété de score
-        //Bindings.concat() pour mettre tout ajouter les unités
-        textScoreCercle.textProperty().bind(Bindings.concat(scoreCercle, " ", UNITE_POINT));
-        textScoreCroix.textProperty().bind(Bindings.concat(scoreCroix, " ", UNITE_POINT));
+        //Attacher la boite de texte avec les proprétées de score
+        //Bindings.concat() pour ajouter les unités
+        textScoreCercle.textProperty().bind(Bindings.concat(scoreCercle, " ", UNITE));
+        textScoreCroix.textProperty().bind(Bindings.concat(scoreCroix, " ", UNITE));
 
-        final Transition flashCercle = new FlashTransition(boxCercle);
-        final Transition flashCroix = new FlashTransition(boxCroix);
-
-        textScoreCercle.textProperty().addListener((observable, oldValue, newValue) -> flashCercle.play());
-        textScoreCroix.textProperty().addListener((observable, oldValue, newValue) -> flashCroix.play());
+        //Quand le text change, appliquer la transition
+        textScoreCercle.textProperty().addListener((observable, oldValue, newValue) -> new FlashTransition(boxCercle).play());
+        textScoreCroix.textProperty().addListener((observable, oldValue, newValue) -> new FlashTransition(boxCroix).play());
     }
 }

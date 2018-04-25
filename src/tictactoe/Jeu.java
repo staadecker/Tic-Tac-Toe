@@ -27,9 +27,9 @@ package tictactoe;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.jetbrains.annotations.NotNull;
+import tictactoe.util.CalculateurStatus;
 import tictactoe.util.Position;
-import tictactoe.util.StructurePlateau;
-import tictactoe.util.Verificateur;
+import tictactoe.util.Tableau;
 
 /**
  * La base d'un jeu. Défini tout sauf comment et quand les joueurs vont jouer
@@ -67,46 +67,54 @@ public class Jeu {
      * Les status de chaque boite du plateau
      */
     @NotNull
-    private final StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite = creeCasesVide();
+    private final Tableau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite = creeCasesVide();
 
     /**
-     * Le status du jeu qui est définit par le Verificateur
+     * Le status du jeu qui est définit par le CalculateurStatus
      */
-    private final ReadOnlyObjectProperty<JeuStatus> statusJeu = new Verificateur(creeReadOnlyStatusBoite(statusBoite)).statusProperty();
+    private final CalculateurStatus calculateurStatus = new CalculateurStatus(creeReadOnlyStatusBoite(statusBoite));
 
     /**
-     * Le tour du joueur
+     * Définit à qui le tour présentement
      */
     private final ReadOnlyObjectWrapper<Tour> tour = new ReadOnlyObjectWrapper<>();
+
+    private Tour premierAJouer;
 
     Jeu() {
         nouvellePartie();
     }
 
     public void nouvellePartie() {
-        //TODO Que le jour qui commence soit différent chaque fois
         for (Position position : statusBoite) {
             //noinspection ConstantConditions
             statusBoite.get(position).set(BoiteStatus.VIDE);
         }
 
-        tour.set(Tour.CROIX);
+        //Pour que le premier à jouer change chaque partie (la première partie X commence)
+        if (premierAJouer == null || premierAJouer == Tour.CERCLE){
+            premierAJouer = Tour.CROIX;
+        } else {
+            premierAJouer = Tour.CERCLE;
+        }
+
+        tour.set(premierAJouer);
     }
 
     /**
-     * Appelé pour jouer
+     * Appelé pour jouer sur une boite
      *
      * @param position la position de la boite où l'on veut jouer
      */
     @SuppressWarnings("ConstantConditions")
     void jouer(Position position) {
-        if (statusJeu.get() == JeuStatus.INCOMPLET) {
-            if (tour.get() == Tour.CROIX) {
-                //Si au tour de X changer la boite pour X
+        if (calculateurStatus.getStatus() == JeuStatus.INCOMPLET) {
+            if (getTour() == Tour.CROIX) {
+                //Si au tour de X changer la boite pour X et changer le tour
                 statusBoite.get(position).set(BoiteStatus.CROIX);
                 tour.set(Tour.CERCLE);
             } else {
-                //Si au tour de O changer la boite pour O
+                //Si au tour de O changer la boite pour O et changer le tour
                 statusBoite.get(position).set(BoiteStatus.CERCLE);
                 tour.set(Tour.CROIX);
             }
@@ -117,12 +125,25 @@ public class Jeu {
     //METHODES DE PROPRIÉTÉ JAVAFX
 
     @SuppressWarnings("ConstantConditions")
+    public BoiteStatus getBoiteStatus(Position position){
+        return statusBoite.get(position).get();
+    }
+
+    @SuppressWarnings("ConstantConditions")
     public ReadOnlyObjectProperty<BoiteStatus> boiteStatusProperty(Position position) {
         return statusBoite.get(position).getReadOnlyProperty();
     }
 
+    public JeuStatus getJeuStatus(){
+        return calculateurStatus.getStatus();
+    }
+
     public ReadOnlyObjectProperty<JeuStatus> jeuStatusProperty() {
-        return statusJeu;
+        return calculateurStatus.statusProperty();
+    }
+
+    public Tour getTour() {
+        return tour.get();
     }
 
     public ReadOnlyObjectProperty<Tour> tourProperty() {
@@ -132,8 +153,8 @@ public class Jeu {
     /**
      * @return Un tableau contenant des ReadOnlyObjectWrappers avec une valeur par défaut de BoiteStatus.VIDE
      */
-    private static StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> creeCasesVide() {
-        StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> data = new StructurePlateau<>();
+    private static Tableau<ReadOnlyObjectWrapper<BoiteStatus>> creeCasesVide() {
+        Tableau<ReadOnlyObjectWrapper<BoiteStatus>> data = new Tableau<>();
 
         for (Position position : data) {
             data.set(position, new ReadOnlyObjectWrapper<>(BoiteStatus.VIDE));
@@ -146,8 +167,8 @@ public class Jeu {
      * @return le même tableau mais avec les des ReadOnlyObjectProperty au lieu de ReadOnlyObjectWrapper
      */
     @SuppressWarnings("ConstantConditions")
-    private static StructurePlateau<ReadOnlyObjectProperty<BoiteStatus>> creeReadOnlyStatusBoite(@NotNull StructurePlateau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite) {
-        StructurePlateau<ReadOnlyObjectProperty<BoiteStatus>> readOnlyBoite = new StructurePlateau<>();
+    private static Tableau<ReadOnlyObjectProperty<BoiteStatus>> creeReadOnlyStatusBoite(@NotNull Tableau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite) {
+        Tableau<ReadOnlyObjectProperty<BoiteStatus>> readOnlyBoite = new Tableau<>();
 
         for (Position position : statusBoite) {
             readOnlyBoite.set(position, statusBoite.get(position).getReadOnlyProperty());

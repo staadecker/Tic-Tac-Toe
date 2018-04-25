@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import tictactoe.ClickListener;
 import tictactoe.Jeu;
 import tictactoe.util.Position;
-import tictactoe.util.StructurePlateau;
+import tictactoe.util.Tableau;
 
 import java.io.IOException;
 
@@ -61,7 +61,7 @@ public class MainController {
     @FXML
     private void initialize() {
         //Ajouter chaque boite au grid pane
-        for (Position position : new StructurePlateau<>()) {
+        for (Position position : new Tableau<>()) {
 
             //Attacher l'objet au ficihier fxml
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boite.fxml"));

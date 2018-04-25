@@ -49,28 +49,20 @@ public class Main extends Application {
 
         Jeu jeu = new Jeu(); //Créer le jeu
 
-        HumainContreHumain strategie = new HumainContreHumain(jeu);
+        HumainContreHumain strategie = new HumainContreHumain(jeu); //Créer la stratégie
 
         //Créer l'interface
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
+
+        //Définir comment les controlleurs devraient être créés
         fxmlLoader.setControllerFactory(param -> {
             if (param == MainController.class) return new MainController(jeu, strategie);
             if (param == PointageController.class) return new PointageController(jeu);
             if (param == TextStatusController.class) return new TextStatusController(jeu);
-
-            else {
-                try {
-                    return param.newInstance();
-                } catch (Exception exc) {
-                    exc.printStackTrace();
-                    throw new RuntimeException(exc);
-                }
-            }
+            throw new RuntimeException("Controller inconnu");
         });
 
-        //Montrer l'interface
         primaryStage.setScene(new Scene(fxmlLoader.load()));
-//        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 }

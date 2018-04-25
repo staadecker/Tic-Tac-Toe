@@ -30,6 +30,12 @@ import org.jetbrains.annotations.NotNull;
 import tictactoe.Jeu;
 
 public class TextStatusController {
+    private static final String MSG_TOUR_X = "Tour à X";
+    private static final String MSG_TOUR_O = "Tour à O";
+    private static final String MSG_O_GAGNE = "Cercle a gagné";
+    private static final String MSG_X_GAGNE = "Croix a gagné";
+    private static final String MSG_EGALITE = "Égalité";
+
     @FXML
     private Label label;
 
@@ -38,34 +44,39 @@ public class TextStatusController {
 
     public TextStatusController(@NotNull Jeu jeu) {
         this.jeu = jeu;
-
-        jeu.jeuStatusProperty().addListener((observable, oldValue, newValue) -> updateStatus(jeu.jeuStatusProperty().get()));
-
-        jeu.tourProperty().addListener((observable, oldValue, newValue) -> {
-            if (jeu.jeuStatusProperty().get() == Jeu.JeuStatus.INCOMPLET) {
-                label.setText(newValue == Jeu.Tour.CROIX? "Tour à X" : "Tour à O");
-            }
-        });
     }
 
     @FXML
     private void initialize() {
-        updateStatus(jeu.jeuStatusProperty().get());
+        //Quand le status du jeu change, changer le text à la nouvelle valeur
+        jeu.jeuStatusProperty().addListener((observable, oldValue, newValue) -> updateStatus(newValue));
+
+        //Quand le tour change, changer le text (seulement si le status du jeu est INCOMPLET)
+        jeu.tourProperty().addListener((observable, oldValue, newValue) -> {
+            if (jeu.getJeuStatus() == Jeu.JeuStatus.INCOMPLET)
+                label.setText(newValue == Jeu.Tour.CROIX ? MSG_TOUR_X : MSG_TOUR_O);
+        });
+
+        updateStatus(jeu.getJeuStatus()); //Mettre à jour le texte pour que le texte ne soit pas vide au début
     }
 
-    private void updateStatus(@NotNull Jeu.JeuStatus valeur) {
-        switch (valeur) {
+    /**
+     * Montre le bon message en fonction du status
+     */
+    private void updateStatus(@NotNull Jeu.JeuStatus status) {
+        switch (status) {
             case INCOMPLET:
-                label.setText(jeu.tourProperty().get() == Jeu.Tour.CROIX ? "Tour à X" : "Tour à O");
+                //Montrer à qui le tour
+                label.setText(jeu.tourProperty().get() == Jeu.Tour.CROIX ? MSG_TOUR_X : MSG_TOUR_O);
                 break;
             case CERCLE_GAGNE:
-                label.setText("Cercle a gagné");
+                label.setText(MSG_O_GAGNE);
                 break;
             case CROIX_GAGNE:
-                label.setText("Croix a gagné");
+                label.setText(MSG_X_GAGNE);
                 break;
             case EGALITE:
-                label.setText("Égalité");
+                label.setText(MSG_EGALITE);
                 break;
         }
     }

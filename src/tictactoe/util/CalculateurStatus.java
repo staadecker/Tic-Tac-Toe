@@ -40,75 +40,83 @@ import java.util.List;
  * Au lieu de revérifier l'état du plateau après chaque tour, le listener vérifie que la rangée, colonne au diagonale qui a été modifié
  * Pour détecter des égalité, le verificateur compte le nombre de boites remplies (non-vide).
  */
-public class Verificateur implements ChangeListener<Jeu.JeuStatus> {
-
+public class CalculateurStatus implements ChangeListener<Jeu.JeuStatus> {
+    /**
+     * Le status du jeu
+     */
     private final ReadOnlyObjectWrapper<Jeu.JeuStatus> status = new ReadOnlyObjectWrapper<>(Jeu.JeuStatus.INCOMPLET);
 
+    /**
+     * Nombre total de verificateur de ligne
+     */
     private final int nombreDeLignes;
+
+    /**
+     * Nombre de lignes à égalité
+     */
     private int nombreDeEgalite = 0;
 
+    /**
+     * Crée un vérificateur de ligne pour chaque colonne, rangée, diagonale et s'ajoute comme listener
+     *
+     * @param statusBoite
+     */
     @SuppressWarnings("ConstantConditions")
-    public Verificateur(@NotNull StructurePlateau<ReadOnlyObjectProperty<Jeu.BoiteStatus>> statusBoite) {
-        int nombreDeLignes = 0;
+    public CalculateurStatus(@NotNull Tableau<ReadOnlyObjectProperty<Jeu.BoiteStatus>> statusBoite) {
+        int compterDeLignes = 0;
 
         //Pour chaque rangée créé un vérificateur de ligne
         Iterator<List<ReadOnlyObjectProperty<Jeu.BoiteStatus>>> iteratorRangee = statusBoite.iteratorRangee();
 
         while (iteratorRangee.hasNext()) {
-            new VerificateurLigne(iteratorRangee.next()).statusProperty().addListener(this);
-            nombreDeLignes++;
+            new VerificateurLigne(iteratorRangee.next())
+                    .statusProperty().addListener(this);
+            compterDeLignes++;
         }
 
         //Créé un vérificateur de ligne pour chaque colonne
         Iterator<List<ReadOnlyObjectProperty<Jeu.BoiteStatus>>> iteratorColonne = statusBoite.iteratorColonne();
 
         while (iteratorColonne.hasNext()) {
-            new VerificateurLigne(iteratorColonne.next()).statusProperty().addListener(this);
-            nombreDeLignes++;
+            new VerificateurLigne(iteratorColonne.next())
+                    .statusProperty().addListener(this);
+            compterDeLignes++;
         }
 
         //Crée un vérificateur de ligne pour les deux diagonales
-        new VerificateurLigne(statusBoite.getDiagonaleGaucheDroit()).statusProperty().addListener(this);
-        new VerificateurLigne(statusBoite.getDiagonaleDroiteGauche()).statusProperty().addListener(this);
-        nombreDeLignes += 2;
+        new VerificateurLigne(statusBoite.getDiagonaleGaucheDroit())
+                .statusProperty().addListener(this);
+        new VerificateurLigne(statusBoite.getDiagonaleDroiteGauche())
+                .statusProperty().addListener(this);
+        compterDeLignes += 2;
 
-        this.nombreDeLignes = nombreDeLignes;
-
-//        for (Position position : statusBoite) {
-//            //Necessaire pour que le compter boiteVide commence avec le bon chiffre
-//            if (statusBoite.get(position).get() != BoiteController.BoiteStatus.VIDE) {
-//                boiteVide--;
-//            }
-//
-//            //Ajouter un listener pour être notifié quand les boites changent pour pouvoir détecter les égalités
-//            statusBoite.get(position).addListener(this);
-//        }
+        this.nombreDeLignes = compterDeLignes;
     }
 
+    /**
+     * Appelé quand un des vérificateurs de lignes change de status
+     */
     @Override
     public void changed(ObservableValue<? extends Jeu.JeuStatus> observable, Jeu.JeuStatus oldValue, Jeu.JeuStatus newValue) {
-        if (oldValue == Jeu.JeuStatus.EGALITE) {
-            nombreDeEgalite--;
-        }
+        //Mettre à jour le compter d'égalité
+        if (oldValue == Jeu.JeuStatus.EGALITE) nombreDeEgalite--;
+        if (newValue == Jeu.JeuStatus.EGALITE) nombreDeEgalite++;
 
-        if (newValue == Jeu.JeuStatus.EGALITE) {
-            nombreDeEgalite++;
-        }
-
-        switch (newValue) {
-            case INCOMPLET:
-            case CERCLE_GAGNE:
-            case CROIX_GAGNE:
-                status.set(newValue);
-                return;
-        }
-
+        //Si toutes les lignes sont égalités alors le plateau est égalité
         if (nombreDeEgalite == nombreDeLignes) {
             status.set(Jeu.JeuStatus.EGALITE);
+            return;
         }
+
+        //Sinon le plateau à la valeur de la ligne (tant que ce n'est pas égalité
+        if (newValue != Jeu.JeuStatus.EGALITE) status.set(newValue);
     }
 
     public ReadOnlyObjectProperty<Jeu.JeuStatus> statusProperty() {
         return status.getReadOnlyProperty();
+    }
+
+    public Jeu.JeuStatus getStatus() {
+        return status.get();
     }
 }

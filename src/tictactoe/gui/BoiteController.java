@@ -35,11 +35,10 @@ import tictactoe.Jeu;
 import tictactoe.util.Position;
 
 /**
- * Une boite (case) du plateau de jeu tic-tac-toe pour l'interface graphique
+ * Controlle une boite (case) du plateau de jeu tic-tac-toe de l'interface graphique
  */
 class BoiteController {
-
-    //Du fichier FXML
+    //DE FXML
 
     @FXML
     private Image imageO;
@@ -69,8 +68,8 @@ class BoiteController {
     private final Jeu jeu;
 
     BoiteController(@NotNull Jeu jeu, @Nullable ClickListener listener, @NotNull Position position) {
-        this.listener = listener;
         this.jeu = jeu;
+        this.listener = listener;
         this.position = position;
     }
 
@@ -84,17 +83,14 @@ class BoiteController {
                 (observable, oldValue, newValue) -> {
                     switch (newValue) {
                         case VIDE:
-                            imageView.setImage(null); //Enelever l'image
+                            setImage(null);
                             break;
                         case CROIX:
-                            // Mettre l'image X et enlever la bordure-hover
-                            setX(false);
-                            contenaire.getStyleClass().setAll("bordure-normale");
+                            setImage(imageX);
                             break;
                         case CERCLE:
-                            // Mettre l'image O et enlever la bordure-hover
-                            setO(false);
-                            contenaire.getStyleClass().setAll("bordure-normale");
+                            setImage(imageO);
+                            break;
                     }
                 }
         );
@@ -105,26 +101,20 @@ class BoiteController {
      * Si un listener est designé et la boite est vide notifier le listener que la boite a été clické
      */
     @FXML
-    private void handleMouseClick() {
-        if (jeu.boiteStatusProperty(position).get().equals(Jeu.BoiteStatus.VIDE) && listener != null) {
+    private void onSourisClick() {
+        if (jeu.getBoiteStatus(position) == Jeu.BoiteStatus.VIDE && listener != null) {
             listener.notifierBoiteClicked(position);
         }
     }
 
     /**
      * Appelé quand le curseur rentre dans la boite
-     * Si la boite est vide la surligner
+     * Si status incomplet et boite vide surligner
      */
     @FXML
-    private void handleMouseEnter() {
-        if (jeu.boiteStatusProperty(position).get().equals(Jeu.BoiteStatus.VIDE) && jeu.jeuStatusProperty().get() == Jeu.JeuStatus.INCOMPLET) {
-            contenaire.getStyleClass().setAll("bordure-hover");
-
-            if (jeu.tourProperty().get() == Jeu.Tour.CROIX) {
-                setX(true);
-            } else {
-                setO(true);
-            }
+    private void onSourisEntrer() {
+        if (jeu.getBoiteStatus(position) == Jeu.BoiteStatus.VIDE && jeu.getJeuStatus() == Jeu.JeuStatus.INCOMPLET) {
+            hover(jeu.getTour() == Jeu.Tour.CROIX ? imageX : imageO);
         }
     }
 
@@ -132,21 +122,27 @@ class BoiteController {
      * Appelé quand le curseur quitte la boite
      */
     @FXML
-    private void handleMouseExit() {
-        contenaire.getStyleClass().setAll("bordure-normale");
-        if (jeu.boiteStatusProperty(position).get() == Jeu.BoiteStatus.VIDE) imageView.setImage(null);
+    private void onSourisSortie() {
+        if (jeu.getBoiteStatus(position) == Jeu.BoiteStatus.VIDE) setImage(null);
     }
 
-    private void setX(boolean grayedOut){
-        setImage(grayedOut, imageX);
-    }
-
-    private void setO(boolean grayedOut){
-        setImage(grayedOut, imageO);
-    }
-
-    private void setImage(boolean grayedOut, Image image) {
-        imageView.setOpacity(grayedOut ? 0.5 : 1);
+    /**
+     * Montre une image a demi et met une bordure bleu
+     * @param image l'image a montrer
+     */
+    private void hover(Image image){
+        imageView.setOpacity(0.5);
         imageView.setImage(image);
+        contenaire.getStyleClass().setAll("bordure-hover");
+    }
+
+    /**
+     * Mets l'image au complet dans la case
+     * @param image l'image a montrer
+     */
+    private void setImage(@Nullable Image image) {
+        imageView.setOpacity(1);
+        imageView.setImage(image);
+        contenaire.getStyleClass().setAll("bordure-normale");
     }
 }

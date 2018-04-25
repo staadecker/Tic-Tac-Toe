@@ -26,17 +26,18 @@
 
 <!--Une boite du plateau de jeu. Contient une image. -->
 
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.image.Image?>
 <Pane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-      fx:id="contenaire"
-      onMouseClicked="#handleMouseClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit"
-      styleClass="bordure-normale">
+      fx:id="contenaire" styleClass="bordure-normale" prefWidth="${contenaire.height}"
+      onMouseClicked="#onSourisClick" onMouseEntered="#onSourisEntrer" onMouseExited="#onSourisSortie">
+    <!--Definit les deux images-->
     <fx:define>
         <Image url="image/o.png" fx:id="imageO"/>
         <Image url="image/x.png" fx:id="imageX"/>
     </fx:define>
 
+    <!-- Fit width pour que l'image prenne la taille du contenaire -->
     <ImageView fx:id="imageView" preserveRatio="true" fitWidth="${contenaire.width}"/>
 </Pane>

@@ -28,7 +28,7 @@ import tictactoe.util.Position;
 
 /**
  * Définit un jeu humain contre humain
- * Quand une boite est appuyer cela signifie qu'elle est joué
+ * Quand une boite est appuyée cela signifie qu'elle devraient être jouée
  */
 public class HumainContreHumain implements ClickListener {
 

@@ -33,22 +33,23 @@ import java.util.List;
 
 /**
  * Une structure de données pour le plateau de jeu tic tac toe
- * Permet au class de garder un objet dans une position du tableau.
+ * Permet aux autres class de garder un objet dans une position du tableau.
  * Par example le {@link tictactoe.gui.MainController} garde toutes les boites du plateau de jeu dans cette structure de données
  * <p>
  * Les classes peuvent accéder les données dans la structure à l'aide de {@link Position} sans devoir se soucier de comment les données sont organisées
  * <p>
  * À l'interne, la structure de données utilisé deux liste une dans l'autre pour stocker les données.
  *
- * @param <T> Le type de donnée stocké
+ * @param <T> Le type de donnée stockée
  */
-public class StructurePlateau<T> implements Iterable<Position> {
+public class Tableau<T> implements Iterable<Position> {
     private static final int GRANDEUR = 3; //Le nombre de colonne et de rangée
 
+    //TODO Change to use single list
     @NotNull
     private final List<List<T>> tableau = new ArrayList<>(GRANDEUR);
 
-    public StructurePlateau() {
+    public Tableau() {
         for (int indexRangee = 0; indexRangee < GRANDEUR; indexRangee++) {
             //Cree une rangée avec la valeur par défaut
             ArrayList<T> rangee = new ArrayList<>(GRANDEUR);

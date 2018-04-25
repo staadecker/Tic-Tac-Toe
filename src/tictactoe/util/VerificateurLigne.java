@@ -34,13 +34,18 @@ import tictactoe.Jeu;
 import java.util.List;
 
 /**
- * Object qui vérifie un ligne pour des gagnants dans une ligne (par example des colonnes ou des rangée)
+ * Object qui vérifie une ligne (rangée, colonne ou diagonale) pour des gagnants (par example des colonnes ou des rangée)
  */
 class VerificateurLigne implements ChangeListener<Jeu.BoiteStatus> {
 
+    /**
+     * Le status de la ligne
+     */
     private final ReadOnlyObjectWrapper<Jeu.JeuStatus> status = new ReadOnlyObjectWrapper<>(Jeu.JeuStatus.INCOMPLET);
 
-    //La liste de boites formant la ligne
+    /**
+     * La liste de boites dans la ligne
+     */
     @NotNull
     private final List<ReadOnlyObjectProperty<Jeu.BoiteStatus>> ligne;
 
@@ -58,7 +63,7 @@ class VerificateurLigne implements ChangeListener<Jeu.BoiteStatus> {
      */
     @Override
     public void changed(ObservableValue<? extends Jeu.BoiteStatus> observable, Jeu.BoiteStatus oldValue, Jeu.BoiteStatus newValue) {
-        //Si il y a une boite de vide c'est indeterminé
+        //Si il y a une boite de vide c'est INCOMPLET
         for (ReadOnlyObjectProperty<Jeu.BoiteStatus> boite : ligne) {
             if (boite.get() == Jeu.BoiteStatus.VIDE) {
                 status.set(Jeu.JeuStatus.INCOMPLET);
@@ -66,6 +71,7 @@ class VerificateurLigne implements ChangeListener<Jeu.BoiteStatus> {
             }
         }
 
+        //Si aucune boite VIDE mais les boites ne sont pas toutes identiques c'est EGALITE
         for (ReadOnlyObjectProperty<Jeu.BoiteStatus> boite : ligne) {
             if (newValue != boite.get()) {
                 status.set(Jeu.JeuStatus.EGALITE);
@@ -73,11 +79,8 @@ class VerificateurLigne implements ChangeListener<Jeu.BoiteStatus> {
             }
         }
 
-        if (newValue == Jeu.BoiteStatus.CROIX) {
-            status.set(Jeu.JeuStatus.CROIX_GAGNE);
-        } else {
-            status.set(Jeu.JeuStatus.CERCLE_GAGNE);
-        }
+        //Sinon les boites ont tous la valeur et il y a un gagnant
+        status.set(newValue == Jeu.BoiteStatus.CROIX ? Jeu.JeuStatus.CROIX_GAGNE : Jeu.JeuStatus.CERCLE_GAGNE);
     }
 
     ReadOnlyObjectProperty<Jeu.JeuStatus> statusProperty() {

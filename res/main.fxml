@@ -44,16 +44,17 @@
 
     <fx:include source="pointage.fxml"/>
 
+    <!-- Binding pour que la plateau soit carrée -->
     <GridPane fx:id="plateauDeJeu" prefWidth="${plateauDeJeu.height}" VBox.vgrow="SOMETIMES">
         <rowConstraints>
-            <RowConstraints vgrow="SOMETIMES" percentHeight="33"/>
-            <RowConstraints vgrow="SOMETIMES" percentHeight="33"/>
-            <RowConstraints vgrow="SOMETIMES" percentHeight="33"/>
+            <RowConstraints percentHeight="33"/>
+            <RowConstraints percentHeight="33"/>
+            <RowConstraints percentHeight="33"/>
         </rowConstraints>
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="33"/>
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="33"/>
-            <ColumnConstraints hgrow="SOMETIMES" percentWidth="33"/>
+            <ColumnConstraints percentWidth="33"/>
+            <ColumnConstraints percentWidth="33"/>
+            <ColumnConstraints percentWidth="33"/>
         </columnConstraints>
     </GridPane>
 

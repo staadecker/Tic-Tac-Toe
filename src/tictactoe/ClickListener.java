@@ -27,7 +27,7 @@ package tictactoe;
 import tictactoe.util.Position;
 
 /**
- * Interface qui definit un listener pour notifier quand une boite est appuyé
+ * Interface qui definit un listener qui sera notifié quand une boite est appuyée
  */
 public interface ClickListener {
     void notifierBoiteClicked(Position position);
