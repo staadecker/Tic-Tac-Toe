@@ -67,7 +67,7 @@ public class TextStatusController {
         switch (status) {
             case INCOMPLET:
                 //Montrer à qui le tour
-                label.setText(jeu.tourProperty().get() == Jeu.Tour.CROIX ? MSG_TOUR_X : MSG_TOUR_O);
+                label.setText(jeu.getTour() == Jeu.Tour.CROIX ? MSG_TOUR_X : MSG_TOUR_O);
                 break;
             case CERCLE_GAGNE:
                 label.setText(MSG_O_GAGNE);

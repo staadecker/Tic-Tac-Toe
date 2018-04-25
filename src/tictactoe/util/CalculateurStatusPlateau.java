@@ -40,7 +40,7 @@ import java.util.List;
  * Au lieu de revérifier l'état du plateau après chaque tour, le listener vérifie que la rangée, colonne au diagonale qui a été modifié
  * Pour détecter des égalité, le verificateur compte le nombre de boites remplies (non-vide).
  */
-public class CalculateurStatus implements ChangeListener<Jeu.JeuStatus> {
+public class CalculateurStatusPlateau implements ChangeListener<Jeu.JeuStatus> {
     /**
      * Le status du jeu
      */
@@ -59,14 +59,14 @@ public class CalculateurStatus implements ChangeListener<Jeu.JeuStatus> {
     /**
      * Crée un vérificateur de ligne pour chaque colonne, rangée, diagonale et s'ajoute comme listener au vérificateur de ligne
      */
-    public CalculateurStatus(@NotNull Tableau<ReadOnlyObjectProperty<Jeu.BoiteStatus>> statusBoites) {
+    public CalculateurStatusPlateau(@NotNull Tableau<ReadOnlyObjectProperty<Jeu.BoiteStatus>> statusBoites) {
         int compterDeLignes = 0;
 
         //Pour chaque rangée créé un vérificateur de ligne
         Iterator<List<ReadOnlyObjectProperty<Jeu.BoiteStatus>>> iteratorRangee = statusBoites.iteratorRangee();
 
         while (iteratorRangee.hasNext()) {
-            new VerificateurLigne(iteratorRangee.next())
+            new CalculateurStatusLigne(iteratorRangee.next())
                     .statusProperty().addListener(this);
             compterDeLignes++;
         }
@@ -75,15 +75,15 @@ public class CalculateurStatus implements ChangeListener<Jeu.JeuStatus> {
         Iterator<List<ReadOnlyObjectProperty<Jeu.BoiteStatus>>> iteratorColonne = statusBoites.iteratorColonne();
 
         while (iteratorColonne.hasNext()) {
-            new VerificateurLigne(iteratorColonne.next())
+            new CalculateurStatusLigne(iteratorColonne.next())
                     .statusProperty().addListener(this);
             compterDeLignes++;
         }
 
         //Crée un vérificateur de ligne pour les deux diagonales
-        new VerificateurLigne(statusBoites.getDiagonaleGaucheDroit())
+        new CalculateurStatusLigne(statusBoites.getDiagonaleGaucheDroit())
                 .statusProperty().addListener(this);
-        new VerificateurLigne(statusBoites.getDiagonaleDroiteGauche())
+        new CalculateurStatusLigne(statusBoites.getDiagonaleDroiteGauche())
                 .statusProperty().addListener(this);
         compterDeLignes += 2;
 

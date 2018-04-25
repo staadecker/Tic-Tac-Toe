@@ -35,31 +35,31 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
- * Transition pour le pointage qui flash du vert dans la région
+ * Transition utilisé pour flasher du vert quand le pointage change
  */
 class FlashTransition extends Transition {
     /**
      * La region sur laquel la transition s'applique
      */
-    private final Region node;
+    private final Region region;
 
-    FlashTransition(Region node) {
-        this.node = node;
+    FlashTransition(Region region) {
+        this.region = region;
 
         setCycleDuration(Duration.millis(1000));
         setInterpolator(Interpolator.EASE_OUT);
     }
 
     /**
-     * Appelé repetitivement à travers la transition
+     * Appelé répétitivement à travers la transition
      *
-     * @param frac la fraction de temps qui a été complété dans la transition (entre 0 et 1)
+     * @param frac la fraction de temps qui a été écoulé dans la transition (entre 0 et 1)
      */
     @Override
     protected void interpolate(double frac) {
-        node.setBackground(new Background(
+        region.setBackground(new Background(
                 new BackgroundFill(
-                        new Color(0, 1, 0, 1 - frac),
+                        new Color(0, 1, 0, 1 - frac), // Une couleur qui devient de plus en plus transparente au fur et mesure que frac augmente
                         CornerRadii.EMPTY, Insets.EMPTY
                 )
         ));

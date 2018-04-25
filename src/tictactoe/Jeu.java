@@ -27,7 +27,7 @@ package tictactoe;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.jetbrains.annotations.NotNull;
-import tictactoe.util.CalculateurStatus;
+import tictactoe.util.CalculateurStatusPlateau;
 import tictactoe.util.Position;
 import tictactoe.util.PositionIterator;
 import tictactoe.util.Tableau;
@@ -71,9 +71,9 @@ public class Jeu {
     private final Tableau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite = creeCasesVide();
 
     /**
-     * Le status du jeu qui est définit par le CalculateurStatus
+     * Le status du jeu qui est définit par le CalculateurStatusPlateau
      */
-    private final CalculateurStatus calculateurStatus = new CalculateurStatus(creeReadOnlyStatusBoite(statusBoite));
+    private final CalculateurStatusPlateau calculateurStatusPlateau = new CalculateurStatusPlateau(creeReadOnlyStatusBoite(statusBoite));
 
     /**
      * Définit à qui le tour présentement
@@ -107,7 +107,7 @@ public class Jeu {
      * @param position la position de la boite où l'on veut jouer
      */
     void jouer(Position position) {
-        if (calculateurStatus.getStatus() == JeuStatus.INCOMPLET) {
+        if (calculateurStatusPlateau.getStatus() == JeuStatus.INCOMPLET) {
             if (getTour() == Tour.CROIX) {
                 //Si au tour de X changer la boite pour X et changer le tour
                 statusBoite.get(position).set(BoiteStatus.CROIX);
@@ -132,11 +132,11 @@ public class Jeu {
     }
 
     public JeuStatus getJeuStatus(){
-        return calculateurStatus.getStatus();
+        return calculateurStatusPlateau.getStatus();
     }
 
     public ReadOnlyObjectProperty<JeuStatus> jeuStatusProperty() {
-        return calculateurStatus.statusProperty();
+        return calculateurStatusPlateau.statusProperty();
     }
 
     public Tour getTour() {

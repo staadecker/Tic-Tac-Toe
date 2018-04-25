@@ -102,9 +102,8 @@ class BoiteController {
      */
     @FXML
     private void onSourisClick() {
-        if (jeu.getBoiteStatus(position) == Jeu.BoiteStatus.VIDE && listener != null) {
+        if (jeu.getBoiteStatus(position) == Jeu.BoiteStatus.VIDE && listener != null)
             listener.notifierBoiteClicked(position);
-        }
     }
 
     /**
@@ -113,9 +112,8 @@ class BoiteController {
      */
     @FXML
     private void onSourisEntrer() {
-        if (jeu.getBoiteStatus(position) == Jeu.BoiteStatus.VIDE && jeu.getJeuStatus() == Jeu.JeuStatus.INCOMPLET) {
+        if (jeu.getBoiteStatus(position) == Jeu.BoiteStatus.VIDE && jeu.getJeuStatus() == Jeu.JeuStatus.INCOMPLET)
             hover(jeu.getTour() == Jeu.Tour.CROIX ? imageX : imageO);
-        }
     }
 
     /**
@@ -128,9 +126,10 @@ class BoiteController {
 
     /**
      * Montre une image a demi et met une bordure bleu
+     *
      * @param image l'image a montrer
      */
-    private void hover(Image image){
+    private void hover(Image image) {
         imageView.setOpacity(0.5);
         imageView.setImage(image);
         contenaire.getStyleClass().setAll("bordure-hover");
@@ -138,6 +137,7 @@ class BoiteController {
 
     /**
      * Mets l'image au complet dans la case
+     *
      * @param image l'image a montrer
      */
     private void setImage(@Nullable Image image) {

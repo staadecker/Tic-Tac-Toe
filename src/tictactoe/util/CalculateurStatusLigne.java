@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Object qui vérifie une ligne (rangée, colonne ou diagonale) pour des gagnants (par example des colonnes ou des rangée)
  */
-class VerificateurLigne implements ChangeListener<Jeu.BoiteStatus> {
+class CalculateurStatusLigne implements ChangeListener<Jeu.BoiteStatus> {
 
     /**
      * Le status de la ligne
@@ -49,7 +49,7 @@ class VerificateurLigne implements ChangeListener<Jeu.BoiteStatus> {
     @NotNull
     private final List<ReadOnlyObjectProperty<Jeu.BoiteStatus>> ligne;
 
-    VerificateurLigne(List<ReadOnlyObjectProperty<Jeu.BoiteStatus>> ligne) {
+    CalculateurStatusLigne(List<ReadOnlyObjectProperty<Jeu.BoiteStatus>> ligne) {
         this.ligne = ligne;
 
         //Se faire notifier si une des boites dans la ligne change
