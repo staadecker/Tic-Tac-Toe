@@ -86,9 +86,8 @@ public class Jeu {
     }
 
     public void nouvellePartie() {
-        for (Position position : statusBoite) {
-            //noinspection ConstantConditions
-            statusBoite.get(position).set(BoiteStatus.VIDE);
+        for (ReadOnlyObjectWrapper<BoiteStatus> boite : statusBoite) {
+            boite.set(BoiteStatus.VIDE);
         }
 
         //Pour que le premier à jouer change chaque partie (la première partie X commence)
@@ -153,8 +152,11 @@ public class Jeu {
     private static Tableau<ReadOnlyObjectWrapper<BoiteStatus>> creeCasesVide() {
         Tableau<ReadOnlyObjectWrapper<BoiteStatus>> data = new Tableau<>();
 
-        for (Position position : data) {
+        Position position = new Position(0, 0);
+
+        while (position.hasNext()){
             data.add(position, new ReadOnlyObjectWrapper<>(BoiteStatus.VIDE));
+            position = position.next();
         }
 
         return data;
@@ -166,8 +168,11 @@ public class Jeu {
     private static Tableau<ReadOnlyObjectProperty<BoiteStatus>> creeReadOnlyStatusBoite(@NotNull Tableau<ReadOnlyObjectWrapper<BoiteStatus>> statusBoite) {
         Tableau<ReadOnlyObjectProperty<BoiteStatus>> readOnlyBoite = new Tableau<>();
 
-        for (Position position : statusBoite) {
+        Position position = new Position(0,0);
+
+        while (position.hasNext()){
             readOnlyBoite.add(position, statusBoite.get(position).getReadOnlyProperty());
+            position = position.next();
         }
 
         return readOnlyBoite;

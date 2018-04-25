@@ -60,9 +60,10 @@ public class MainController {
 
     @FXML
     private void initialize() {
-        //Ajouter chaque boite au grid pane
-        for (Position position : new Tableau<>()) {
+        Position position = new Position(0,0);
 
+        //Ajouter chaque boite au grid pane
+        while (position.hasNext()) {
             //Attacher l'objet au ficihier fxml
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boite.fxml"));
             fxmlLoader.setController(new BoiteController(jeu, listener, position));
@@ -73,6 +74,7 @@ public class MainController {
                 throw new RuntimeException(exception);
             }
 
+            position = position.next();
         }
     }
 

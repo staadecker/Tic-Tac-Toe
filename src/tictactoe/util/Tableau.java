@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @param <T> Le type de donnée stockée
  */
-public class Tableau<T> implements Iterable<Position> {
+public class Tableau<T> implements Iterable<T> {
     private static final int GRANDEUR = 3; //Le nombre de colonne et de rangée
 
     //TODO Change to use single list
@@ -161,32 +161,20 @@ public class Tableau<T> implements Iterable<Position> {
      */
     @NotNull
     @Override
-    public Iterator<Position> iterator() {
-        return new Iterator<Position>() {
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
             private Position position = new Position(0, 0); //Position de départ
 
             @Override
             public synchronized boolean hasNext() {
-                return position.rangee != GRANDEUR;
+                return position.hasNext();
             }
 
             @Override
-            public synchronized Position next() {
+            public synchronized T next() {
                 Position resultat = position;
-
-                //Si la position est trop grande lancer une error
-                if (resultat.rangee >= GRANDEUR || resultat.colonne >= GRANDEUR) {
-                    throw new IndexOutOfBoundsException("Pas de prochaine position");
-                }
-
-                //Passer à la prochaine position
-                if (position.colonne + 1 == GRANDEUR) { //Si on est sur la dernière colonne
-                    position = new Position(position.rangee + 1, 0);
-                } else {
-                    position = new Position(position.rangee, position.colonne + 1);
-                }
-
-                return resultat;
+                position = position.next();
+                return Tableau.this.get(resultat);
             }
         };
     }

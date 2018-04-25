@@ -31,10 +31,16 @@ import org.jetbrains.annotations.Contract;
  * (0,0) est la case en haut à gauche
  */
 public class Position {
+    private static final int GRANDEUR = 3;
+
     public final int rangee;
     public final int colonne;
 
-    Position(int rangee, int colonne) {
+    public Position(int rangee, int colonne) {
+        if (rangee < 0 || colonne < 0 || rangee >= GRANDEUR || colonne >= GRANDEUR) {
+            throw new IndexOutOfBoundsException("Position invalide");
+        }
+
         this.rangee = rangee;
         this.colonne = colonne;
     }
@@ -52,5 +58,17 @@ public class Position {
         if (!(obj instanceof Position)) return false;
 
         return rangee == ((Position) obj).rangee && colonne == ((Position) obj).colonne;
+    }
+
+    public boolean hasNext() {
+        return !(rangee == GRANDEUR - 1 && colonne == GRANDEUR - 1);
+    }
+
+    public Position next() {
+        try {
+            return new Position(rangee, colonne + 1);
+        } catch (IndexOutOfBoundsException e) {
+            return new Position(rangee + 1, 0);
+        }
     }
 }
