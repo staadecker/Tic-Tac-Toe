@@ -37,7 +37,7 @@ import javafx.util.Duration;
 /**
  * Transition pour le pointage qui flash du vert dans la région
  */
-public class FlashTransition extends Transition {
+class FlashTransition extends Transition {
     /**
      * La region sur laquel la transition s'applique
      */

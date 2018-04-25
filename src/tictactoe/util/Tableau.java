@@ -24,6 +24,7 @@
 
 package tictactoe.util;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -89,10 +90,12 @@ public class Tableau<T> implements Iterable<T> {
         return diagonale;
     }
 
+    @Contract(pure = true)
     private int getIndex(Position position){
         return getIndex(position.rangee, position.colonne);
     }
 
+    @Contract(pure = true)
     private int getIndex(int rangee, int colonne) {
         return Position.MAXIMUM * rangee + colonne;
     }
@@ -163,7 +166,7 @@ public class Tableau<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            private PositionIterator positionIterator = new PositionIterator();
+            private final PositionIterator positionIterator = new PositionIterator();
 
             @Override
             public synchronized boolean hasNext() {

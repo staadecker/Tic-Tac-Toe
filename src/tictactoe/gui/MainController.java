@@ -32,7 +32,6 @@ import tictactoe.ClickListener;
 import tictactoe.Jeu;
 import tictactoe.util.Position;
 import tictactoe.util.PositionIterator;
-import tictactoe.util.Tableau;
 
 import java.io.IOException;
 import java.util.Iterator;
