@@ -44,6 +44,19 @@
         </Text>
     </VBox>
     <Separator orientation="VERTICAL" styleClass="separateur"/>
+    <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS" fx:id="boxEgalite">
+        <Text text="MATCHS NULS">
+            <font>
+                <Font size="30"/>
+            </font>
+        </Text>
+        <Text fx:id="textScoreEgalite">
+            <font>
+                <Font size="30"/>
+            </font>
+        </Text>
+    </VBox>
+    <Separator orientation="VERTICAL" styleClass="separateur"/>
     <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS" fx:id="boxCroix">
         <Text text="CROIX">
             <font>

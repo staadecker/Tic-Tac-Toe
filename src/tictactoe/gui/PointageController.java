@@ -34,6 +34,7 @@ import tictactoe.Jeu;
 /**
  * Controlle la zone qui montre les points
  */
+//TODO Make class for each score keeping box
 public class PointageController {
     private static final String UNITE = "pt";
 
@@ -44,6 +45,12 @@ public class PointageController {
     private Text textScoreCroix;
 
     @FXML
+    private Text textScoreEgalite;
+
+    @FXML
+    private VBox boxEgalite;
+
+    @FXML
     private VBox boxCercle;
 
     @FXML
@@ -52,6 +59,7 @@ public class PointageController {
     //Propriétés qui représentent le score des deux joueurs
     private final SimpleIntegerProperty scoreCercle = new SimpleIntegerProperty(0);
     private final SimpleIntegerProperty scoreCroix = new SimpleIntegerProperty(0);
+    private final SimpleIntegerProperty scoreEgalite = new SimpleIntegerProperty(0);
 
     public PointageController(Jeu jeu) {
         //Quand le status du jeu change, changer la propriété du score
@@ -60,15 +68,14 @@ public class PointageController {
                     switch (newValue) {
                         //Si les X gagne, +1 pour les X
                         case CROIX_GAGNE:
-                            scoreCroix.set(scoreCroix.getValue() + 1);
+                            scoreCroix.set(scoreCroix.get() + 1);
                             break;
                         //Si les O gagne +1 pour les O
                         case CERCLE_GAGNE:
-                            scoreCercle.set(scoreCercle.getValue() + 1);
+                            scoreCercle.set(scoreCercle.get() + 1);
                             break;
                         case EGALITE:
-                            scoreCroix.set(scoreCroix.getValue() + 1);
-                            scoreCercle.set(scoreCercle.getValue() + 1);
+                            scoreEgalite.set(scoreEgalite.get() + 1);
                             break;
                     }
                 }
@@ -81,9 +88,11 @@ public class PointageController {
         //Bindings.concat() pour ajouter les unités
         textScoreCercle.textProperty().bind(Bindings.concat(scoreCercle, " ", UNITE));
         textScoreCroix.textProperty().bind(Bindings.concat(scoreCroix, " ", UNITE));
+        textScoreEgalite.textProperty().bind(Bindings.concat(scoreEgalite, " ", UNITE));
 
         //Quand le text change, appliquer la transition
         textScoreCercle.textProperty().addListener((observable, oldValue, newValue) -> new FlashTransition(boxCercle).play());
         textScoreCroix.textProperty().addListener((observable, oldValue, newValue) -> new FlashTransition(boxCroix).play());
+        textScoreEgalite.textProperty().addListener((observable, oldValue, newValue) -> new FlashTransition(boxEgalite).play());
     }
 }
