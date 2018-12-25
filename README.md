@@ -4,7 +4,7 @@ Two-player tic tac toe game using JavaFX (with FXML).
 
 ## Architecture
 
-Uses the [MVP (Model-View-Presenter) Pattern] (https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter).
+Uses the [MVP (Model-View-Presenter) Pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter).
 
 ### The model
 The model is defined by the `Game` class and is independent of the GUI.
