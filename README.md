@@ -1,21 +1,21 @@
 # Tic Tac Toe
 
-Jeu de tic tac toe à deux joueurs utilisant JavaFX (avec FXML).
+Two-player tic tac toe game using JavaFX (with FXML).
 
 ## Architecture
 
-Utilise le [MVP (Model-View-Presenter) Pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter).
+Uses the [MVP (Model-View-Presenter) Pattern] (https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter).
 
-### Le Model 
-Le model est définit par la class `Jeu` et est indépendant de l'interface graphique.
-Le model définit le status de cases, à qui le tour et le status du jeu (Egalité, Gagnant, etc.)
+### The model
+The model is defined by the `Game` class and is independent of the GUI.
+The model defines the status of boxes, to which the tour and the status of the game (Equality, Winner, etc.)
 
-### Le View
+### The View
 
-Le view est définit par les fichiers FXML. C'est l'interface graphique.
+The view is defined by FXML files. It's the graphical interface.
 
-### Le Controlleur (Le Presenteur)
+### The Controller (The Presentator)
 
-Le presenter ou controlleur contrôle le View (l'interface graphique) en fonction du model.
-Il s'assure que l'interface graphique représente toujours le modèle du Jeu.
-Il transmet aussi au modèle les actions de l'utilisateur (button appuyé, click sur case)
+The presenter or controller controls the View (the GUI) according to the model.
+It makes sure that the graphical interface always represents the model of the Game.
+It also transmits the actions of the user to the model (ex. button pressed, click on box)
